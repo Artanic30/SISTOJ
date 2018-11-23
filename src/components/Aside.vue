@@ -1,5 +1,9 @@
 <template>
   <div class="aside">
+    <div class="logo1" style="margin-bottom: 20px">
+      <img v-bind:src="img" style="width: 40px; height: 40px">
+      <span style="color: #A40006">Online Judge</span>
+    </div>
     <div class="title1">
       <span >Your Courses</span>
     </div>
@@ -12,7 +16,8 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Shanghaitech online judge!Click on one of your courses to the right, or on the Account menu above.'
+      msg: 'Welcome to Shanghaitech online judge! Click on one of your courses to the right, or on the Account menu above.',
+      img: require('../assets/logo.png')
     }
   }
 }
@@ -20,13 +25,16 @@ export default {
 <style>
   .aside {
     display:flex;
-    justify-content: left;
+    justify-content: center;
     flex-direction: column;
+    margin-top: 20px;
   }
-  > title1 {
+  .title1 {
     font-size: 30px;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
-  .aside content1 {
-    font-size: 20px;
+  .content1 {
+    margin-top: 20px;
+    font-size: 15px;
   }
 </style>
