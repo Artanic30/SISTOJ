@@ -1,6 +1,6 @@
 # online-judge
 
-> A Vue.js project
+> A Vue.js project for oj
 
 ## Build Setup
 
