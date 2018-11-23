@@ -3,9 +3,9 @@
     <el-row style="background-color: #A40006">
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
-    <el-row>
+    <el-row style="height: 100%">
       <rl-col>
-          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 0 0 0">
+          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
             <v-aside></v-aside>
           </el-menu>
       </rl-col>
@@ -37,10 +37,10 @@ export default {
   },
   methods: {
     handleOpen (key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
     handleClose (key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     }
   }
 }

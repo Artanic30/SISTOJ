@@ -1,24 +1,24 @@
 <template>
   <div class="home">
-    <el-row style="float: left;margin: 10px 0 10px 0;width: 100%">
+    <el-row style="float: left;margin: 4% 0 10px 0;width: 100%">
         <span style="font-size: 30px">Your Courses</span>
     </el-row>
-    <el-row style="float: left;margin: 10px 0 10px 0;width: 100%">
-       <span>{{ semester }}</span>
+    <el-row style="float: left;margin: 4% 0 10px 0;width: 100%">
+       <span style="font-size: 20px">{{ semester }}</span>
     </el-row>
-     <el-row>
-       <el-card class="box-card" v-for="a in TD" :key="a">
-          <div slot="header" class="card-title" style="float: left">
-           <span>{{ a.name }}</span>
-          </div>
-          <div class="text item">
-            <span>{{ a.address }}</span>
-          </div>
-          <div class="bottom" style="float: left">
-            <span>状态栏</span>
-          </div>
+       <el-card class="box-card" v-for="a in TD" :key="a" style="height: 250px;width: 400px;margin: 3% 5% 5% 0">
+         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;">
+                <el-row style="margin: 20px 0 10px 4%">
+                  <span style="float: left;font-size: 40px;font-style: inherit">{{ a.name }}</span>
+                </el-row>
+                <el-row style="height: 100px;margin: 20px 0 0 4%">
+                    <span style="font-style: italic;float: left">{{ a.address }}</span>
+                </el-row>
+                <el-row style="background-color: black;height: 80px" type="flex">
+                    <span style="margin: 30px 0 0 4%;color: white">{{ a.state }}</span>
+                </el-row>
+         </el-button>
        </el-card>
-     </el-row>
   </div>
 </template>
 
@@ -28,14 +28,17 @@ export default {
     return {
       semester: 'Fall 2018',
       TD: [{
-        name: 'cs100',
-        address: '上海市普陀区金沙江路 1518 弄'
+        name: 'CS100',
+        address: 'programming 1',
+        state: '4assignment'
       }, {
-        name: 'cs101',
-        address: '上海市普陀区金沙江路 1518 弄'
+        name: 'CS101',
+        address: 'programming 2',
+        state: '4assignment'
       }, {
-        name: 'cs102',
-        address: '上海市普陀区金沙江路 1518 弄'
+        name: 'CS102',
+        address: 'programming 3',
+        state: '4assignment'
       }]
     }
   }
@@ -48,14 +51,5 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-  }
-  .text {
-    font-size: 14px;
-  }
-  .box-card {
-    font-size: 30px;
-    width: 480px;
-    height:500px;
-    background-color: #D3DCE6;
   }
 </style>

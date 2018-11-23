@@ -1,6 +1,6 @@
 <template>
   <div class="aside">
-    <div class="logo1" style="margin-bottom: 20px">
+    <div class="logo1" style="margin: 10% 0 10% 0">
       <img v-bind:src="img" style="width: 40px; height: 40px">
       <span style="color: #A40006">Online Judge</span>
     </div>
