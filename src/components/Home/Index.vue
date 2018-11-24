@@ -4,12 +4,14 @@
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
     <el-row style="height: 100%">
-      <rl-col>
+      <el-col :span="4" style="margin-right: 5%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
             <v-aside></v-aside>
           </el-menu>
-      </rl-col>
-      <v-home></v-home>
+      </el-col>
+      <el-col :span="16">
+         <v-main></v-main>
+      </el-col>
     </el-row>
     <!--
     <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">   todo:展开收缩
@@ -20,8 +22,8 @@
   </div>
 </template>
 <script>
-import nav from './Navigation'
-import home from './Home'
+import nav from '../Navigation'
+import main from './Main'
 import aside from './Aside'
 
 export default {
@@ -31,7 +33,7 @@ export default {
     }
   },
   components: {
-    'v-home': home,
+    'v-main': main,
     'v-nav': nav,
     'v-aside': aside
   },

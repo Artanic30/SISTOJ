@@ -16,8 +16,8 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Shanghaitech online judge! Click on one of your courses to the right, or on the Account menu above.',
-      img: require('../assets/logo.png')
+      msg: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.',
+      img: require('../../assets/logo.png')
     }
   }
 }
