@@ -10,7 +10,7 @@
             active-text-color="#ffd04b"
             router
             >           <!--  todo:箭头与文字重合及箭头颜色   -->
-            <el-submenu index="2">
+            <el-submenu index="2" style="float: right">
               <template slot="title">Account</template>
               <el-menu-item index="/email">change email</el-menu-item>
               <el-menu-item index="/password">change password</el-menu-item>
