@@ -7,7 +7,7 @@
         </div>
         <div class="blackline" style="margin-right: 5%"></div>
         <div style="margin-top: 5px">
-          <span style="font-size: 20px;font-style: italic;">{{ coinfo.semester }}</span>
+          <span style="font-size: 20px;font-style: normal;">{{ coinfo.semester }}</span>
         </div>
       </div>
     </el-row>
@@ -22,6 +22,7 @@
           >
         </el-table-column>
         <el-table-column
+          v-bind:src="img"
           prop="state"
           label="STATUS"
           width="180">
@@ -43,6 +44,7 @@
 export default {
   data () {
     return {
+      img: require('../../assets/logo.png'),
       costate: [{
         name: '',
         state: '',

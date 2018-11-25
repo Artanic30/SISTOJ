@@ -1,10 +1,6 @@
 <template>
   <div class="aside">
-    <el-row style="margin: 15% 0 10% 0">
-      <img v-bind:src="img" style="width: 40px; height: 40px">
-      <span style="color: #A40006">Online Judge</span>
-    </el-row>
-    <el-row>
+    <el-row style="margin-top: 40px">
       <span style="font-size: 30px;font-style: inherit">{{ coinfo.name }}</span>
     </el-row>
     <el-row>
@@ -12,21 +8,21 @@
     </el-row>
     <el-row style="margin-top: 10%">
       <el-col :span="5">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 25px;color: #A40006">Dashboard</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 25px;">Dashboard</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10%">
       <el-col :span="5">
-        <i class="el-icon-star-on"></i>
+        <i class="el-icon-star-on" style="margin-left: 10px"></i>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="15">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 25px;color: #A40006">Contest</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 25px;color: black!important">Contest</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>
@@ -35,7 +31,7 @@
     </el-row>
     <el-row v-for="a in coinfo.instructors" :key="a" style="margin-top: 5%">
       <el-col :span="5">
-        <i class="el-icon-info"></i>
+        <i class="el-icon-info" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
         <span style="font-size: 15px">{{ a }}</span>

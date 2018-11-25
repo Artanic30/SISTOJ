@@ -1,12 +1,8 @@
 <template>
   <div class="aside">
-    <div class="logo1" style="margin: 10% 0 10% 0">
-      <img v-bind:src="img" style="width: 40px; height: 40px">
-      <span style="color: #A40006">Online Judge</span>
-    </div>
-    <div class="title1">
-      <span >Your Courses</span>
-    </div>
+    <el-row style="margin-top: 20px">
+      <span class="title1">Your Courses</span>
+    </el-row>
     <div class="content1">
       <span>{{msg}}</span>
     </div>
@@ -16,8 +12,7 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.',
-      img: require('../../assets/logo.png')
+      msg: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.'
     }
   }
 }

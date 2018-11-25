@@ -1,6 +1,10 @@
 <template>
   <div class="index">
     <el-row style="background-color: #A40006">
+      <el-col :span="8">
+          <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
+          <span style="color: white;">Online Judge</span>
+      </el-col>
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
     <el-row style="height: 100%">
@@ -29,7 +33,8 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      img: require('../../assets/logo.png')
     }
   },
   components: {
