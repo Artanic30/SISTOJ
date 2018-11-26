@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div>
     <el-row style="background-color: #A40006">
       <el-col :span="8">
           <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
@@ -13,7 +13,7 @@
             <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="20">
          <v-main></v-main>
       </el-col>
     </el-row>
@@ -52,10 +52,9 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
-
   }
 </style>

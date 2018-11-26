@@ -10,11 +10,11 @@
     <el-row style="height: 100%" :gutter="20">
       <el-col :span="4" style="margin-right: 10%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
-            <v-aside :courseInformation="coinfo"></v-aside>
+            <v-aside></v-aside>
           </el-menu>
       </el-col>
       <el-col :span="16">
-         <v-main :courseState="costate" :courseInformation="coinfo"></v-main>
+         <v-main></v-main>
       </el-col>
     </el-row>
     <!--
@@ -34,28 +34,7 @@ export default {
   data () {
     return {
       img: require('../../assets/logo.png'),
-      isCollapse: false,
-      coinfo: {
-        name: 'CS100',
-        group: 'programming',
-        instructors: ['Zhongkai Liu', 'Zhongkai Liu'],
-        semester: 'Fall 2018'
-      },
-      costate: [{
-        name: '编程第一次作业',
-        state: 'Submitted',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: 'Ongoing',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: '59/100',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'}]
+      isCollapse: false
     }
   },
   components: {

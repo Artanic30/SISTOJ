@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div>
     <el-row style="margin: 4% 0 10px 0">
       <div class="tle">
         <div style="margin-right: 5%;">
@@ -34,7 +34,8 @@
         <el-table-column
           prop="due"
           label="DUE(CST"
-          width="180">
+          width="180"
+          >       <!-- v-bind:style="classcolor(costate.state)" -->
         </el-table-column>
       </el-table>
     </el-row>
@@ -78,16 +79,26 @@ export default {
   },
   methods: {
   },
-  props: ['courseinformation', 'coursestate'],
+  props: ['courseInformation', 'courseState'],
   created () {
-    this.coinfo = this.courseinformation
-    this.costate = this.coursestate
+    this.coinfo = this.courseInformation
+    this.costate = this.courseState
     if (this.costate.state === 'Submitted') {
       this.costate.check = true
     }
     if (this.costate.state === 'Ongoing') {
       this.costate.check = false
     }
+  },
+  computed: {
+    // classcolor (a) {
+    //   if (a === 'submitted') {
+    //    return {'color': 'green'}            todo:changecolor
+    //   } else if (a === 'Ongoing') {
+    //     return {'color': 'red'}
+    //   } else {
+    //     return {'color': 'yellow'}
+    //   }
   }
 }
 </script>

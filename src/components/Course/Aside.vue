@@ -22,7 +22,7 @@
       </el-col>
       <el-col :span="15">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 25px;color: black!important">Contest</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/score' }" style="font-size: 25px;color: black!important">ScoreBoard</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>
@@ -51,9 +51,9 @@ export default {
       }
     }
   },
-  props: ['courseinformation'],
+  props: ['courseInformation'],
   created () {
-    this.coinfo = this.courseinformation
+    this.coinfo = this.courseInformation
   }
 
 }
