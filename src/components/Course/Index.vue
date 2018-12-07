@@ -7,14 +7,14 @@
       </el-col>
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
-    <el-row style="height: 100%" :gutter="20">
+    <el-row style="height: 100%">
       <el-col :span="4" style="margin-right: 10%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
-            <v-aside :courseInformation="coinfo"></v-aside>
+            <v-aside :courseInformation="coInfo"></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="16">
-         <v-main :courseState="costate" :courseInformation="coinfo"></v-main>
+      <el-col :span="17">
+         <v-main :courseState="coState" :courseInformation="coInfo"></v-main>
       </el-col>
     </el-row>
     <!--
@@ -35,13 +35,13 @@ export default {
     return {
       img: require('../../assets/logo.png'),
       isCollapse: false,
-      coinfo: {
+      coInfo: {
         name: 'CS100',
         group: 'programming',
-        instructors: ['Zhongkai Liu', 'Zhongkai Liu'],
+        instructors: ['Zhongkai Liu', 'Mianheng Jiang'],
         semester: 'Fall 2018'
       },
-      costate: [{
+      coState: [{
         name: '编程第一次作业',
         state: 'Submitted',
         release: 'NOV 01',
@@ -75,7 +75,7 @@ export default {
 </script>
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+     width: 220px;
     min-height: 400px;
   }
 </style>

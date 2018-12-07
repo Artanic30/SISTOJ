@@ -7,7 +7,7 @@
        <span style="font-size: 20px">{{ semester }}</span>
     </el-row>
        <el-card class="box-card" v-for="a in courseInfo" :key="a" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
-         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="tocourse()">
+         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse()">
                 <el-row style="margin: 20px 0 10px 4%">
                   <span style="float: left;font-size: 40px;font-style: inherit">{{ a.name }}</span>
                 </el-row>
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    tocourse () {
+    toCourse () {
       this.$router.push('/course')
     }
   }

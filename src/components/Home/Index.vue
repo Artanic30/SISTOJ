@@ -7,13 +7,13 @@
       </el-col>
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
-    <el-row style="height: 100%">
+    <el-row style="height: 100%" :gutter="2">
       <el-col :span="4" style="margin-right: 5%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="18">
          <v-main></v-main>
       </el-col>
     </el-row>
@@ -54,7 +54,7 @@ export default {
 </script>
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    min-width: 100px;
     min-height: 400px;
   }
 </style>
