@@ -7,7 +7,7 @@
        <span style="font-size: 20px">{{ semester }}</span>
     </el-row>
        <el-card class="box-card" v-for="a in courseInfo" :key="a" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
-         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse()">
+         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse(a.course_id)">
                 <el-row style="margin: 20px 0 10px 4%">
                   <span style="float: left;font-size: 40px;font-style: inherit">{{ a.name }}</span>
                 </el-row>
@@ -23,29 +23,56 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
-      semester: 'Fall 2018', // wait untill api is settled todo:change variable name //
+      semester: '', // wait untill api is settled todo:change variable name //
       courseInfo: [{
         name: 'CS100',
         group: 'programming 1',
-        state: '4assignment'
+        state: '4assignment',
+        course_id: 110
       }, {
         name: 'CS101',
         group: 'programming 2',
-        state: '4assignment'
+        state: '4assignment',
+        course_id: 120
       }, {
         name: 'CS102',
         group: 'programming 3',
-        state: '4assignment'
-      }]
+        state: '4assignment',
+        course_id: 130
+      }],
+      id: 2333,
+      student_id: 0
     }
   },
   methods: {
-    toCourse () {
-      this.$router.push('/course')
+    toCourse (path) {
+      this.$router.push('/student/' + this.student_id + '/course/' + path)
     }
+  },
+  mounted: function () {
+    this.semester = this.$store.state.semester
+    this.student_id = this.$store.state.student_id
+    axios({
+      method: 'GET',
+      url: this.GetApi + 'clubs/profile',
+      params: {
+        ClubId: this.ClubId
+      }
+    }).then(function (response) {
+      if (response.data.message === 'success') {
+        this.Club = response.data.data
+      } else {
+        this.$notify.error({
+          'message': '无法获得社团信息',
+          'title': 'Error'
+        })
+      }
+    }.bind(this))
   }
 }
 </script>

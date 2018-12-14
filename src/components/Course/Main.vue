@@ -14,13 +14,10 @@
     <el-row>
       <el-table
         :data="coState"
-        :row-class-name="tableRowClassName">
         style="width: 100%"
         stripe>
-        <el-table-column
-          prop="name"
-          label="NAME"
-          >
+        <el-table-column label="NAME">
+          <template slot-scope="scope" ><router-link :to="getpath(scope.row.name)" style="color: #606266;text-decoration:none">{{ scope.row.name }}</router-link></template>
         </el-table-column>
         <el-table-column
           prop="state"
@@ -55,27 +52,26 @@ export default {
         name: '',
         group: '',
         instructors: ['']
-      }
+      },
+      student_id: 0
     }
   },
   methods: {
+    toDetail () {
+      this.router.push('/student/:id')
+    },
+    getpath (path) {
+      return '/student/' + this.student_id + '/course/' + path
+    }
   },
   props: ['courseInformation', 'courseState'],
   created () {
     this.coInfo = this.courseInformation
     this.coState = this.courseState
-  },
-  computed: {
-    // classcolor (a) {
-    //   if (a === 'submitted') {
-    //    return {'color': 'green'}            todo:changecolor
-    //   } else if (a === 'Ongoing') {
-    //     return {'color': 'red'}
-    //   } else {
-    //     return {'color': 'yellow'}
-    //   }
+    this.student_id = this.$store.state.student_id
   }
 }
+
 </script>
 <style scoped>
   .blackline {

@@ -5,7 +5,9 @@
           <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
           <span style="color: white;">Online Judge</span>
       </el-col>
-      <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
+      <el-col :span="2" style="float: right" v-if="authorized">
+        <v-nav></v-nav>
+      </el-col>
     </el-row>
     <el-row style="height: 100%" :gutter="2">
       <el-col :span="4" style="margin-right: 5%">
@@ -34,7 +36,9 @@ export default {
   data () {
     return {
       isCollapse: false,
-      img: require('../../assets/logo.png')
+      img: require('../../assets/logo.png'),
+      authorized: true,
+      uid: 2018233
     }
   },
   components: {
