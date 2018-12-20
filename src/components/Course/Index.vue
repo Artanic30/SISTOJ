@@ -43,7 +43,7 @@ export default {
       },
       coState: [{
         name: '编程第一次作业',
-        state: 'Submitted',
+        state: 'Failed',
         release: 'NOV 01',
         due: 'NOV 12 T 12:00AM'
       }, {

@@ -29,7 +29,13 @@ const store = new Vuex.Store({
     uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
     email: '',
     name: '',
-    student_id: '2018533110'
+    student_id: '2018533110',
+    instructor: 23333
+  },
+  mutations: {
+    changeSemester (state, value) {
+      state.semester = value
+    }
   },
   plugins: [vuexLocal.plugin]
 })
