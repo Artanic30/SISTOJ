@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     email: '',
     name: '',
     student_id: '2018533110',
-    instructor: 23333
+    instructor: 'true'
   },
   mutations: {
     changeSemester (state, value) {
