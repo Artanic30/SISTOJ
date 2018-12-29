@@ -15,7 +15,7 @@
         </el-col>
         <el-col :span="18" style="float: right;">
             <v-state v-if="change" v-on:changeState="changeState"></v-state>
-            <v-add v-if="!change"></v-add>
+            <v-add v-if="!change" v-on:goBack="goBack" style="margin-right: 15%"></v-add>
         </el-col>
       </el-row>
     </div>
@@ -49,6 +49,9 @@ export default {
     },
     changeState: function (value) {
       this.change = value
+    },
+    goBack: function () {
+      this.change = true
     }
   },
   mounted () {
