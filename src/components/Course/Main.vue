@@ -26,7 +26,9 @@
           label="STATUS"
           width="180">
           <template slot-scope="scope">
-            <router-link :to="getstate(scope.row.name)" :style="colors(scope.row.state)">{{ scope.row.state }}</router-link>
+            <el-button :style="colors(scope.row.state)">
+              <router-link :to="getstate(scope.row.name)" style="text-decoration: none;color: white;">{{ scope.row.state }}</router-link>
+            </el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -59,19 +61,19 @@ export default {
         instructors: ['']
       },
       student_id: 0,
-      instructor: ''
+      instructor: 'false'
     }
   },
   methods: {
     getpath (path) {
-      if (this.instructor === true) {
+      if (this.instructor === 'false') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/assignment/' + path
       }
     },
     getstate (path) {
-      if (this.instructor === true) {
+      if (this.instructor === 'false') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/submission/' + path
@@ -79,11 +81,11 @@ export default {
     },
     colors (situation) { // don't use state as the variable name
       if (situation === 'Failed') {
-        return 'color: red;text-decoration:none'
+        return 'background-color: #ed3f14;'
       } else if (situation === 'Ongoing') {
-        return 'color: green;text-decoration:none'
+        return 'background-color: #19be6b;'
       } else {
-        return 'color: blue;text-decoration:none'
+        return 'background-color: #2d8cf0;'
       }
     }
   },
@@ -94,6 +96,7 @@ export default {
     this.student_id = this.$store.state.student_id
     this.instructor = this.$store.state.instructor
     console.log(this.$store.state.student_id)
+    console.log(this.instructor)
   }
 }
 

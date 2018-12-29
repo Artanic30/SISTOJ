@@ -24,13 +24,13 @@ const vuexLocal = new VuexPersistence({
 const store = new Vuex.Store({
   state: {
     semester: '',
-    authorized: false,
+    authorized: 'false',
     root: false,
     uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
     email: '',
     name: '',
     student_id: '2018533110',
-    instructor: 23333
+    instructor: 'true'
   },
   mutations: {
     changeSemester (state, value) {
