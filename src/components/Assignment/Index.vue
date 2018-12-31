@@ -7,19 +7,35 @@
         </el-col>
         <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
       </el-row>
+      <el-row :gutter="2">
+        <el-col :span="4">
+          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
+            <v-aside :deliverDetail="assignmentDetail"></v-aside>
+          </el-menu>
+        </el-col>
+        <el-col :span="18"><v-main style="margin: 5% 5% 5% 5%" :deliverDetail="assignmentDetail"></v-main></el-col>
+      </el-row>
     </div>
 </template>
 
 <script>
 import nav from '../Navigation'
 import main from './Main'
-import aside from '../Course/Aside'
+import aside from './Aside'
 
 export default {
   data () {
     return {
       img: require('../../assets/logo.png'),
-      isCollapse: false
+      isCollapse: false,
+      assignmentDetail: {
+        uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+        course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+        name: 'Homework1: Postfix Calculator',
+        deadline: 157000000,
+        release_date: 157000000,
+        descr_link: 'https://shtech.org/course/si100c/17f/hw/1'
+      }
     }
   },
   components: {
@@ -39,5 +55,8 @@ export default {
 </script>
 
 <style scoped>
-
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 220px;
+    min-height: 1000px;
+  }
 </style>

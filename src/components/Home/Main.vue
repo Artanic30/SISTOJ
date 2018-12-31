@@ -63,7 +63,7 @@ export default {
   },
   mounted: function () {
     this.student_id = this.$store.state.student_id
-    if (this.$store.state.authorized === true) {
+    if (this.$store.state.authorized === 'true') {
       axios({
         method: 'GET',
         url: '/student/' + this.$store.state.student_id + 'course/'
