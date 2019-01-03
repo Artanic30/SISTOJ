@@ -1,19 +1,21 @@
 <template>
     <div>
-       <el-row style="background-color: #A40006">
-        <el-col :span="8">
-            <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
+      <el-row>
+          <el-row style="background-color: #A40006">
+            <el-col :span="8">
+              <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
             <span style="color: white;font-size: 15px">Online Judge</span>
-        </el-col>
-        <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
-      </el-row>
-      <el-row :gutter="2">
-        <el-col :span="4">
-          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
-            <v-aside :deliverDetail="assignmentDetail"></v-aside>
-          </el-menu>
-        </el-col>
-        <el-col :span="18"><v-main style="margin: 5% 5% 5% 5%" :deliverDetail="assignmentDetail"></v-main></el-col>
+            </el-col>
+            <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
+          </el-row>
+          <el-row :gutter="4">
+            <el-col :span="4">
+              <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
+                <v-aside :deliverDetail="assignmentDetail"></v-aside>
+              </el-menu>
+            </el-col>
+            <el-col :span="16" style="float: right;margin-right: 10%"><v-main style="margin: 5% 5% 5% 5%" :deliverDetail="assignmentDetail"></v-main></el-col>
+          </el-row>
       </el-row>
     </div>
 </template>
@@ -32,7 +34,7 @@ export default {
         uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
         course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
         name: 'Homework1: Postfix Calculator',
-        deadline: 157000000,
+        deadline: 157000100,
         release_date: 157000000,
         descr_link: 'https://shtech.org/course/si100c/17f/hw/1'
       }

@@ -61,19 +61,19 @@ export default {
         instructors: ['']
       },
       student_id: 0,
-      instructor: 'false'
+      instructor: 'true'
     }
   },
   methods: {
     getpath (path) {
-      if (this.instructor === 'false') {
+      if (this.instructor === 'true') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/assignment/' + path
       }
     },
     getstate (path) {
-      if (this.instructor === 'false') {
+      if (this.instructor === 'true') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/submission/' + path

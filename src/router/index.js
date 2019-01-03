@@ -38,7 +38,7 @@ export default new Router({
       component: assignment
     },
     {
-      path: '/score',
+      path: '/home/course/:id/scoreboard/:id',
       name: 'score',
       component: score
     },
