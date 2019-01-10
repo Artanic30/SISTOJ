@@ -107,8 +107,16 @@ export default {
       console.log(key, keyPath)
     }
   },
-  mounted () {
-
+  beforeMount () {
+    let courseId = 0
+    let assignmentId = 0
+    this.axios.get(`/course/${courseId}/assignment/${assignmentId}/scores/`)
+      .then((response) => {
+        this.scoreInfo = response.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 </script>

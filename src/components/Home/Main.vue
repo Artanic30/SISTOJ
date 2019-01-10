@@ -6,7 +6,7 @@
     <el-row style="float: left;margin: 4% 0 10px 0;width: 100%">
        <span style="font-size: 20px">{{ courseInfo[0].semester + ' ' + courseInfo[0].year }}</span>
     </el-row>
-       <el-card class="box-card" v-for="a in courseInfo" :key="a" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
+       <el-card class="box-card" v-for="a in courseInfo" :key="a.uid" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
          <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse(a.uid)">
                 <el-row style="margin: 20px 0 10px 4%">
                   <span style="float: left;font-size: 40px;font-style: inherit">{{ a.name }}</span>
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data () {
     return {
@@ -61,14 +59,13 @@ export default {
       this.$router.push('home/course/' + path)
     }
   },
-  mounted: function () {
-    this.student_id = this.$store.state.student_id
+  beforeMount () {
     if (this.$store.state.authorized === true) {
-      axios({
+      this.axios({
         method: 'GET',
-        url: '/student/' + this.$store.state.student_id + 'course/'
-      }).then(function (response) {
-        if (response.data === 403) {
+        url: `/student/${this.$store.state.student_id}/course/`
+      }).then((response) => {
+        if (response.status === 403) {
           this.$notify.error({
             'message': '无法获得信息',
             'title': 'Error'
@@ -76,7 +73,7 @@ export default {
         } else {
           this.courseInfo = response.data
         }
-      }.bind(this))
+      })
     }
     this.$store.commit('changeSemester', this.courseInfo[0].semester)
   }
