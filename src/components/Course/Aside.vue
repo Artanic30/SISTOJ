@@ -1,12 +1,12 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 40px">
+    <el-row style="margin-top: 40px;">
       <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
     </el-row>
     <el-row>
       <span class="subtitle">{{ coInfo.group }}</span>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="mt-10percent">
       <el-col :span="5">
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
@@ -16,7 +16,7 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="mt-10percent">
       <el-col :span="5">
         <i class="el-icon-star-on" style="margin-left: 10px"></i>
       </el-col>
@@ -26,7 +26,7 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="mt-10percent">
       <span class="subtitle">INSTRUCTOR</span>
     </el-row>
     <el-row v-for="a in coInfo.instructors" :key="a" style="margin-top: 5%">
@@ -60,6 +60,12 @@ export default {
 }
 </script>
 <style scoped>
+  .mt-10percent {
+    margin-top: 10%;
+  }
+  .aside {
+    padding-left: 4%;
+  }
   .subtitle {
     font-size: 15px;
     font-style: italic;
