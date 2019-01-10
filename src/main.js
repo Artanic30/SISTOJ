@@ -14,13 +14,15 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Vuex)
-Vue.use(axios)
+axios.defaults.baseURL = ''
+Vue.prototype.axios = axios
 Vue.component(CollapseTransition.name, CollapseTransition)
 /* eslint-disable no-new */
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 })
+
 const store = new Vuex.Store({
   state: {
     semester: '',
