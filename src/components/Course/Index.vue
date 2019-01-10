@@ -63,6 +63,17 @@ export default {
     'v-nav': nav,
     'v-aside': aside
   },
+  beforeMount () {
+    if (this.$store.state.authorized === true) {
+      this.axios.get(`/student/${this.$store.state.student_id}/course/`)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
   methods: {
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
