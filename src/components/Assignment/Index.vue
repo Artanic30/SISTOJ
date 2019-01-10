@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="abandaned">
       <el-row>
           <el-row style="background-color: #A40006">
             <el-col :span="8">

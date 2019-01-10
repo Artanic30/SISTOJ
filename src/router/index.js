@@ -4,7 +4,6 @@ import index from '@/components/Home/Index'
 import course from '@/components/Course/Index'
 import score from '@/components/ScoreBoard/Index'
 import student from '@/components/StudentInfo'
-import assignment from '@/components/Assignment/Index'
 import submission from '@/components/Submission/Index'
 import instructor from '@/components/AddAssignment/Index'
 
@@ -31,11 +30,6 @@ export default new Router({
       path: '/home/course/:id',
       name: 'course',
       component: course
-    },
-    {
-      path: '/home/course/:id/assignment/:id',
-      name: 'assignmentDetail',
-      component: assignment
     },
     {
       path: '/home/course/:id/scoreboard/:id',

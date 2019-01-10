@@ -60,6 +60,16 @@ export default {
         group: '',
         instructors: ['']
       },
+      assignmentList: [
+        {
+          uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+          name: 'Homework1: Postfix Calculator',
+          deadline: 157000000,
+          release_date: 157000000,
+          descr_link: 'https://shtech.org/course/si100c/17f/hw/1'
+        }
+      ],
       student_id: 0,
       instructor: 'true'
     }
