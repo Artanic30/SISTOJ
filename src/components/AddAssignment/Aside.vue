@@ -1,13 +1,19 @@
 <template>
     <div>
       <el-row style="margin-top: 20%">
-        <span style="margin-top: 20px;font-size: 200%;">Welcome</span>
+        <el-col>
+          <span style="margin-top: 20px;font-size: 200%;">Welcome</span>
+        </el-col>
       </el-row>
       <el-row style="margin-top: 5%">
-        <span style="font-size: 150%;margin-top: 5%">instructor<br>{{ name }}</span>
+        <el-col>
+          <span style="font-size: 150%;margin-top: 5%">instructor<br>{{ name }}</span>
+        </el-col>
       </el-row>
       <el-row style="margin-top: 5%">
-        <span style="margin-top: 5%">You can check students' assignments state and add new assignment here</span>
+        <el-col>
+          <span style="margin-top: 5%">You can check students' assignments state and add new assignment here</span>
+        </el-col>
       </el-row>
        <el-row style="margin-top: 10%">
       <el-col :span="5">

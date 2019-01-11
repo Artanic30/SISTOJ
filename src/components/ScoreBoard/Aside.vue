@@ -1,10 +1,14 @@
 <template>
   <div class="aside">
     <el-row style="margin-top: 40px">
-      <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+      <el-col>
+        <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+      </el-col>
     </el-row>
     <el-row>
-      <span class="subtitle">{{ coInfo.group }}</span>
+      <el-col>
+        <span class="subtitle">{{ coInfo.group }}</span>
+      </el-col>
     </el-row>
     <el-row style="margin-top: 10%">
       <el-col :span="5">

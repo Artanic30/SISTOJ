@@ -1,10 +1,14 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 40px;">
-      <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+    <el-row style="margin-top: 40px">
+      <el-col>
+        <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+      </el-col>
     </el-row>
     <el-row>
-      <span class="subtitle">{{ coInfo.group }}</span>
+      <el-col>
+        <span class="subtitle">{{ coInfo.group }}</span>
+      </el-col>
     </el-row>
     <el-row class="mt-10percent">
       <el-col :span="5">
@@ -26,11 +30,13 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
-    <el-row class="mt-10percent">
-      <span class="subtitle">INSTRUCTOR</span>
+    <el-row style="margin-top: 10%">
+      <el-col>
+        <span class="subtitle">INSTRUCTOR</span>
+      </el-col>
     </el-row>
     <el-row v-for="a in coInfo.instructors" :key="a" style="margin-top: 5%">
-      <el-col :span="5">
+      <el-col :span="6">
         <i class="el-icon-info" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">

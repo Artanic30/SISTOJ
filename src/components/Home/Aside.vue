@@ -1,11 +1,15 @@
 <template>
   <div class="aside">
     <el-row style="margin-top: 20px">
-      <span class="title1">Your Courses</span>
+      <el-col>
+        <span class="title1">Your Courses</span>
+      </el-col>
     </el-row>
-    <div class="content1">
+    <el-col>
+      <div class="content1">
       <span>{{msg}}</span>
     </div>
+    </el-col>
   </div>
 </template>
 <script>

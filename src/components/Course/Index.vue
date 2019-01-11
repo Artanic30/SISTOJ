@@ -7,13 +7,13 @@
       </el-col>
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
-    <el-row style="height: 100%">
+    <el-row style="height: 100%" :gutter="6">
       <el-col :span="4" style="margin-right: 10%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
             <v-aside :courseInformation="coInfo"></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="17">
+      <el-col :span="14">
          <v-main :courseState="coState" :courseInformation="coInfo"></v-main>
       </el-col>
     </el-row>

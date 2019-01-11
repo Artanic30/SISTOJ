@@ -1,10 +1,13 @@
 <template>
   <div>
     <el-row>
-      <span style="font-size: 30px;font-style: inherit ">ScoreBoard</span>
+      <el-col>
+        <span style="font-size: 30px;font-style: inherit ">ScoreBoard</span>
+      </el-col>
     </el-row>
     <el-row>
-      <el-table
+      <el-col>
+        <el-table
         :data="scoreInfo.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         style="width: 100%;background-color: #606266"
         highlight-current-row
@@ -40,16 +43,19 @@
         </el-table-column>
           <!-- v-bind:style="classcolor(costate.state)" -->
      </el-table>
+      </el-col>
     </el-row>
     <el-row style="justify-content: center" type="flex">
-      <el-pagination
-      background
-      :page-size="pagesize"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      layout="prev, pager, next"
-      :total="total">
-    </el-pagination>
+      <el-col>
+        <el-pagination
+        background
+        :page-size="pagesize"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total">
+        </el-pagination>
+      </el-col>
     </el-row>
   </div>
 </template>

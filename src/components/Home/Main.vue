@@ -1,10 +1,14 @@
 <template>
   <div class="home">
     <el-row style="float: left;margin: 4% 0 10px 0;width: 100%">
+      <el-col>
         <span style="font-size: 30px">Your Courses</span>
+      </el-col>
     </el-row>
     <el-row style="float: left;margin: 4% 0 10px 0;width: 100%">
-       <span style="font-size: 20px">{{ courseInfo[0].semester + ' ' + courseInfo[0].year }}</span>
+      <el-col>
+         <span style="font-size: 20px">{{ courseInfo[0].semester + ' ' + courseInfo[0].year }}</span>
+      </el-col>
     </el-row>
        <el-card class="box-card" v-for="a in courseInfo" :key="a.uid" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
          <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse(a.uid)">

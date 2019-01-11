@@ -1,18 +1,21 @@
 <template>
   <div>
     <el-row style="margin: 4% 0 10px 0">
-      <div class="tle">
-        <div style="margin-right: 5%;">
-          <span style="font-size: 30px;" >{{ coInfo.name }}</span>
+      <el-col>
+        <div class="tle">
+          <div style="margin-right: 5%;">
+            <span style="font-size: 30px;" >{{ coInfo.name }}</span>
+          </div>
+          <div class="blackline" style="margin-right: 5%"></div>
+          <div style="margin-top: 5px">
+            <span style="font-size: 20px;font-style: normal;">{{ coInfo.semester }}</span>
+          </div>
         </div>
-        <div class="blackline" style="margin-right: 5%"></div>
-        <div style="margin-top: 5px">
-          <span style="font-size: 20px;font-style: normal;">{{ coInfo.semester }}</span>
-        </div>
-      </div>
+      </el-col>
     </el-row>
     <el-row>
-      <el-table
+      <el-col>
+        <el-table
         :data="coState"
         style="width: 100%"
         stripe>
@@ -41,7 +44,8 @@
           width="180"
           >
         </el-table-column>
-      </el-table>
+        </el-table>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -60,20 +64,30 @@ export default {
         group: '',
         instructors: ['']
       },
+      assignmentList: [
+        {
+          uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+          name: 'Homework1: Postfix Calculator',
+          deadline: 157000000,
+          release_date: 157000000,
+          descr_link: 'https://shtech.org/course/si100c/17f/hw/1'
+        }
+      ],
       student_id: 0,
-      instructor: 'false'
+      instructor: 'true'
     }
   },
   methods: {
     getpath (path) {
-      if (this.instructor === 'false') {
+      if (this.instructor === 'true') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/assignment/' + path
       }
     },
     getstate (path) {
-      if (this.instructor === 'false') {
+      if (this.instructor === 'true') {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/submission/' + path
