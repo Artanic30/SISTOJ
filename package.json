@@ -17,6 +17,7 @@
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
     "element-ui": "^2.4.10",
+    "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
