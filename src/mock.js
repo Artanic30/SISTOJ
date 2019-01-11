@@ -44,4 +44,4 @@ const returnCourseAssignment = function () {
 
 // Mock.mock( url, post/get , 返回的数据)；
 Mock.mock(/student\/[0-9]+\/course/, 'get', returnStudentCourseList)
-Mock.mock(/course\/[0-9]+\/assignment/, 'get', returnCourseAssignment)
+Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
