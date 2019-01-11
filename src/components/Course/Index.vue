@@ -40,39 +40,13 @@ export default {
         group: 'programming',
         instructors: ['Zhongkai Liu', 'Mianheng Jiang'],
         semester: 'Fall 2018'
-      },
-      coState: [{
-        name: '编程第一次作业',
-        state: 'Failed',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: 'Ongoing',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: '59/100',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'}]
+      }
     }
   },
   components: {
     'v-main': main,
     'v-nav': nav,
     'v-aside': aside
-  },
-  beforeMount () {
-    if (this.$store.state.authorized === true) {
-      this.axios.get(`/student/${this.$store.state.student_id}/course/`)
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
   },
   methods: {
     handleOpen (key, keyPath) {

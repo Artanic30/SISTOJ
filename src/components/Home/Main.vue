@@ -34,22 +34,6 @@ export default {
         year: 2017,
         homepage: 'https://shtech.org/course/si100c/17f/',
         instructor: ['keenan', 'jackson']
-      }, {
-        uid: '2b3b17c00f16511e8b',
-        name: 'CS100',
-        code: 'programming 1',
-        semester: 'Fall',
-        year: 2017,
-        homepage: 'https://shtech.org/course/si100c/17f/',
-        instructor: ['keenan', 'jackson']
-      }, {
-        uid: '3b3b17c00f16511e8b',
-        name: 'CS100',
-        code: 'programming 1',
-        semester: 'Fall',
-        year: 2017,
-        homepage: 'https://shtech.org/course/si100c/17f/',
-        instructor: ['keenan', 'jackson']
       }],
       student_id: 0
     }
@@ -59,7 +43,7 @@ export default {
       this.$router.push('home/course/' + path)
     }
   },
-  beforeMount () {
+  created () {
     if (this.$store.state.authorized === true) {
       this.axios({
         method: 'GET',
