@@ -104,9 +104,21 @@ export default {
     }
   },
   props: ['courseInformation', 'courseState'],
+  created () {
+    if (this.$store.state.authorized === true) {
+      this.axios.get(`/course/${this.$store.state.student_id}/assignment/`)
+        .then((response) => {
+          console.log(response)
+          this.coState = response.data
+          console.log(this.coState)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
   mounted () {
     this.coInfo = this.courseInformation
-    this.coState = this.courseState
     this.student_id = this.$store.state.student_id
     this.instructor = this.$store.state.instructor
     console.log(this.$store.state.student_id)

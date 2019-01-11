@@ -10,7 +10,7 @@
         <span class="subtitle">{{ coInfo.group }}</span>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="mt-10percent">
       <el-col :span="5">
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
@@ -20,7 +20,7 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="mt-10percent">
       <el-col :span="5">
         <i class="el-icon-star-on" style="margin-left: 10px"></i>
       </el-col>
@@ -66,6 +66,12 @@ export default {
 }
 </script>
 <style scoped>
+  .mt-10percent {
+    margin-top: 10%;
+  }
+  .aside {
+    padding-left: 4%;
+  }
   .subtitle {
     font-size: 15px;
     font-style: italic;
