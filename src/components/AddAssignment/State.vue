@@ -11,45 +11,47 @@
         </el-col>
       </el-row>
       <el-row style="margin-top: 5%">
-        <el-table
+        <el-col>
+          <el-table
           :data="coState"
           style="width: 100%"
           max-height="250">
-        <el-table-column
-          fixed
-          prop="name"
-          label="NAME"
-          width="150">
-        </el-table-column>
-        <el-table-column
-          prop="state"
-          label="STATE"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="release"
-          label="RELEASE"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="due"
-          label="DUE"
-          >
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="120">
-          <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="deleteRow(scope.$index, coState)"
-              type="text"
-              size="small">
-              移除
-            </el-button>
-          </template>
-        </el-table-column>
-        </el-table>
+          <el-table-column
+            fixed
+            prop="name"
+            label="NAME"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            prop="state"
+            label="STATE"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="release"
+            label="RELEASE"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="due"
+            label="DUE"
+            >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="120">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteRow(scope.$index, coState)"
+                type="text"
+                size="small">
+                移除
+              </el-button>
+            </template>
+          </el-table-column>
+          </el-table>
+        </el-col>
       </el-row>
     </div>
 </template>

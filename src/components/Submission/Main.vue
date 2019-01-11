@@ -1,17 +1,22 @@
 <template>
   <div>
     <el-row>
-      <el-card shadow="always">
-        <el-row style="margin: 1% 0 1% 2%">
-          <span style="font-size: 25px">{{ assignmentDetail.name }} Submission </span>
-        </el-row>
-      </el-card>
+      <el-col>
+        <el-card shadow="always">
+          <el-row style="margin: 1% 0 1% 2%">
+            <el-col>
+               <span style="font-size: 25px">{{ assignmentDetail.name }} Submission </span>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
       <el-row>
-        <el-table
-          :data="submission"
-          style="width: 100%"
-          :default-sort = "{prop: 'date', order: 'descending'}"
-          >
+        <el-col>
+            <el-table
+            :data="submission"
+            style="width: 100%"
+            :default-sort = "{prop: 'date', order: 'descending'}"
+            >
             <el-table-column
               prop="submission_time"
               label="When"
@@ -44,6 +49,7 @@
               width="100">
             </el-table-column>
           </el-table>
+          </el-col>
         </el-row>
     </el-row>
   </div>

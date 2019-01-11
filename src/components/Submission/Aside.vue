@@ -1,10 +1,14 @@
 <template>
   <div class="aside">
     <el-row style="margin-top: 15%">
-      <span style="font-size: 30px;font-style: inherit">{{ courseId }}</span>
+      <el-col>
+        <span style="font-size: 30px;font-style: inherit">{{ courseId }}</span>
+      </el-col>
     </el-row>
     <el-row style="margin-top: 10%">
-      <span class="subtitle">{{ assignmentDetail.name }}</span>
+      <el-col>
+        <span class="subtitle">{{ assignmentDetail.name }}</span>
+      </el-col>
     </el-row>
     <el-row style="margin-top: 15%">
       <el-col :span="5">
