@@ -30,6 +30,19 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
+    <el-row style="margin-top: 10%">
+      <el-col>
+        <span class="subtitle">INSTRUCTOR</span>
+      </el-col>
+    </el-row>
+    <el-row v-for="a in coInfo.instructor" :key="a" style="margin-top: 5%">
+      <el-col :span="6">
+        <i class="el-icon-info" style="margin-left: 10px"></i>
+      </el-col>
+      <el-col :span="18">
+        <span style="font-size: 15px">{{ a }}</span>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -38,16 +51,11 @@ export default {
     return {
       img: require('../../assets/logo.png'),
       coInfo: {
-        name: '',
-        group: '',
-        instructors: [''],
-        semester: ''
       }
     }
   },
-  props: ['courseInformation'],
   created () {
-    this.coInfo = this.courseInformation
+    this.coInfo = this.$store.state.coInfo
   }
 }
 </script>

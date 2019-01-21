@@ -20,16 +20,6 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
-      <el-col :span="5">
-        <i class="el-icon-star-on" style="margin-left: 10px"></i>
-      </el-col>
-      <el-col :span="15">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/home/course/' + this.assignmentDetail.uid + '/assignment/' + this.assignmentDetail.name }" style="font-size: 25px;color: black!important">Assignment</el-breadcrumb-item>
-        </el-breadcrumb>
-      </el-col>
-    </el-row>
     <el-row style="margin-top: 15%">
       <el-col :span="5">
         <i class="el-icon-menu" style="margin-left: 10px"></i>

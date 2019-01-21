@@ -11,7 +11,7 @@
       </el-col>
     </el-row>
        <el-card class="box-card" v-for="a in courseInfo" :key="a.uid" style="height: 250px;width: 400px;margin: 3% 2% 5% 0">
-         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse(a.uid)">
+         <el-button style="background-color: #fff1f1;height: 250px;width: 400px;padding: 0 0 0 0;" @click="toCourse(a)">
                 <el-row style="margin: 20px 0 10px 4%">
                   <span style="float: left;font-size: 40px;font-style: inherit">{{ a.name }}</span>
                 </el-row>
@@ -19,7 +19,7 @@
                     <span style="font-style: italic;float: left">{{ a.code }}</span>
                 </el-row>
                 <el-row style="background-color: black;height: 80px" type="flex">
-                    <span style="margin: 30px 0 0 4%;color: white" v-for="b in a.instructor" :key="b">{{ b }}</span>
+                    <span style="margin: 30px 0 0 4%;color: white">{{ a.instructor[0] }} {{ a.instructor[1] }}</span>
                 </el-row>
          </el-button>
        </el-card>
@@ -31,39 +31,36 @@ export default {
   data () {
     return {
       courseInfo: [{
-        uid: 'b3b17c00f16511e8b',
-        name: 'CS100',
-        code: 'programming 1',
-        semester: 'Fall',
-        year: 2017,
-        homepage: 'https://shtech.org/course/si100c/17f/',
-        instructor: ['keenan', 'jackson']
+        uid: '',
+        name: '',
+        code: '',
+        semester: '',
+        year: 0,
+        homepage: '',
+        instructor: ['']
       }],
       student_id: 0
     }
   },
   methods: {
-    toCourse (path) {
-      this.$router.push('home/course/' + path)
+    toCourse (course) {
+      this.$store.commit('updateCoInfo', course)
+      this.$router.push('home/course/' + course.uid)
     }
   },
   created () {
-    if (this.$store.state.authorized === true) {
+    if (this.$store.state.authorized) {
       this.axios({
         method: 'GET',
         url: `/student/${this.$store.state.student_id}/course/`
       }).then((response) => {
         if (response.status === 403) {
-          this.$notify.error({
-            'message': '无法获得信息',
-            'title': 'Error'
-          })
+          // todo: 跳转报错页面（%参数加上当前页面地址）
         } else {
           this.courseInfo = response.data
         }
       })
     }
-    this.$store.commit('changeSemester', this.courseInfo[0].semester)
   }
 }
 </script>
