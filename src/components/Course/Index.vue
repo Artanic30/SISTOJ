@@ -14,7 +14,7 @@
           </el-menu>
       </el-col>
       <el-col :span="14">
-         <v-main :courseState="coState" :courseInformation="coInfo"></v-main>
+         <v-main :courseInformation="coInfo"></v-main>
       </el-col>
     </el-row>
     <!--
@@ -38,7 +38,7 @@ export default {
       coInfo: {
         name: 'CS100',
         group: 'programming',
-        instructors: ['Zhongkai Liu', 'Mianheng Jiang'],
+        instructors: [''],
         semester: 'Fall 2018'
       }
     }
@@ -55,6 +55,9 @@ export default {
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     }
+  },
+  mounted () {
+    this.coInfo.instructors = this.$store.state.instrName
   }
 }
 </script>

@@ -14,7 +14,9 @@
                 <v-aside :deliverDetail="assignmentDetail"></v-aside>
               </el-menu>
             </el-col>
-            <el-col :span="18" style="float: right"><v-main style="margin: 5% 5% 5% 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main></el-col>
+            <el-col :span="18" style="float: right">
+              <v-main style="margin: 5% 5% 5% 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
+            </el-col>
           </el-row>
       </el-row>
     </div>
@@ -31,42 +33,6 @@ export default {
       img: require('../../assets/logo.png'),
       isCollapse: false,
       submission: [
-        {
-          git_commit_id: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          message: '1. Accepted\n',
-          score: 10,
-          overall_score: 10,
-          submission_time: 157000000,
-          delta: 0
-        },
-        {
-          git_commit_id: 'b3b17c00f16511e8b3dfdca9047a0f15',
-          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          message: '1. Partially Accepted\n',
-          score: 8,
-          overall_score: 10,
-          submission_time: 157000200,
-          delta: 0
-        },
-        {
-          git_commit_id: 'b3b17c00f16511e8b3dfdca9047a0f16',
-          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          message: '1. WrongAnswer\n',
-          score: 9,
-          overall_score: 10,
-          submission_time: 157000300,
-          delta: 0
-        },
-        {
-          git_commit_id: 'b3b17c00f16511e8b3dfdca9047a0f17',
-          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          message: '1. RuntimeError\n',
-          score: 3,
-          overall_score: 10,
-          submission_time: 157000400,
-          delta: 0
-        }
       ],
       assignmentDetail: {
         uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
@@ -89,6 +55,20 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    }
+  },
+  created () {
+    if (this.$store.state.authorized) {
+      this.axios({
+        method: 'GET',
+        url: `/student/${this.$store.state.student_id}/course/${this.$store.state.student_id}/assignment/${this.$store.state.student_id}/history/`
+      }).then((response) => {
+        if (response.status === 403) {
+          // todo: 跳转报错页面（%参数加上当前页面地址）
+        } else {
+          this.submission = response.data
+        }
+      })
     }
   }
 }

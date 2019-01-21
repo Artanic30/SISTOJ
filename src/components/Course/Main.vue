@@ -21,7 +21,7 @@
         stripe>
         <el-table-column label="NAME">
           <template slot-scope="scope" >
-            <router-link :to="getpath(scope.row.name)" style="color: #606266;text-decoration:none">{{ scope.row.name }}</router-link>
+            <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -54,40 +54,31 @@ export default {
   data () {
     return {
       coState: [{
+        uid: '',
+        course_uid: '',
         name: '',
-        state: '',
-        release: '',
-        due: ''
+        deadline: 0,
+        release_date: 0,
+        descr_link: ''
       }],
       coInfo: {
         name: '',
         group: '',
         instructors: ['']
       },
-      assignmentList: [
-        {
-          uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-          name: 'Homework1: Postfix Calculator',
-          deadline: 157000000,
-          release_date: 157000000,
-          descr_link: 'https://shtech.org/course/si100c/17f/hw/1'
-        }
-      ],
-      student_id: 0,
-      instructor: 'true'
+      student_id: 0
     }
   },
   methods: {
-    getpath (path) {
-      if (this.instructor === 'true') {
-        return this.$route.path + '/instructor/' + path
+    getpath (scope) {
+      if (this.$store.state.instructor) {
+        this.$router.push(this.$route.path + '/instructor/' + scope.row.name)
       } else {
-        return this.$route.path + '/assignment/' + path
+        window.location.href = scope.row.descr_link
       }
     },
     getstate (path) {
-      if (this.instructor === 'true') {
+      if (this.$store.state.instructor) {
         return this.$route.path + '/instructor/' + path
       } else {
         return this.$route.path + '/submission/' + path
@@ -95,34 +86,30 @@ export default {
     },
     colors (situation) { // don't use state as the variable name
       if (situation === 'Failed') {
-        return 'background-color: #ed3f14;'
+        return 'background-color: #ed3f14;width: 100px'
       } else if (situation === 'Ongoing') {
-        return 'background-color: #19be6b;'
+        return 'background-color: #19be6b;;width: 100px'
       } else {
-        return 'background-color: #2d8cf0;'
+        return 'background-color: #2d8cf0;;width: 100px'
       }
     }
   },
-  props: ['courseInformation', 'courseState'],
+  props: ['courseInformation'],
+  mounted () {
+    this.coInfo = this.courseInformation
+    this.student_id = this.$store.state.student_id
+    this.instructor = this.$store.state.instructor
+  },
   created () {
-    if (this.$store.state.authorized === true) {
+    if (this.$store.state.authorized) {
       this.axios.get(`/course/${this.$store.state.student_id}/assignment/`)
         .then((response) => {
-          console.log(response)
           this.coState = response.data
-          console.log(this.coState)
         })
         .catch((err) => {
           console.log(err)
         })
     }
-  },
-  mounted () {
-    this.coInfo = this.courseInformation
-    this.student_id = this.$store.state.student_id
-    this.instructor = this.$store.state.instructor
-    console.log(this.$store.state.student_id)
-    console.log(this.instructor)
   }
 }
 
@@ -137,5 +124,9 @@ export default {
   .tle {
     display: flex;
     flex-direction: row;
+  }
+  .name{
+    border: none!important;
+    padding: 0 0 2px 0!important;
   }
 </style>
