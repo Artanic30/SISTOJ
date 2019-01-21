@@ -15,7 +15,7 @@
               </el-menu>
             </el-col>
             <el-col :span="18" style="float: right">
-              <v-main style="margin: 5% 5% 5% 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
+              <v-main style="margin: 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
             </el-col>
           </el-row>
       </el-row>
