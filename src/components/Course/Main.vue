@@ -47,6 +47,38 @@
         </el-table>
       </el-col>
     </el-row>
+    <el-row style="margin-top: 10%">
+      <el-col>
+        <el-tooltip class="item" effect="dark" content="Those who disrespect rules and cause harm to system will be on the list" placement="top">
+          <el-button size="mini" @click="showPending" style="float: right">Show shot list</el-button>
+        </el-tooltip>
+      </el-col>
+    </el-row>
+    <el-row v-if="showpending">
+      <el-col>
+        <el-table
+        :data="pendingList"
+        style="width: 100%"
+        stripe>
+        <el-table-column
+          prop="git_commit_id"
+          label="git commit id">
+        </el-table-column>
+        <el-table-column
+          prop="course_id"
+          label="course id">
+        </el-table-column>
+        <el-table-column
+          prop="submission_time"
+          label="submission time">
+        </el-table-column>]
+        <el-table-column
+          prop="submitter"
+          label="submitter">
+        </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -66,7 +98,14 @@ export default {
         group: '',
         instructors: ['']
       },
-      student_id: 0
+      student_id: 0,
+      showpending: false,
+      pendingList: [{
+        git_commit_id: '232',
+        course_id: '2323',
+        submission_time: 2333,
+        submitter: '23233'
+      }]
     }
   },
   methods: {
@@ -92,6 +131,9 @@ export default {
       } else {
         return 'background-color: #2d8cf0;;width: 100px'
       }
+    },
+    showPending () {
+      this.showpending = !this.showpending
     }
   },
   props: ['courseInformation'],
@@ -110,9 +152,19 @@ export default {
           console.log(err)
         })
     }
+    if (this.$store.state.authorized) {
+      this.axios.get(`/course/${this.$store.state.coInfo.uid}/queue/`)
+        .then((response) => {
+          this.pendingList = response.data
+          console.log(this.pendingList)
+          console.log(response)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 }
-
 </script>
 <style scoped>
   .blackline {
