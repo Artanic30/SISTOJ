@@ -6,7 +6,7 @@
           <div style="margin-right: 5%;">
             <span style="font-size: 30px;" >{{ coInfo.name }}</span>
           </div>
-          <div class="blackLine" style="margin-right: 5%"></div>
+          <div class="blackline" style="margin-right: 5%"></div>
           <div style="margin-top: 5px">
             <span style="font-size: 20px;font-style: normal;">{{ coInfo.semester }}</span>
           </div>
@@ -167,7 +167,7 @@ export default {
 }
 </script>
 <style scoped>
-  .blackLine {
+  .blackline {
     height: 30px;
     background-color: black;
     width: 1px;
