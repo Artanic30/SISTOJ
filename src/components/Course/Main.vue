@@ -6,7 +6,7 @@
           <div style="margin-right: 5%;">
             <span style="font-size: 30px;" >{{ coInfo.name }}</span>
           </div>
-          <div class="blackline" style="margin-right: 5%"></div>
+          <div class="blackLine" style="margin-right: 5%"></div>
           <div style="margin-top: 5px">
             <span style="font-size: 20px;font-style: normal;">{{ coInfo.semester }}</span>
           </div>
@@ -54,7 +54,7 @@
         </el-tooltip>
       </el-col>
     </el-row>
-    <el-row v-if="showpending">
+    <el-row v-if="show">
       <el-col>
         <el-table
         :data="pendingList"
@@ -71,7 +71,7 @@
         <el-table-column
           prop="submission_time"
           label="submission time">
-        </el-table-column>]
+        </el-table-column>
         <el-table-column
           prop="submitter"
           label="submitter">
@@ -99,12 +99,12 @@ export default {
         instructors: ['']
       },
       student_id: 0,
-      showpending: false,
+      show: false,
       pendingList: [{
-        git_commit_id: '232',
-        course_id: '2323',
-        submission_time: 2333,
-        submitter: '23233'
+        git_commit_id: '',
+        course_id: '',
+        submission_time: 0,
+        submitter: ''
       }]
     }
   },
@@ -167,7 +167,7 @@ export default {
 }
 </script>
 <style scoped>
-  .blackline {
+  .blackLine {
     height: 30px;
     background-color: black;
     width: 1px;
