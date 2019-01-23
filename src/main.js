@@ -28,13 +28,11 @@ const store = new Vuex.Store({
   state: {
     authorized: true,
     root: false,
-    uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-    email: '',
-    name: '',
     courseId: 'CS110',
     student_id: '2018533110',
-    instructor: true,
+    instructor: false,
     coInfo: {
+      uid: '',
       instructor: [''],
       name: '',
       code: '',

@@ -78,8 +78,23 @@ const returnAssignmentScoreboard = function () {
   return scoreBoard
 }
 
+const returnPendingAssignment = function () {
+  let pendingList = []
+  for (let i = 0; i <= 12; i++) {
+    let list = {
+      'submitter': Random.name(),
+      'git_commit_id': Random.word(25, 40),
+      'course_id': Random.word(25, 40),
+      'submission_time': Random.date()
+    }
+    pendingList.push(list)
+  }
+  return pendingList
+}
+
 // Mock.mock( url, post/get , 返回的数据)；
 Mock.mock(/course\/[0-9]+\/assignment\/[0-9]+\/scores/, 'get', returnAssignmentScoreboard())
 Mock.mock(/student\/[0-9]+\/course\/[0-9]+\/assignment\/[0-9]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/student\/[0-9]+\/course/, 'get', returnStudentCourseList)
 Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
+Mock.mock(/course\/[-a-zA-Z0-9]+\/queue/, 'get', returnPendingAssignment())
