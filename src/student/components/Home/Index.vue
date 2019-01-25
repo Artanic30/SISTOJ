@@ -1,20 +1,22 @@
 <template>
-  <div class="index">
+  <div>
     <el-row style="background-color: #A40006">
       <el-col :span="8">
           <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-          <span style="color: white;font-size: 15px">Online Judge</span>
+          <span style="color: white;">Online Judge</span>
       </el-col>
-      <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
+      <el-col :span="2" style="float: right" v-if="authorized">
+        <v-nav></v-nav>
+      </el-col>
     </el-row>
-    <el-row style="height: 100%" :gutter="6">
-      <el-col :span="4" style="margin-right: 10%">
+    <el-row style="height: 100%" :gutter="2">
+      <el-col :span="4" style="margin-right: 5%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
-            <v-aside :courseInformation="coInfo"></v-aside>
+            <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="14">
-         <v-main :courseInformation="coInfo"></v-main>
+      <el-col :span="18">
+         <v-main></v-main>
       </el-col>
     </el-row>
     <!--
@@ -33,14 +35,10 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../assets/logo.png'),
       isCollapse: false,
-      coInfo: {
-        name: 'CS100',
-        group: 'programming',
-        instructors: [''],
-        semester: 'Fall 2018'
-      }
+      img: require('../../../assets/logo.png'),
+      authorized: true,
+      uid: 2018233
     }
   },
   components: {
@@ -55,15 +53,12 @@ export default {
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     }
-  },
-  mounted () {
-    this.coInfo.instructors = this.$store.state.instrName
   }
 }
 </script>
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 220px;
+    min-width: 100px;
     min-height: 1000px;
   }
 </style>

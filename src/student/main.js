@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './router/index'
 import ElementUI from 'element-ui'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import '../theme/index.css'
+import '../../theme/index.css'
 import 'element-ui/lib/theme-chalk/base.css'
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 import axios from 'axios'
@@ -28,13 +28,11 @@ const store = new Vuex.Store({
   state: {
     authorized: true,
     root: false,
-    uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-    email: '',
-    name: '',
     courseId: 'CS110',
     student_id: '2018533110',
-    instructor: true,
+    instructor: false,
     coInfo: {
+      uid: '',
       instructor: [''],
       name: '',
       code: '',

@@ -7,14 +7,14 @@
       </el-col>
       <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
     </el-row>
-    <el-row style="height: 100%" :gutter="2">
+    <el-row style="height: 100%" :gutter="6">
       <el-col :span="4" style="margin-right: 10%">
           <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
-            <v-aside></v-aside>
+            <v-aside :courseInformation="coInfo"></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="16">
-         <v-main></v-main>
+      <el-col :span="14">
+         <v-main :courseInformation="coInfo"></v-main>
       </el-col>
     </el-row>
     <!--
@@ -33,12 +33,14 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../assets/logo.png'),
+      img: require('../../../assets/logo.png'),
       isCollapse: false,
       coInfo: {
-      },
-      scoreInfo: [
-      ]
+        name: 'CS100',
+        group: 'programming',
+        instructors: [''],
+        semester: 'Fall 2018'
+      }
     }
   },
   components: {
@@ -54,14 +56,14 @@ export default {
       console.log(key, keyPath)
     }
   },
-  created () {
-    this.coInfo = this.$store.state.coInfo
+  mounted () {
+    this.coInfo.instructors = this.$store.state.instrName
   }
 }
 </script>
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
+    width: 220px;
+    min-height: 1000px;
   }
 </style>

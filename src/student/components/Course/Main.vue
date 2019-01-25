@@ -133,7 +133,7 @@ export default {
       }
     },
     showPending () {
-      this.showpending = !this.showpending
+      this.show = !this.show
     }
   },
   props: ['courseInformation'],
@@ -156,8 +156,6 @@ export default {
       this.axios.get(`/course/${this.$store.state.coInfo.uid}/queue/`)
         .then((response) => {
           this.pendingList = response.data
-          console.log(this.pendingList)
-          console.log(response)
         })
         .catch((err) => {
           console.log(err)

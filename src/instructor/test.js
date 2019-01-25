@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from '../instructor/router/index'
 import ElementUI from 'element-ui'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import '../theme/index.css'
+import '../../theme/index.css'
 import 'element-ui/lib/theme-chalk/base.css'
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 import axios from 'axios'
@@ -17,7 +17,6 @@ Vue.use(Vuex)
 // axios.defaults.baseURL = ''
 Vue.prototype.axios = axios
 Vue.component(CollapseTransition.name, CollapseTransition)
-require('./mock.js')
 /* eslint-disable no-new */
 
 const vuexLocal = new VuexPersistence({

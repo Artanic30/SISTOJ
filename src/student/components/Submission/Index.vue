@@ -30,7 +30,7 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../assets/logo.png'),
+      img: require('../../../assets/logo.png'),
       isCollapse: false,
       submission: [
       ],

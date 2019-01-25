@@ -30,7 +30,7 @@ import add from './Add'
 export default {
   data () {
     return {
-      img: require('../../assets/logo.png'),
+      img: require('../../../assets/logo.png'),
       change: true
     }
   },

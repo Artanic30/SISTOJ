@@ -1,21 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/components/Home/Index'
-import course from '@/components/Course/Index'
-import score from '@/components/ScoreBoard/Index'
-import student from '@/components/StudentInfo'
-import submission from '@/components/Submission/Index'
-import instructor from '@/components/AddAssignment/Index'
+import index from '../components/Home/Index'
+import course from '../components/Course/Index'
+import score from '../components/ScoreBoard/Index'
+import student from '../components/StudentInfo'
+import submission from '../components/Submission/Index'
+import instructor from '../components/AddAssignment/Index'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '*', // todo: page not found
-      name: 'HelloWorld',
-      component: index
-    },
     {
       path: '/student',
       name: 'student',
