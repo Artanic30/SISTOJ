@@ -10,7 +10,7 @@
           </el-row>
           <el-row :gutter="2">
             <el-col :span="4">
-              <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
+              <el-menu style="float: left;margin-right: 5%;width: 220px;min-height: 1000px;">
                 <v-aside :deliverDetail="assignmentDetail"></v-aside>
               </el-menu>
             </el-col>
@@ -31,7 +31,6 @@ export default {
   data () {
     return {
       img: require('../../../assets/logo.png'),
-      isCollapse: false,
       submission: [
       ],
       assignmentDetail: {
@@ -50,12 +49,6 @@ export default {
     'v-aside': aside
   },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    }
   },
   created () {
     if (this.$store.state.authorized) {
@@ -70,13 +63,10 @@ export default {
         }
       })
     }
+    this.assignmentDetail = this.$store.state.assignments
+    console.log(this.$store.state.assignments)
   }
 }
 </script>
-
 <style scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 220px;
-    min-height: 1000px;
-  }
 </style>

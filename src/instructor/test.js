@@ -17,6 +17,7 @@ Vue.use(Vuex)
 // axios.defaults.baseURL = ''
 Vue.prototype.axios = axios
 Vue.component(CollapseTransition.name, CollapseTransition)
+require('./mock.js')
 /* eslint-disable no-new */
 
 new Vue({

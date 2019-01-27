@@ -60,7 +60,7 @@ export default {
 </script>
 <style scoped>
   .subtitle {
-    font-size: 15px;
+    font-size: 20px;
     font-style: italic;
   }
 </style>

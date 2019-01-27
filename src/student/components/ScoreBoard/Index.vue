@@ -9,7 +9,7 @@
     </el-row>
     <el-row style="height: 100%" :gutter="2">
       <el-col :span="4" style="margin-right: 10%">
-          <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="float: left;margin: 0 5% 0 0">
+          <el-menu style="float: left;margin-right: 5%;width: 200px;min-height: 400px;">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
@@ -28,7 +28,6 @@ export default {
   data () {
     return {
       img: require('../../../assets/logo.png'),
-      isCollapse: false,
       coInfo: {
       },
       scoreInfo: [
@@ -41,12 +40,6 @@ export default {
     'v-aside': aside
   },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    }
   },
   created () {
     this.coInfo = this.$store.state.coInfo
@@ -54,8 +47,4 @@ export default {
 }
 </script>
 <style scoped>
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
 </style>

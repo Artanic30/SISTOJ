@@ -5,9 +5,9 @@
         <span class="title1">Your Courses</span>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row style="margin-top: 5%">
       <el-col>
-        <span>Instructor {{ this.$store.state.coInfo.name }}</span>
+        <span style="font-family: inherit;font-size: 20px">Instructor {{ this.$store.state.coInfo.name }}</span>
       </el-col>
     </el-row>
     <el-row>

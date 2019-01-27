@@ -5,7 +5,7 @@
           <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
           <span style="color: white;">Online Judge</span>
       </el-col>
-      <el-col :span="2" style="float: right" v-if="authorized">
+      <el-col :span="2" style="float: right" v-if="this.$store.state.authorized">
         <v-nav></v-nav>
       </el-col>
     </el-row>
@@ -16,7 +16,7 @@
           </el-menu>
       </el-col>
       <el-col :span="18">
-         <v-main></v-main>
+         <v-main :passCoInfo="courseInfo"></v-main>
       </el-col>
     </el-row>
   </div>
@@ -29,7 +29,8 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png')
+      img: require('../../../assets/logo.png'),
+      courseInfo: {}
     }
   },
   components: {
@@ -38,6 +39,20 @@ export default {
     'v-aside': aside
   },
   methods: {
+  },
+  created () {
+    if (this.$store.state.authorized) {
+      this.axios({
+        method: 'GET',
+        url: `/instructor/${this.$store.state.student_id}/course/`
+      }).then((response) => {
+        if (response.status === 403) {
+          // todo: 跳转报错页面（%参数加上当前页面地址）
+        } else {
+          this.courseInfo = response.data
+        }
+      })
+    }
   }
 }
 </script>

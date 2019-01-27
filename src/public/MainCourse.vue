@@ -34,10 +34,10 @@ export default {
         uid: '',
         name: '',
         code: '',
-        semester: '',
-        year: 0,
+        semester: 'WinterFall',
+        year: 2013,
         homepage: '',
-        instructor: ['']
+        instructor: ['0', '0']
       }],
       student_id: 0
     }
@@ -48,24 +48,17 @@ export default {
       this.$router.push('home/course/' + course.uid)
     }
   },
-  created () {
-    if (this.$store.state.authorized) {
-      this.axios({
-        method: 'GET',
-        url: `/student/${this.$store.state.student_id}/course/`
-      }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
-          this.courseInfo = response.data
-        }
-      })
+  props: ['passCoInfo'],
+  watch: {
+    passCoInfo: function name (newValue) {
+      this.courseInfo = newValue
     }
+  },
+  created () {
+    this.courseInfo = this.passCoInfo
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this public only -->
 <style scoped>
   .home {
     display: flex;

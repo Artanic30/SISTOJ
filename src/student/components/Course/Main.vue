@@ -8,7 +8,7 @@
           </div>
           <div class="blackline" style="margin-right: 5%"></div>
           <div style="margin-top: 5px">
-            <span style="font-size: 20px;font-style: normal;">{{ coInfo.semester }}</span>
+            <span style="font-size: 35px;">{{ coInfo.semester }}</span>
           </div>
         </div>
       </el-col>
@@ -29,8 +29,8 @@
           label="STATUS"
           width="180">
           <template slot-scope="scope">
-            <el-button :style="colors(scope.row.state)">
-              <router-link :to="getstate(scope.row.name)" style="text-decoration: none;color: white;">{{ scope.row.state }}</router-link>
+            <el-button :style="colors(scope.row.state)" @click="updateAss(scope.row)">
+              <router-link :to="getstate(scope.row)" style="text-decoration: none;color: white;">{{ scope.row.state }}</router-link>
             </el-button>
           </template>
         </el-table-column>
@@ -94,9 +94,6 @@ export default {
         descr_link: ''
       }],
       coInfo: {
-        name: '',
-        group: '',
-        instructors: ['']
       },
       student_id: 0,
       show: false,
@@ -113,7 +110,7 @@ export default {
       window.location.href = scope.row.descr_link
     },
     getstate (path) {
-      return this.$route.path + '/submission/' + path
+      return this.$route.path + '/submission/' + path.uid
     },
     colors (situation) { // don't use state as the variable name
       if (situation === 'Failed') {
@@ -126,11 +123,14 @@ export default {
     },
     showPending () {
       this.show = !this.show
+    },
+    updateAss (info) {
+      console.log(info)
+      this.$store.commit('updateAss', info)
     }
   },
-  props: ['courseInformation'],
   mounted () {
-    this.coInfo = this.courseInformation
+    this.coInfo = this.$store.state.coInfo
     this.student_id = this.$store.state.student_id
     this.instructor = this.$store.state.instructor
   },

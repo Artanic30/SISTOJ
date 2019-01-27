@@ -30,7 +30,7 @@
 export default {
   data () {
     return {
-      name: 'Mianheng jiang'
+      name: ''
     }
   },
   methods: {

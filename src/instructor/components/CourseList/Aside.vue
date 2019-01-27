@@ -40,7 +40,8 @@ export default {
   data () {
     return {
       img: require('../../../assets/logo.png'),
-      coInfo: {}
+      coInfo: {
+      }
     }
   },
   created () {
