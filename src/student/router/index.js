@@ -5,12 +5,17 @@ import course from '../components/Course/Index'
 import score from '../components/ScoreBoard/Index'
 import student from '../components/StudentInfo'
 import submission from '../components/Submission/Index'
-import instructor from '../components/AddAssignment/Index'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
+    {
+      path: '*',
+      name: 'notFound',
+      component: index
+    },
     {
       path: '/student',
       name: 'student',
@@ -35,11 +40,6 @@ export default new Router({
       path: '/home/course/:id/submission/:id',
       name: 'submissionHistory',
       component: submission
-    },
-    {
-      path: '/home/course/:id/instructor/:id',
-      name: 'instructorAddHomework',
-      component: instructor
     }
   ]
 })

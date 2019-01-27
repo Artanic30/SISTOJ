@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this public only -->
 <style scoped>
   .home {
     display: flex;

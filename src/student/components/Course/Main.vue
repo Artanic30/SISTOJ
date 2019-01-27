@@ -110,18 +110,10 @@ export default {
   },
   methods: {
     getpath (scope) {
-      if (this.$store.state.instructor) {
-        this.$router.push(this.$route.path + '/instructor/' + scope.row.name)
-      } else {
-        window.location.href = scope.row.descr_link
-      }
+      window.location.href = scope.row.descr_link
     },
     getstate (path) {
-      if (this.$store.state.instructor) {
-        return this.$route.path + '/instructor/' + path
-      } else {
-        return this.$route.path + '/submission/' + path
-      }
+      return this.$route.path + '/submission/' + path
     },
     colors (situation) { // don't use state as the variable name
       if (situation === 'Failed') {

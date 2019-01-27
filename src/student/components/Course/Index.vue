@@ -17,16 +17,10 @@
          <v-main :courseInformation="coInfo"></v-main>
       </el-col>
     </el-row>
-    <!--
-    <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">   todo:展开收缩
-      <el-radio-button :label="false">展开</el-radio-button>
-      <el-radio-button :label="true">收起</el-radio-button>
-    </el-radio-group>
-    -->
   </div>
 </template>
 <script>
-import nav from '../Navigation'
+import nav from '../../../public/Navigation'
 import main from './Main'
 import aside from './Aside'
 

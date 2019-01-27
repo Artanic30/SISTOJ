@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import nav from '../Navigation'
+import nav from '../../../public/Navigation'
 import main from './Main'
 import aside from './Aside'
 
