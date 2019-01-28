@@ -70,20 +70,22 @@ export default {
       currentPage: 1,
       pagesize: 10,
       total: 0
-    }// todo:计算total的值
+    }
   },
   created () {
     let courseId = 0
     let assignmentId = 0
-    this.axios.get(`/course/${courseId}/assignment/${assignmentId}/scores/`)
-      .then((response) => {
-        this.scoreInfo = response.data
-        // 很诡异 只有这种写法跑的起来
-        this.total = response.data.length
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (this.getAuth) {
+      this.axios.get(`/course/${courseId}/assignment/${assignmentId}/scores/`)
+        .then((response) => {
+          this.scoreInfo = response.data
+          // 很诡异 只有这种写法跑的起来(非同步跟新)
+          this.total = response.data.length
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   },
   methods: {
     handleCurrentChange (val) {
@@ -91,6 +93,9 @@ export default {
     },
     handleSizeChange (val) {
       this.pagesize = val
+    },
+    getAuth () {
+      return this.$store.state.authorized
     }
   }
 }

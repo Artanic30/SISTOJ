@@ -6,7 +6,7 @@
           <span style="color: white;">Online Judge</span>
       </el-col>
       <el-col :span="2" style="float: right" v-if="this.$store.state.authorized">
-        <v-nav></v-nav>
+        <v-na></v-na>
       </el-col>
     </el-row>
     <el-row style="height: 100%" :gutter="2">
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import nav from '../../../public/Navigation'
+import na from '../../../public/Navigation'
 import main from './Main'
 import aside from './Aside'
 
@@ -34,7 +34,7 @@ export default {
   },
   components: {
     'v-main': main,
-    'v-nav': nav,
+    'v-na': na,
     'v-aside': aside
   },
   methods: {

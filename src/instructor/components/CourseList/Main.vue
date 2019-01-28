@@ -76,11 +76,11 @@ export default {
         method: 'GET',
         url: `/course/${this.$store.state.student_id}/students/${this.$store.state.student_id}`
       }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
+        if (response.status === 200) {
           this.studentList = response.data
           console.log(response.data)
+        } else {
+          // todo: 跳转报错页面（%参数加上当前页面地址）
         }
       })
     }

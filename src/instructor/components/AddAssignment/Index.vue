@@ -5,7 +5,7 @@
             <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
             <span style="color: white;font-size: 15px">Online Judge</span>
         </el-col>
-        <el-col :span="2" style="float: right"><v-nav></v-nav></el-col>
+        <el-col :span="2" style="float: right"><v-na></v-na></el-col>
       </el-row>
       <el-row :gutter="2">
         <el-col :span="4">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import nav from '../../../public/Navigation'
+import na from '../../../public/Navigation'
 import state from './State'
 import aside from './Aside'
 import add from './Add'
@@ -35,7 +35,7 @@ export default {
     }
   },
   components: {
-    'v-nav': nav,
+    'v-na': na,
     'v-state': state,
     'v-aside': aside,
     'v-add': add

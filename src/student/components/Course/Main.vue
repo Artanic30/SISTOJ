@@ -125,7 +125,6 @@ export default {
       this.show = !this.show
     },
     updateAss (info) {
-      console.log(info)
       this.$store.commit('updateAss', info)
     }
   },
@@ -135,7 +134,7 @@ export default {
     this.instructor = this.$store.state.instructor
   },
   created () {
-    if (this.$store.state.authorized) {
+    if (this.getAuth) {
       this.axios.get(`/course/${this.$store.state.student_id}/assignment/`)
         .then((response) => {
           this.coState = response.data
@@ -144,7 +143,7 @@ export default {
           console.log(err)
         })
     }
-    if (this.$store.state.authorized) {
+    if (this.getAuth) {
       this.axios.get(`/course/${this.$store.state.coInfo.uid}/queue/`)
         .then((response) => {
           this.pendingList = response.data
@@ -152,6 +151,11 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    }
+  },
+  computed: {
+    getAuth () {
+      return this.$store.state.authorized
     }
   }
 }

@@ -12,11 +12,6 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '*',
-      name: 'notFound',
-      component: index
-    },
-    {
       path: '/student',
       name: 'student',
       component: student
@@ -40,6 +35,11 @@ export default new Router({
       path: '/home/course/:id/submission/:id',
       name: 'submissionHistory',
       component: submission
+    },
+    {
+      path: '*',
+      name: 'notFound',
+      component: index
     }
   ]
 })

@@ -5,8 +5,8 @@
           <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
           <span style="color: white;">Online Judge</span>
       </el-col>
-      <el-col :span="2" style="float: right" v-if="this.$store.state.authorized">
-        <v-nav></v-nav>
+      <el-col :span="2" style="float: right" v-if="getAuth">
+        <v-na></v-na>
       </el-col>
     </el-row>
     <el-row style="height: 100%" :gutter="2">
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import nav from '../../../public/Navigation'
+import na from '../../../public/Navigation'
 import main from '../../../public/MainCourse'
 import aside from './Aside'
 
@@ -35,13 +35,16 @@ export default {
   },
   components: {
     'v-main': main,
-    'v-nav': nav,
+    'v-na': na,
     'v-aside': aside
   },
-  methods: {
+  computed: {
+    getAuth () {
+      return this.$store.state.authorized
+    }
   },
   created () {
-    if (this.$store.state.authorized) {
+    if (this.getAuth) {
       this.axios({
         method: 'GET',
         url: `/student/${this.$store.state.student_id}/course/`
