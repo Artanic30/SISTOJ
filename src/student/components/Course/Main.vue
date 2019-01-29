@@ -1,16 +1,18 @@
 <template>
   <div>
-    <el-row style="margin: 4% 0 10px 0">
-      <el-col>
-        <div class="tle">
+    <el-row class="tle">
+      <el-col :span="6">
           <div style="margin-right: 5%;">
             <span style="font-size: 30px;" >{{ coInfo.name }}</span>
           </div>
+      </el-col>
+      <el-col :span="2">
           <div class="blackline" style="margin-right: 5%"></div>
-          <div style="margin-top: 5px">
+      </el-col>
+      <el-col :span="16">
+          <div>
             <span style="font-size: 35px;">{{ coInfo.semester }}</span>
           </div>
-        </div>
       </el-col>
     </el-row>
     <el-row>
@@ -170,6 +172,7 @@ export default {
   .tle {
     display: flex;
     flex-direction: row;
+    margin: 4% 0 10px 0;
   }
   .name{
     border: none!important;

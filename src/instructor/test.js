@@ -21,7 +21,7 @@ require('./mock.js')
 /* eslint-disable no-new */
 
 new Vue({
-  el: '#app',
+  el: '#app2',
   store,
   router,
   render: h => h(App)
