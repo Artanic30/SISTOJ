@@ -84,7 +84,7 @@ const returnStudentList = function () {
     let list = {
       'name': Random.name(),
       'uid': Random.guid(),
-      'email': Random.email,
+      'email': Random.email(),
       'student_id': Random.natural(10, 11)
     }
     studentList.push(list)
@@ -94,7 +94,7 @@ const returnStudentList = function () {
 
 // Mock.mock( url, post/get , 返回的数据);
 Mock.mock(/instructor\/[0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
+Mock.mock(/course\/[0-9]+\/students/, 'get', returnStudentList())
 Mock.mock(/course\/[0-9]+\/assignment\/[0-9]+\/scores/, 'get', returnAssignmentScoreboard())
 Mock.mock(/student\/[0-9]+\/course\/[0-9]+\/assignment\/[0-9]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
-Mock.mock(/course\/[-a-zA-Z0-9]+\/students\/[-a-zA-Z0-9]+/, 'get', returnStudentList())
