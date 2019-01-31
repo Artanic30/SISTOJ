@@ -63,19 +63,20 @@ const returnSubmissionHistory = function () {
   return submissionHistorys
 }
 
-const returnAssignmentScoreboard = function () {
-  let scoreBoard = []
-  for (let i = 0; i <= 34; i++) {
+const returnAssignments = function () {
+  let list = []
+  for (let i = 0; i <= 6; i++) {
     let scores = {
-      'nickname': Random.name(),
-      'score': Random.natural(10, 100),
-      'overall_score': Random.natural(100, 120),
-      'submission_time': Random.date(),
-      'delta': Random.natural(0, 10)
+      'uid': Random.guid(),
+      'course_id': Random.guid(),
+      'name': Random.name(),
+      'deadline': Random.date(),
+      'release_date': Random.date(),
+      'descr_link': Random.url()
     }
-    scoreBoard.push(scores)
+    list.push(scores)
   }
-  return scoreBoard
+  return list
 }
 
 const returnStudentList = function () {
@@ -85,7 +86,7 @@ const returnStudentList = function () {
       'name': Random.name(),
       'uid': Random.guid(),
       'email': Random.email(),
-      'student_id': Random.natural(10, 11)
+      'student_id': Random.natural(2018000000, 2018999999)
     }
     studentList.push(list)
   }
@@ -95,6 +96,6 @@ const returnStudentList = function () {
 // Mock.mock( url, post/get , 返回的数据);
 Mock.mock(/instructor\/[0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
 Mock.mock(/course\/[0-9]+\/students/, 'get', returnStudentList())
-Mock.mock(/course\/[0-9]+\/assignment\/[0-9]+\/scores/, 'get', returnAssignmentScoreboard())
+Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment/, 'get', returnAssignments())
 Mock.mock(/student\/[0-9]+\/course\/[0-9]+\/assignment\/[0-9]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)

@@ -115,6 +115,8 @@ export default {
     },
     goOutside () {
       window.location.href = 'http://www.baidu.com'
+    },
+    created () {
     }
   }
 }

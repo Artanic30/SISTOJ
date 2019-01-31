@@ -49,10 +49,11 @@ export default {
         method: 'GET',
         url: `/instructor/${this.$store.state.student_id}/course/`
       }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
+        if (response.status === 200) {
           this.courseInfo = response.data
+        } else {
+          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
+          this.$router.push({path: '/404', query: { path: this.$route.path }})
         }
       })
     }

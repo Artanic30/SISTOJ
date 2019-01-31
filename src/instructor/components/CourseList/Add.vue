@@ -8,21 +8,24 @@
         <el-button style="background-color: #A40004;float: right" @click="goBack()"><span style="color: white">back</span></el-button>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row style="margin-top: 5%">
       <el-col>
-        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+        <el-form :model="studentInfo" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
           <el-form-item label="Name" prop="name">
-            <el-input type="password" v-model="ruleForm2.name" autocomplete="off"></el-input>
+            <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="deadline" prop="deadline">
-            <el-input type="password" v-model="ruleForm2.deadline" autocomplete="off"></el-input>
+          <el-form-item label="Uid" prop="uid">
+            <el-input type="text" v-model="studentInfo.uid" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="courseId" prop="courseId">
-            <el-input v-model.number="ruleForm2.courseId"></el-input>
+          <el-form-item label="Email" prop="email">
+            <el-input type="email" v-model.number="studentInfo.email"></el-input>
+          </el-form-item>
+          <el-form-item label="Student Id" prop="student_id">
+            <el-input v-model.number="studentInfo.student_id"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-            <el-button @click="resetForm('ruleForm2')">重置</el-button>
+            <el-button type="primary" @click="submitForm('studentInfo')">提交</el-button>
+            <el-button @click="resetForm('studentInfo')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -40,20 +43,34 @@ export default {
         callback()
       }, 1000)
     }
+    var checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('不能为空'))
+      } else if (!value.includes('@shanghaitech.edu.cn')) {
+        return callback(new Error('请输入正确邮箱'))
+      }
+      setTimeout(() => {
+        callback()
+      }, 1000)
+    }
     return {
-      ruleForm2: {
+      studentInfo: {
         name: '',
-        deadline: '',
-        courseId: ''
+        uid: '',
+        email: '',
+        student_id: ''
       },
-      rules2: {
+      rules: {
         name: [
+          {validator: check, trigger: 'blur'}
+        ],
+        uid: [
           { validator: check, trigger: 'blur' }
         ],
-        deadline: [
-          { validator: check, trigger: 'blur' }
+        email: [
+          { validator: checkEmail, trigger: 'blur' }
         ],
-        courseId: [
+        student_id: [
           { validator: check, trigger: 'blur' }
         ]
       }
@@ -75,10 +92,19 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
-          this.steps += 1
-          this.url.magic = true
-          // todo:axios post
+          if (this.getAuth) {
+            this.axios({
+              method: 'post',
+              url: `/course/${this.$store.state.coInfo.uid}/students/${this.studentInfo.uid}`,
+              data: this.studentInfo
+            }).then((response) => {
+              if (response.status === 200) {
+                alert('submit!')
+              } else if (response.status === 403) {
+                // todo: 跳转报错页面（%参数加上当前页面地址）
+              }
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
