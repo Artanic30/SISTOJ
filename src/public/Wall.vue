@@ -1,43 +1,52 @@
 <template>
-  <div style="background: #303133;height: 1000px;">
-    <el-row style="background-color: #A40006">
-      <el-col :span="8">
-          <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-          <span style="color: white;">Online Judge</span>
-      </el-col>
-      <el-col :span="2" style="float: right" v-if="getAuth">
-        <v-na></v-na>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col style="margin-left: 45%">
-        <span style="color: white;font-size: 70px;">4 0 4</span>
-      </el-col>
-    </el-row>
-    <el-row style="margin: 1% 10% 0 35%">
-          <el-card class="cards">
-              <el-row>
-                <el-col :span="12">
-                  <img class="img" v-bind:src="img2">
-                </el-col>
-                <el-col :span="12" style="margin-top: 10%;">
-                  <span class="words">Page was gone.....</span>
-                </el-col>
+  <div class="wall-main">
+    <el-container style="height: 100%">
+      <el-header style="padding: 0">
+        <el-row type="flex" style="background-color: #A40006; padding:0 1rem;" justify="space-between" align="middle">
+          <el-col style="width: auto">
+            <el-row type="flex" justify="start" align="middle" :gutter="20">
+              <el-col>
+                <img v-bind:src="img" style="width: 100px;">
+              </el-col>
+              <el-col>
+                <span style="color: white;">Online Judge</span>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col style="width: auto" v-if="getAuth">
+            <v-na></v-na>
+          </el-col>
+        </el-row>
+      </el-header>
+      <el-main style="height: 100%">
+        <el-row type="flex" justify="center" align="middle">
+          <el-col style="width: auto">
+            <span style="color: #b82e3b;font-size: 7rem;">4 0 4</span>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center" align="middle">
+          <el-col :span="10">
+            <el-card class="cards">
+              <el-row type="flex" justify="space-around" align="middle">
+                <span class="words">Page was gone.....</span>
               </el-row>
-              <el-row style="margin: 70px 0 0 50px" :gutter="6">
-                <el-col :span="10">
-                  <router-link class="link" :to="{ path: '/'}">Dashboard</router-link>
-                </el-col>
-                <el-col :span="8" class="link2">
-                  <router-link class="link" :to="{ path: this.$route.query.path}">Go back</router-link>
-                </el-col>
+              <el-row type="flex" justify="space-around" align="middle">
+                <img v-bind:src="img2" class="img">
               </el-row>
-          </el-card>
-    </el-row>
+              <el-row type="flex" justify="space-around" align="middle">
+                <router-link class="link" :to="{ path: '/'}">Dashboard</router-link>
+                <router-link class="link" :to="{ path: this.$route.query.path}">Go back</router-link>
+              </el-row>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-main>
+    </el-container>
   </div>
 </template>
 <script>
 import na from './Navigation'
+
 export default {
   data () {
     return {
@@ -56,26 +65,33 @@ export default {
 }
 </script>
 <style scoped>
-  .words{
-    display: flex;
+  .wall-main {
+    height: 100vh;
+  }
+
+  .words {
+    color: #b82e3b;
     font-size: 50px;
-    flex-wrap: nowrap!important;
-    margin-top: 10%;
+    flex-wrap: nowrap !important;
   }
+
   .link {
+    text-decoration: none;
     font-size: 30px;
-    color: black;
+    color: #363636;
   }
+
+  .link:hover {
+    font-size: 30px;
+    color: #b82e3b;
+  }
+
   .cards {
-    height: 400px;
-    width: 400px;
+    padding: 4rem 0;
   }
+
   .img {
-    height: 150px!important;
-    margin: 50px 0 0 30px;
-  }
-  .link2 {
-    float: right;
-    margin-right: 40px;
+    padding: 3rem 0;
+    height: 200px !important;
   }
 </style>
