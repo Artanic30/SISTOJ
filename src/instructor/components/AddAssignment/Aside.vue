@@ -20,7 +20,7 @@
         <i class="el-icon-star-on" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="15">
-        <span @click="back" style="font-size: 20px">Course list</span>
+        <span @click="back" style="font-size: 20px">Student List</span>
       </el-col>
     </el-row>
     </div>

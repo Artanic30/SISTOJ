@@ -20,12 +20,22 @@
         </el-breadcrumb>
       </el-col>
     </el-row>
+    <el-row class="mt-10percent">
+      <el-col :span="5">
+        <i class="el-icon-menu" style="margin-left: 10px"></i>
+      </el-col>
+      <el-col :span="18">
+        <el-breadcrumb>
+          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment ` }" style="font-size: 25px;">Assignments</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+    </el-row>
     <el-row style="margin-top: 10%">
       <el-col>
         <span class="subtitle">INSTRUCTOR</span>
       </el-col>
     </el-row>
-    <el-row v-for="a in coInfo.instructor" :key="a" style="margin-top: 5%">
+    <el-row v-for="a in coInfo.instructor" :key="a.uid" style="margin-top: 5%">
       <el-col :span="6">
         <i class="el-icon-info" style="margin-left: 10px"></i>
       </el-col>

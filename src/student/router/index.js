@@ -5,11 +5,17 @@ import course from '../components/Course/Index'
 import score from '../components/ScoreBoard/Index'
 import student from '../components/StudentInfo'
 import submission from '../components/Submission/Index'
+import wall from '../../public/Wall'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      name: 'index',
+      component: index
+    },
     {
       path: '/student',
       name: 'student',
@@ -38,7 +44,7 @@ export default new Router({
     {
       path: '*',
       name: 'notFound',
-      component: index
+      component: wall
     }
   ]
 })

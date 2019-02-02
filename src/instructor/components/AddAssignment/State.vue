@@ -14,26 +14,18 @@
         <el-col>
           <el-table
           :data="coState"
-          style="width: 100%"
-          max-height="250">
+          style="width: 100%">
           <el-table-column
             fixed
             prop="name"
-            label="NAME"
-            width="150">
+            label="NAME">
           </el-table-column>
           <el-table-column
-            prop="state"
-            label="STATE"
-            width="120">
+            prop="release_date"
+            label="RELEASE">
           </el-table-column>
           <el-table-column
-            prop="release"
-            label="RELEASE"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="due"
+            prop="deadline"
             label="DUE"
             >
           </el-table-column>
@@ -62,20 +54,13 @@ export default {
     return {
       childChange: false,
       coState: [{
-        name: '编程第一次作业',
-        state: 'Failed',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: 'Ongoing',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'
-      }, {
-        name: '编程第一次作业',
-        state: '59/100',
-        release: 'NOV 01',
-        due: 'NOV 12 T 12:00AM'}]
+        name: '',
+        descr_link: '',
+        release_date: '',
+        deadline: '',
+        uid: '',
+        course_id: ''
+      }]
     }
   },
   methods: {
@@ -101,14 +86,48 @@ export default {
           type: 'success',
           message: '删除成功!'
         })
-        rows.splice(index, 1)
-        // todo: axios delete
+        if (this.getAuth) {
+          this.axios({
+            methods: 'delete',
+            url: `/course/${this.$store.state.coInfo.uid}/assignment/${rows.uid}`,
+            data: rows.splice(index, 1)
+          })
+            .then((response) => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
       })
+    }
+  },
+  created () {
+    if (this.getAuth) {
+      this.axios.get(`/course/${this.$store.state.coInfo.uid}/assignment/`)
+        .then((response) => {
+          if (response.status === 200) {
+            this.coState = response.data
+          } else {
+            this.$router.push('/404')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
+  computed: {
+    getAuth () {
+      return this.$store.state.authorized
     }
   }
 }
