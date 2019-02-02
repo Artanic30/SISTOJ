@@ -1,11 +1,7 @@
 <template>
   <div>
     <el-row style="background-color: #A40006">
-      <el-col :span="8">
-          <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-          <span style="color: white;">Online Judge</span>
-      </el-col>
-      <el-col :span="2" style="float: right" v-if="getAuth">
+      <el-col :span="24">
         <v-na></v-na>
       </el-col>
     </el-row>
@@ -29,7 +25,6 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png'),
       courseInfo: {}
     }
   },

@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import index from '../components/Home/Index'
 import course from '../components/Course/Index'
 import score from '../components/ScoreBoard/Index'
-import student from '../components/StudentInfo'
 import submission from '../components/Submission/Index'
 import wall from '../../public/Wall'
+import profile from '../../public/InfoPage'
 
 Vue.use(Router)
 
@@ -15,11 +15,6 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index
-    },
-    {
-      path: '/student',
-      name: 'student',
-      component: student
     },
     {
       path: '/home',
@@ -40,6 +35,11 @@ export default new Router({
       path: '/home/course/:id/submission/:id',
       name: 'submissionHistory',
       component: submission
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
     },
     {
       path: '*',
