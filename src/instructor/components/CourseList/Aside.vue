@@ -26,7 +26,7 @@
       </el-col>
       <el-col :span="18">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment ` }" style="font-size: 25px;">Assignments</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment` }" style="font-size: 25px;">Assignments</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>

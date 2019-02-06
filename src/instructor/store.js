@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     root: false,
     courseId: 'CS110',
     student_id: '2018533110',
-    instructor: false,
+    instructor: true,
     coInfo: {
       uid: '',
       instructor: [''],
