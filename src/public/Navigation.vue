@@ -14,7 +14,6 @@
           <el-col style="width: auto" v-if="getAuth">
              <el-menu
               :default-active="$route.path"
-              class="el-menu-demo"
               mode="horizontal"
               background-color="#A40006"
               text-color="#fff"
@@ -40,7 +39,7 @@ export default {
       img: require('../assets/logo.png')
     }
   },
-  methods: {
+  computed: {
     getAuth () {
       return this.$store.state.authorized
     }
@@ -49,4 +48,7 @@ export default {
 </script>
 
 <style scoped>
+  .line {
+    background: #A40006;
+  }
 </style>

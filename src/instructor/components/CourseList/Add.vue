@@ -95,7 +95,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.$store.state.coInfo.uid}/students/${this.studentInfo.uid}`,
+              url: `/course/${this.getUid}/students/${this.studentInfo.uid}`,
               data: this.studentInfo
             }).then((response) => {
               if (response.status === 200) {
@@ -110,6 +110,11 @@ export default {
           return false
         }
       })
+    }
+  },
+  computed: {
+    getUid () {
+      return this.$store.state.coInfo.uid
     }
   }
 }

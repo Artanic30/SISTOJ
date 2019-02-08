@@ -1,49 +1,44 @@
 <template>
     <div>
-      <el-row style="background-color: #A40006;margin-bottom: 1%">
-        <el-col :span="24">
-          <v-na></v-na>
-        </el-col>
-    </el-row>
     <el-row>
       <el-col align="middle"><span class="title">{{ this.Info.name }}</span></el-col>
     </el-row>
     <el-row :gutter="2">
       <el-col :span="24" align="middle">
         <el-card class="cards">
-          <img v-bind:src="img" class="Img" v-if="getState">
-          <img v-bind:src="img2" class="Img" v-else>
+          <img v-bind:src="imgStudent" class="Img" v-if="getState">
+          <img v-bind:src="imgInstructor" class="Img" v-else>
         </el-card>
       </el-col>
     </el-row>
       <el-row>
         <el-col align="middle">
           <el-card class="cards">
-            <el-row type="flex" justify="center" align="middle" class="card_row">
+            <el-row type="flex" justify="center" align="middle" class="card-row">
               <el-col :span="6">
-                <span class="sub_title">Nickname:</span>
+                <span class="sub-title">Nickname:</span>
               </el-col>
               <el-col :span="10">
                 <el-input class="shortInput" v-model="Info.nickname" :disabled="true"></el-input>
               </el-col>
               <el-col :span="6">
-                <span class="sub_title">Student Id:</span>
+                <span class="sub-title">Student ID:</span>
               </el-col>
               <el-col :span="10">
                 <el-input class="shortInput" v-model="Info.student_id" :disabled="true"></el-input>
               </el-col>
             </el-row>
-            <el-row type="flex" align="middle" class="card_row2">
+            <el-row type="flex" align="middle" class="card-row2">
               <el-col :span="4">
-                <span class="sub_title">Email:</span>
+                <span class="sub-title">Email:</span>
               </el-col>
               <el-col :span="18">
                 <el-input class="shortInput" v-model="Info.email" :disabled="true"></el-input>
               </el-col>
             </el-row>
-            <el-row type="flex" align="middle" class="card_row2">
+            <el-row type="flex" align="middle" class="card-row2">
               <el-col :span="4">
-                <span class="sub_title">Public Key:</span>
+                <span class="sub-title">Public Key:</span>
               </el-col>
               <el-col :span="18">
                 <el-input class="shortInput" v-model="Info.rsa_pub_key" :disabled="true"></el-input>
@@ -61,8 +56,8 @@ import na from './Navigation'
 export default {
   data () {
     return {
-      img: require('../assets/student.jpg'),
-      img2: require('../assets/instructor.jpg'),
+      imgStudent: require('../assets/student.jpg'),
+      imgInstructor: require('../assets/instructor.jpg'),
       Info: {
         uid: 'dlsakhdiagsfdcbhkagcu2',
         name: '王大锤',
@@ -82,13 +77,16 @@ export default {
     },
     getAuth () {
       return this.$store.state.authorized
+    },
+    getID () {
+      return this.$store.state.student_id
     }
   },
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.$store.state.student_id}`
+        url: `/student/${this.getID}/`
       }).then((response) => {
         if (response.status === 200) {
           this.Info = response.data
@@ -104,7 +102,7 @@ export default {
 
 <style scoped>
   .Img {
-    height: 350px;
+    padding: 2%;
   }
   .cards {
     width: 700px;
@@ -113,14 +111,16 @@ export default {
     font-size: 40px;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
-  .sub_title {
+  .sub-title {
     font-size: 20px;
-    font-family: "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    float: right;
+    margin-right: 8%;
   }
-  .card_row {
+  .card-row {
     margin: 3% 3% 2% 3%;
   }
-  .card_row2 {
+  .card-row2 {
     margin: 3% 0 2% 5%;
   }
 </style>

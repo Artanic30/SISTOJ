@@ -70,7 +70,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.$store.state.student_id}/students/${rows.uid}`,
+            url: `/course/${this.getID}/students/${rows.uid}`,
             data: rows.splice(index, 1)
           })
             .then((response) => {
@@ -105,7 +105,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.$store.state.student_id}/students/`)
+      this.axios.get(`/course/${this.getID}/students/`)
         .then((response) => {
           this.studentList = response.data
         })
@@ -117,6 +117,9 @@ export default {
   computed: {
     getAuth () {
       return this.$store.state.authorized
+    },
+    getID () {
+      return this.$store.state.student_id
     }
   }
 }

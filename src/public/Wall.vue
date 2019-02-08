@@ -1,13 +1,6 @@
 <template>
   <div class="wall-main">
     <el-container style="height: 100%">
-      <el-header style="padding: 0">
-        <el-row>
-          <el-col>
-            <v-na></v-na>
-          </el-col>
-        </el-row>
-      </el-header>
       <el-main style="height: 100%">
         <el-row type="flex" justify="center" align="middle">
           <el-col style="width: auto">
@@ -41,7 +34,7 @@ export default {
   data () {
     return {
       img: require('../assets/logo.png'),
-      img2: require('../assets/404.jpg'),
+      img2: require('../assets/pagenotfound.jpg'),
       historyUrl: ''
     }
   },

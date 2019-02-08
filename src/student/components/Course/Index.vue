@@ -1,10 +1,5 @@
 <template>
   <div class="index">
-    <el-row style="background-color: #A40006">
-      <el-col :span="24">
-        <v-na></v-na>
-      </el-col>
-    </el-row>
     <el-row style="height: 100%" :gutter="6">
       <el-col :span="4" style="margin-right: 10%">
           <el-menu style="float: left;margin-right: 5%;width: 220px;min-height: 1000px;">

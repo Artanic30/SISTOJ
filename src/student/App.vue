@@ -1,12 +1,18 @@
 <template>
   <div id="app">
+    <v-na></v-na>
     <router-view/>
   </div>
 </template>
 
 <script>
+import na from '../public/Navigation'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    'v-na': na
+  }
 }
 </script>
 

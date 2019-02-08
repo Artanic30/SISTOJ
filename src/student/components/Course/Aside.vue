@@ -39,12 +39,16 @@
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png'),
       coInfo: {}
     }
   },
   created () {
-    this.coInfo = this.$store.state.coInfo
+    this.coInfo = this.getCoInfo
+  },
+  computed: {
+    getCoInfo () {
+      return this.$store.state.coInfo
+    }
   }
 }
 </script>

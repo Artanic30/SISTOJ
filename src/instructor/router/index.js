@@ -4,15 +4,20 @@ import index from '../components/Home/Index'
 import addAssignment from '../components/AddAssignment/Index'
 import courses from '../components/CourseList/Index'
 import wall from '../../public/Wall'
-import profile from '../../public/InfoPage'
+import profile from '../../public/Profile'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/home',
+      path: '/',
       name: 'index',
+      component: index
+    },
+    {
+      path: '/home',
+      name: 'Home',
       component: index
     },
     {

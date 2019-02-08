@@ -1,10 +1,5 @@
 <template>
   <div>
-    <el-row style="background-color: #A40006">
-      <el-col :span="24">
-        <v-na></v-na>
-      </el-col>
-    </el-row>
     <el-row style="height: 100%" :gutter="2">
       <el-col :span="4" style="margin-right: 5%">
           <el-menu class="el-menu-vertical-demo" style="float: left;margin: 0 5% 0 0">
@@ -37,13 +32,16 @@ export default {
   computed: {
     getAuth () {
       return this.$store.state.authorized
+    },
+    getID () {
+      return this.$store.state.student_id
     }
   },
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/instructor/${this.$store.state.student_id}/course/`
+        url: `/instructor/${this.getID}/course/`
       }).then((response) => {
         if (response.status === 200) {
           this.courseInfo = response.data
