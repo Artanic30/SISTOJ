@@ -17,12 +17,12 @@ export default new Router({
       component: index
     },
     {
-      path: '/home/course/:id/scoreboard/:id',
+      path: '/home/course/:id/scoreboard/:ids',
       name: 'score',
       component: score
     },
     {
-      path: '/home/course/:id/submission/:id',
+      path: '/home/course/:id/submission/:ids',
       name: 'submissionHistory',
       component: submission
     },

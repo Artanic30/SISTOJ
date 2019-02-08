@@ -1,7 +1,7 @@
 <template>
     <div>
     <el-row>
-      <el-col align="middle"><span class="title">{{ this.Info.name }}</span></el-col>
+      <el-col align="middle" v-if="!getState"><span class="title">{{ this.Info.nickname }}</span></el-col>
     </el-row>
     <el-row :gutter="2">
       <el-col :span="24" align="middle">
@@ -16,10 +16,10 @@
           <el-card class="cards">
             <el-row type="flex" justify="center" align="middle" class="card-row">
               <el-col :span="6">
-                <span class="sub-title">Nickname:</span>
+                <span class="sub-title">Name:</span>
               </el-col>
               <el-col :span="10">
-                <el-input class="shortInput" v-model="Info.nickname" :disabled="true"></el-input>
+                <el-input class="shortInput" v-model="Info.name" :disabled="true"></el-input>
               </el-col>
               <el-col :span="6">
                 <span class="sub-title">Student ID:</span>
@@ -76,7 +76,7 @@ export default {
       return this.$store.state.instructor
     },
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     },
     getID () {
       return this.$store.state.student_id

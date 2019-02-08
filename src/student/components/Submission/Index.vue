@@ -60,7 +60,7 @@ export default {
       return this.$store.state.student_id
     },
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     }
   }
 }

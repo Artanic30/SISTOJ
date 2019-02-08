@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     }
   }
 }

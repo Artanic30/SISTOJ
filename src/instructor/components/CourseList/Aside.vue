@@ -40,7 +40,7 @@
         <i class="el-icon-info" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <span style="font-size: 15px">{{ a }}</span>
+        <router-link class="instr" :to="{ path: '/profile', params: {}}">{{ a }}</router-link>
       </el-col>
     </el-row>
   </div>
@@ -49,13 +49,17 @@
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png'),
       coInfo: {
       }
     }
   },
   created () {
-    this.coInfo = this.$store.state.coInfo
+    this.coInfo = this.getCoInfo
+  },
+  computed: {
+    getCoInfo () {
+      return this.$store.state.coInfo
+    }
   }
 }
 </script>
@@ -69,5 +73,10 @@ export default {
   .subtitle {
     font-size: 15px;
     font-style: italic;
+  }
+  .instr {
+    font-size: 15px;
+    text-decoration: none;
+    color: black;
   }
 </style>

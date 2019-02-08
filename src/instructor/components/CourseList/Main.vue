@@ -116,7 +116,7 @@ export default {
   },
   computed: {
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     },
     getID () {
       return this.$store.state.student_id

@@ -95,7 +95,7 @@ export default {
       this.pagesize = val
     },
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     }
   }
 }
