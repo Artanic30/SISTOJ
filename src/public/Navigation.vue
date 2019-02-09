@@ -23,8 +23,7 @@
               <el-submenu index="2" style="float: right">
                 <template slot="title">Account</template>
                 <el-menu-item index="/profile">Profile</el-menu-item>
-                <el-menu-item index="/password">change password</el-menu-item>
-                <el-menu-item index="/key">change key</el-menu-item>
+                <el-menu-item index="/" @click="logout">Log out</el-menu-item>
               </el-submenu>
          </el-menu>
           </el-col>
@@ -42,6 +41,11 @@ export default {
   computed: {
     getAuth () {
       return this.$store.state.isAuthorized
+    }
+  },
+  methods: {
+    logout () {
+      console.log(2333)
     }
   }
 }

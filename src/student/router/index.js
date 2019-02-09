@@ -6,6 +6,7 @@ import score from '../components/ScoreBoard/Index'
 import submission from '../components/Submission/Index'
 import wall from '../../public/Wall'
 import profile from '../../public/Profile'
+import instructorProfile from '../../public/InstructorProfile'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: profile
+    },
+    {
+      path: '/instrProfile',
+      name: 'instrProfile',
+      component: instructorProfile
     },
     {
       path: '*',

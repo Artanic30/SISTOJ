@@ -5,6 +5,7 @@ import addAssignment from '../components/AddAssignment/Index'
 import courses from '../components/CourseList/Index'
 import wall from '../../public/Wall'
 import profile from '../../public/Profile'
+import instructorProfile from '../../public/InstructorProfile'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: profile
+    },
+    {
+      path: '/instrProfile',
+      name: 'instrProfile',
+      component: instructorProfile
     },
     {
       path: '*',

@@ -16,6 +16,7 @@
 import na from '../../../public/Navigation'
 import main from '../../../public/MainCourse'
 import aside from './Aside'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -29,14 +30,10 @@ export default {
     'v-na': na,
     'v-aside': aside
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
-    getID () {
-      return this.$store.state.student_id
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  }),
   created () {
     if (this.getAuth) {
       this.axios({

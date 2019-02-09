@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -125,14 +127,10 @@ export default {
         })
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
-    getUid () {
-      return this.$store.state.coInfo.uid
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 

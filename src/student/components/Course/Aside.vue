@@ -25,12 +25,12 @@
         <span class="subtitle">INSTRUCTOR</span>
       </el-col>
     </el-row>
-    <el-row v-for="a in coInfo.instructor" :key="a" style="margin-top: 5%">
+    <el-row v-for="a in instructors" :key="a.uid" style="margin-top: 5%">
       <el-col :span="6">
         <i class="el-icon-info" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <span style="font-size: 15px">{{ a }}</span>
+        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.uid }}">{{ a.name }}</router-link>
       </el-col>
     </el-row>
   </div>
@@ -39,15 +39,36 @@
 export default {
   data () {
     return {
-      coInfo: {}
+      coInfo: {},
+      instructors: [{
+        uid: '',
+        name: '',
+        email: ''
+      }]
     }
   },
   created () {
     this.coInfo = this.getCoInfo
+    if (this.getAuth) {
+      this.axios({
+        method: 'GET',
+        url: `/course/${this.coInfo.uid}/instructor/`
+      }).then((response) => {
+        if (response.status === 200) {
+          this.instructors = response.data
+        } else {
+          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
+          this.$router.push({path: '/403', query: { path: this.$route.path }})
+        }
+      })
+    }
   },
   computed: {
     getCoInfo () {
       return this.$store.state.coInfo
+    },
+    getAuth () {
+      return this.$store.state.isAuthorized
     }
   }
 }
@@ -62,5 +83,10 @@ export default {
   .subtitle {
     font-size: 15px;
     font-style: italic;
+  }
+  .instr {
+    font-size: 15px;
+    text-decoration: none;
+    color: black;
   }
 </style>

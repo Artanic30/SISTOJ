@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -114,14 +116,10 @@ export default {
         })
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
-    getID () {
-      return this.$store.state.student_id
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 

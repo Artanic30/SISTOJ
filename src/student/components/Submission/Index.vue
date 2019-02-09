@@ -17,6 +17,7 @@
 import na from '../../../public/Navigation'
 import main from './Main'
 import aside from './Aside'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -55,14 +56,10 @@ export default {
     }
     this.assignmentDetail = this.$store.state.assignments
   },
-  computed: {
-    getID () {
-      return this.$store.state.student_id
-    },
-    getAuth () {
-      return this.$store.state.isAuthorized
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 <style scoped>
