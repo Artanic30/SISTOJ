@@ -1,14 +1,6 @@
 <template>
     <div>
-      <el-row>
-          <el-row style="background-color: #A40006">
-            <el-col :span="8">
-              <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-            <span style="color: white;font-size: 15px">Online Judge</span>
-            </el-col>
-            <el-col :span="2" style="float: right"><v-na></v-na></el-col>
-          </el-row>
-          <el-row :gutter="2">
+        <el-row :gutter="2">
             <el-col :span="4">
               <el-menu style="float: left;margin-right: 5%;width: 220px;min-height: 1000px;">
                 <v-aside :deliverDetail="assignmentDetail"></v-aside>
@@ -17,8 +9,7 @@
             <el-col :span="18" style="float: right">
               <v-main style="margin: 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
             </el-col>
-          </el-row>
-      </el-row>
+        </el-row>
     </div>
 </template>
 
@@ -26,11 +17,11 @@
 import na from '../../../public/Navigation'
 import main from './Main'
 import aside from './Aside'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png'),
       submission: [
       ],
       assignmentDetail: {
@@ -51,10 +42,10 @@ export default {
   methods: {
   },
   created () {
-    if (this.$store.state.authorized) {
+    if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.$store.state.student_id}/course/${this.$store.state.student_id}/assignment/${this.$store.state.student_id}/history/`
+        url: `/student/${this.getID}/course/${this.getID}/assignment/${this.getID}/history/`
       }).then((response) => {
         if (response.status === 403) {
           // todo: 跳转报错页面（%参数加上当前页面地址）
@@ -64,8 +55,11 @@ export default {
       })
     }
     this.assignmentDetail = this.$store.state.assignments
-    console.log(this.$store.state.assignments)
-  }
+  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 <style scoped>

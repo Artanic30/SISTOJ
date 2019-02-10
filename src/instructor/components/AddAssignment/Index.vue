@@ -1,12 +1,5 @@
 <template>
     <div>
-      <el-row style="background-color: #A40006">
-        <el-col :span="8">
-            <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-            <span style="color: white;font-size: 15px">Online Judge</span>
-        </el-col>
-        <el-col :span="2" style="float: right"><v-na></v-na></el-col>
-      </el-row>
       <el-row :gutter="2">
         <el-col :span="4">
           <el-menu class="el-menu-vertical-demo" style="float: left;margin: 0 5% 0 0">
@@ -47,8 +40,6 @@ export default {
     goBack: function () {
       this.change = true
     }
-  },
-  mounted () {
   }
 }
 </script>

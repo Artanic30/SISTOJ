@@ -1,14 +1,5 @@
 <template>
   <div>
-    <el-row style="background-color: #A40006">
-      <el-col :span="8">
-          <img v-bind:src="img" style="width: 100px;height: 30px;margin: 14px 20px 0 20px">
-          <span style="color: white;">Online Judge</span>
-      </el-col>
-      <el-col :span="2" style="float: right" v-if="getAuth">
-        <v-na></v-na>
-      </el-col>
-    </el-row>
     <el-row style="height: 100%" :gutter="2">
       <el-col :span="4" style="margin-right: 5%">
           <el-menu class="el-menu-vertical-demo" style="float: left;margin: 0 5% 0 0">
@@ -25,6 +16,7 @@
 import na from '../../../public/Navigation'
 import main from '../../../public/MainCourse'
 import aside from './Aside'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -38,16 +30,15 @@ export default {
     'v-na': na,
     'v-aside': aside
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.authorized
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  }),
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/instructor/${this.$store.state.student_id}/course/`
+        url: `/instructor/${this.getID}/course/`
       }).then((response) => {
         if (response.status === 200) {
           this.courseInfo = response.data

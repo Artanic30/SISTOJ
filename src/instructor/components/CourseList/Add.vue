@@ -10,7 +10,7 @@
     </el-row>
     <el-row style="margin-top: 5%">
       <el-col>
-        <el-form :model="studentInfo" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+        <el-form :model="studentInfo" status-icon :rules="rules" ref="ruleForm2" label-width="100px">
           <el-form-item label="Name" prop="name">
             <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -95,7 +95,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.$store.state.coInfo.uid}/students/${this.studentInfo.uid}`,
+              url: `/course/${this.getUid}/students/${this.studentInfo.uid}`,
               data: this.studentInfo
             }).then((response) => {
               if (response.status === 200) {
@@ -110,6 +110,11 @@ export default {
           return false
         }
       })
+    }
+  },
+  computed: {
+    getUid () {
+      return this.$store.state.coInfo.uid
     }
   }
 }

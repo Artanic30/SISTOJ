@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -89,7 +91,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.$store.state.coInfo.uid}/assignment/${rows.uid}`,
+            url: `/course/${this.getUid}/assignment/${rows.uid}`,
             data: rows.splice(index, 1)
           })
             .then((response) => {
@@ -112,7 +114,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.$store.state.coInfo.uid}/assignment/`)
+      this.axios.get(`/course/${this.getUid}/assignment/`)
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
@@ -125,11 +127,10 @@ export default {
         })
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.authorized
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 

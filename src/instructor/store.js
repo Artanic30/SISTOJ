@@ -10,11 +10,11 @@ const vuexLocal = new VuexPersistence({
 
 const store = new Vuex.Store({
   state: {
-    authorized: true,
+    isAuthorized: true,
     root: false,
     courseId: 'CS110',
     student_id: '2018533110',
-    instructor: false,
+    isInstructor: true,
     coInfo: {
       uid: '',
       instructor: [''],

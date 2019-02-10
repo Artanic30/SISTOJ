@@ -84,6 +84,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -131,13 +133,13 @@ export default {
     }
   },
   mounted () {
-    this.coInfo = this.$store.state.coInfo
-    this.student_id = this.$store.state.student_id
-    this.instructor = this.$store.state.instructor
+    this.coInfo = this.getCoInfo
+    this.student_id = this.getID
+    this.instructor = this.getInstr
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.$store.state.student_id}/assignment/`)
+      this.axios.get(`/course/${this.getID}/assignment/`)
         .then((response) => {
           this.coState = response.data
         })
@@ -146,7 +148,7 @@ export default {
         })
     }
     if (this.getAuth) {
-      this.axios.get(`/course/${this.$store.state.coInfo.uid}/queue/`)
+      this.axios.get(`/course/${this.getUid}/queue/`)
         .then((response) => {
           this.pendingList = response.data
         })
@@ -155,11 +157,13 @@ export default {
         })
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.authorized
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id,
+    getUid: state => state.coInfo.uid,
+    getInstr: state => state.instructor,
+    getCoInfo: state => state.coInfo
+  })
 }
 </script>
 <style scoped>

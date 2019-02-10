@@ -4,6 +4,8 @@ import index from '../components/Home/Index'
 import addAssignment from '../components/AddAssignment/Index'
 import courses from '../components/CourseList/Index'
 import wall from '../../public/Wall'
+import profile from '../../public/Profile'
+import instructorProfile from '../../public/InstructorProfile'
 
 Vue.use(Router)
 
@@ -15,9 +17,9 @@ export default new Router({
       component: index
     },
     {
-      path: '/home/course/:id/assignment',
-      name: 'instructorAddHomework',
-      component: addAssignment
+      path: '/home',
+      name: 'Home',
+      component: index
     },
     {
       path: '/home/course/:id',
@@ -25,7 +27,22 @@ export default new Router({
       component: courses
     },
     {
-      path: '/404',
+      path: '/home/course/:id/assignment',
+      name: 'instructorAddHomework',
+      component: addAssignment
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
+    },
+    {
+      path: '/instrProfile',
+      name: 'instrProfile',
+      component: instructorProfile
+    },
+    {
+      path: '*',
       name: 'NotFound',
       component: wall
     }

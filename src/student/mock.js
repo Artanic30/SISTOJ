@@ -92,9 +92,32 @@ const returnPendingAssignment = function () {
   return pendingList
 }
 
+const returnInstructors = function () {
+  let instructors = []
+  for (let i = 0; i <= 4; i++) {
+    let instructor = {
+      'uid': Random.guid(),
+      'name': Random.name(),
+      'email': Random.email()
+    }
+    instructors.push(instructor)
+  }
+  return instructors
+}
+
+const returnInstructor = function () {
+  return {
+    'uid': Random.guid(),
+    'name': Random.name(),
+    'email': Random.email()
+  }
+}
+
 // Mock.mock( url, post/get , 返回的数据)；
+Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
 Mock.mock(/course\/[0-9]+\/assignment\/[0-9]+\/scores/, 'get', returnAssignmentScoreboard())
 Mock.mock(/student\/[0-9]+\/course\/[0-9]+\/assignment\/[0-9]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/student\/[0-9]+\/course/, 'get', returnStudentCourseList)
 Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
 Mock.mock(/course\/[-a-zA-Z0-9]+\/queue/, 'get', returnPendingAssignment())
+Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructors)

@@ -74,7 +74,7 @@ export default {
   },
   created () {
     let courseId = 0
-    let assignmentId = 0
+    let assignmentId = 0 // todo:specified axios
     if (this.getAuth) {
       this.axios.get(`/course/${courseId}/assignment/${assignmentId}/scores/`)
         .then((response) => {
@@ -95,7 +95,7 @@ export default {
       this.pagesize = val
     },
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     }
   }
 }

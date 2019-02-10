@@ -1,23 +1,6 @@
 <template>
   <div class="wall-main">
     <el-container style="height: 100%">
-      <el-header style="padding: 0">
-        <el-row type="flex" style="background-color: #A40006; padding:0 1rem;" justify="space-between" align="middle">
-          <el-col style="width: auto">
-            <el-row type="flex" justify="start" align="middle" :gutter="20">
-              <el-col>
-                <img v-bind:src="img" style="width: 100px;">
-              </el-col>
-              <el-col>
-                <span style="color: white;">Online Judge</span>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col style="width: auto" v-if="getAuth">
-            <v-na></v-na>
-          </el-col>
-        </el-row>
-      </el-header>
       <el-main style="height: 100%">
         <el-row type="flex" justify="center" align="middle">
           <el-col style="width: auto">
@@ -34,8 +17,8 @@
                 <img v-bind:src="img2" class="img">
               </el-row>
               <el-row type="flex" justify="space-around" align="middle">
-                <router-link class="link" :to="{ path: '/'}">Dashboard</router-link>
-                <router-link class="link" :to="{ path: this.$route.query.path}">Go back</router-link>
+                <router-link class="link" :to="{ path: '/home'}">Dashboard</router-link>
+                <router-link class="link" :to="{ path: '/'}">Login again</router-link>
               </el-row>
             </el-card>
           </el-col>
@@ -51,7 +34,8 @@ export default {
   data () {
     return {
       img: require('../assets/logo.png'),
-      img2: require('../assets/404.jpg')
+      img2: require('../assets/pagenotfound.jpg'),
+      historyUrl: ''
     }
   },
   components: {
@@ -59,7 +43,7 @@ export default {
   },
   computed: {
     getAuth () {
-      return this.$store.state.authorized
+      return this.$store.state.isAuthorized
     }
   }
 }
