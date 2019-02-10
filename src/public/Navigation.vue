@@ -22,7 +22,8 @@
               >
               <el-submenu index="2" style="float: right">
                 <template slot="title">Account</template>
-                <el-menu-item index="/profile">Profile</el-menu-item>
+                <el-menu-item index="/profile" v-if="profilePage">Profile</el-menu-item>
+                <el-menu-item index="/" v-else>Dashboard</el-menu-item>
                 <el-menu-item index="/" @click="logout">Log out</el-menu-item>
               </el-submenu>
          </el-menu>
@@ -41,6 +42,9 @@ export default {
   computed: {
     getAuth () {
       return this.$store.state.isAuthorized
+    },
+    profilePage () {
+      return (this.$route.path.search('/profile') === -1) && (this.$route.path.search('/instrProfile') === -1)
     }
   },
   methods: {
