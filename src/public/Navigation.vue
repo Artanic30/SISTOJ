@@ -24,6 +24,7 @@
                 <template slot="title">Account</template>
                 <el-menu-item index="/profile" v-if="profilePage">Profile</el-menu-item>
                 <el-menu-item index="/" v-else>Dashboard</el-menu-item>
+                <el-menu-item index="/" v-if="!profilePage" @click="goBack">Go back</el-menu-item>
                 <el-menu-item index="/" @click="logout">Log out</el-menu-item>
               </el-submenu>
          </el-menu>
@@ -50,6 +51,9 @@ export default {
   methods: {
     logout () {
       console.log(2333)
+    },
+    goBack () {
+      this.$route.go(-1)
     }
   }
 }

@@ -10,17 +10,17 @@
     </el-row>
     <el-row style="margin-top: 5%">
       <el-col>
-        <el-form :model="studentInfo" status-icon :rules="rules" ref="ruleForm2" label-width="100px">
-          <el-form-item label="Name" prop="name">
+        <el-form :model="studentInfo" status-icon :rules="rules" ref="studentInfo" label-width="100px">
+          <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Uid" prop="uid">
+          <el-form-item label="Uid:" prop="uid">
             <el-input type="text" v-model="studentInfo.uid" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Email" prop="email">
+          <el-form-item label="Email:" prop="email">
             <el-input type="email" v-model.number="studentInfo.email"></el-input>
           </el-form-item>
-          <el-form-item label="Student Id" prop="student_id">
+          <el-form-item label="Student ID:" prop="student_id">
             <el-input v-model.number="studentInfo.student_id"></el-input>
           </el-form-item>
           <el-form-item>
@@ -41,7 +41,7 @@ export default {
       }
       setTimeout(() => {
         callback()
-      }, 1000)
+      }, 500)
     }
     var checkEmail = (rule, value, callback) => {
       if (!value) {
@@ -57,7 +57,7 @@ export default {
       studentInfo: {
         name: '',
         uid: '',
-        email: '',
+        email: '@shanghaitech.edu.cn',
         student_id: ''
       },
       rules: {
@@ -110,6 +110,9 @@ export default {
           return false
         }
       })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   },
   computed: {

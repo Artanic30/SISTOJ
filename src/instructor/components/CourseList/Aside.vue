@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="18">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/home' }" style="font-size: 25px;">DashBoard</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/home' }" class="sub-title">DashBoard</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>
@@ -26,7 +26,7 @@
       </el-col>
       <el-col :span="18">
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment` }" style="font-size: 25px;">Assignments</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment` }" class="sub-title">Assignments</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
     </el-row>
@@ -99,5 +99,8 @@ export default {
     font-size: 15px;
     text-decoration: none;
     color: black;
+  }
+  .sub-title {
+    font-size: 25px;
   }
 </style>

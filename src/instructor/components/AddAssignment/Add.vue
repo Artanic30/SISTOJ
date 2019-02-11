@@ -84,7 +84,7 @@ export default {
       }
       setTimeout(() => {
         callback()
-      }, 1000)
+      }, 500)
     }
     return {
       studentInfo: {

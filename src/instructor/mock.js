@@ -103,7 +103,21 @@ const returnAddAssignment = function () {
   }
 }
 
+const returnJudges = function () {
+  let judgeList = []
+  for (let i = 0; i <= 12; i++) {
+    let judge = {
+      'uid': Random.guid(),
+      'host': Random.ip(),
+      'cert': Random.name(),
+      'max_job': Random.natural(1, 6)
+    }
+    judgeList.push(judge)
+  }
+  return judgeList
+}
 // Mock.mock( url, post/get , 返回的数据);
+Mock.mock(/judge/, 'get', returnJudges)
 Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+/, 'post', returnAddAssignment)
 Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
 Mock.mock(/instructor\/[0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
