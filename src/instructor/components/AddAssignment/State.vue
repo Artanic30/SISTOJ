@@ -91,7 +91,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows.uid}`,
+            url: `/course/${this.getUid}/assignment/${rows.uid}/`,
             data: rows.splice(index, 1)
           })
             .then((response) => {
@@ -119,7 +119,7 @@ export default {
           if (response.status === 200) {
             this.coState = response.data
           } else {
-            this.$router.push('/404')
+            this.$router.push('/403')
           }
         })
         .catch((err) => {
