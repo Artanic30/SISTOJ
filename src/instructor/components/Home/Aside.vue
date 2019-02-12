@@ -25,7 +25,7 @@
           <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
         </el-col>
         <el-col :span="15">
-          <span @click="goJudge" class="sub-title">Judges</span>
+          <router-link :to="{ path: '/judge'}" class="sub-title">Judges</router-link>
         </el-col>
       </el-row>
   </div>
@@ -36,11 +36,6 @@ export default {
     return {
       msgWelcome: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.',
       judge: 'You can manage all of your judges here:'
-    }
-  },
-  methods: {
-    goJudge () {
-      this.$router.push('/judge')
     }
   }
 }
@@ -62,7 +57,9 @@ export default {
   }
   .sub-title {
    font-size: 25px;
- }
+   text-decoration: none;
+   color: black;
+  }
   .message {
     font-size: 18px;
   }

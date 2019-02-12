@@ -15,9 +15,7 @@
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/home' }" class="sub-title">DashBoard</el-breadcrumb-item>
-        </el-breadcrumb>
+        <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
       </el-col>
     </el-row>
     <el-row class="mt-10percent">
@@ -25,9 +23,7 @@
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: `/home/course/${this.coInfo.uid}/assignment` }" class="sub-title">Assignments</el-breadcrumb-item>
-        </el-breadcrumb>
+          <router-link :to="{ path: `/home/course/${this.coInfo.uid}/assignment`}" class="sub-title">Assignments</router-link>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10%">
@@ -101,6 +97,8 @@ export default {
     color: black;
   }
   .sub-title {
-    font-size: 25px;
-  }
+   font-size: 25px;
+   text-decoration: none;
+   color: black;
+ }
 </style>

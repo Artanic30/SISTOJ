@@ -96,16 +96,9 @@ export default {
             methods: 'delete',
             url: `/judge/${rows.uid}/`,
             data: rows.splice(index, 1)
+          }).catch((err) => {
+            console.log(err)
           })
-            .then((response) => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
         }
       }).catch(() => {
         this.$message({

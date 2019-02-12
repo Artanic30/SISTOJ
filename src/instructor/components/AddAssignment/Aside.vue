@@ -20,7 +20,7 @@
           <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
         </el-col>
         <el-col :span="15">
-          <span @click="backDashboard" class="sub-title">Dashboard</span>
+          <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
         </el-col>
       </el-row>
       <el-row style="margin-top: 10%">
@@ -28,7 +28,7 @@
           <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
         </el-col>
         <el-col :span="15">
-          <span @click="backStudentList" class="sub-title">Student List</span>
+          <router-link :to="{ path: `/home/course/${this.getCourseUid}` }" class="sub-title">Student List</router-link>
         </el-col>
       </el-row>
     </div>
@@ -41,12 +41,9 @@ export default {
       name: ''
     }
   },
-  methods: {
-    backStudentList () {
-      this.$router.go(-1)
-    },
-    backDashboard () {
-      this.$router.push('/')
+  computed: {
+    getCourseUid () {
+      return this.$store.state.coInfo.uid
     }
   }
 }
@@ -55,5 +52,7 @@ export default {
 <style scoped>
  .sub-title {
    font-size: 25px;
+   text-decoration: none;
+   color: black;
  }
 </style>

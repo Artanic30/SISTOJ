@@ -15,9 +15,7 @@
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/home' }" style="font-size: 25px;">DashBoard</el-breadcrumb-item>
-        </el-breadcrumb>
+        <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10%">
@@ -89,4 +87,9 @@ export default {
     text-decoration: none;
     color: black;
   }
+  .sub-title {
+   font-size: 25px;
+   text-decoration: none;
+   color: black;
+ }
 </style>

@@ -15,9 +15,7 @@
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: `/home/course/${this.assignmentDetail.uid}` }" style="font-size: 25px;">CourseList</el-breadcrumb-item>
-        </el-breadcrumb>
+        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}` }" class="sub-title">CourseList</router-link>
       </el-col>
     </el-row>
     <el-row style="margin-top: 15%">
@@ -25,9 +23,7 @@
         <i class="el-icon-menu" style="margin-left: 10px"></i>
       </el-col>
       <el-col :span="18">
-        <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: `/home/course/${this.assignmentDetail.uid}/scoreboard/${this.assignmentDetail.name}` }" style="font-size: 25px;">Scoreboard</el-breadcrumb-item>
-        </el-breadcrumb>
+        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}/scoreboard/${this.assignmentDetail.name}` }" class="sub-title">Scoreboard</router-link>
       </el-col>
     </el-row>
   </div>
@@ -65,4 +61,9 @@ export default {
     font-size: 20px;
     font-style: italic;
   }
+  .sub-title {
+   font-size: 25px;
+   text-decoration: none;
+   color: black;
+ }
 </style>

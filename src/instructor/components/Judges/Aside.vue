@@ -20,7 +20,7 @@
           <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
         </el-col>
         <el-col :span="15">
-          <span @click="backDashboard" class="sub-title">Dashboard</span>
+          <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
         </el-col>
       </el-row>
     </div>
@@ -32,11 +32,6 @@ export default {
     return {
       name: ''
     }
-  },
-  methods: {
-    backDashboard () {
-      this.$router.push('/')
-    }
   }
 }
 </script>
@@ -44,5 +39,7 @@ export default {
 <style scoped>
  .sub-title {
    font-size: 25px;
+   text-decoration: none;
+   color: black;
  }
 </style>
