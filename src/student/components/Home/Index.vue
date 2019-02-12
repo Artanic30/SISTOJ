@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row style="height: 100%" :gutter="2">
-      <el-col :span="4" style="margin-right: 5%">
-          <el-menu style="float: left;margin-right: 5%;min-width: 100px;min-height: 1000px;">
+    <el-row class="row-height" :gutter="2">
+      <el-col :span="4" class="col-one">
+          <el-menu class="menu-only">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
@@ -50,4 +50,16 @@ export default {
 }
 </script>
 <style scoped>
+  .row-height {
+    height: 100%;
+  }
+  .col-one {
+    margin-right: 5%;
+  }
+  .menu-only {
+    float: left;
+    margin-right: 5%;
+    min-width: 100px;
+    min-height: 1000px;
+  }
 </style>

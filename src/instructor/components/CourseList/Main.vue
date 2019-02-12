@@ -1,12 +1,12 @@
 <template>
     <div>
       <el-row :gutter="16">
-        <el-col style="margin-top: 5%" :span="4">
-          <span style="font-family: inherit;font-size: 30px">Students</span>
+        <el-col class="col-half" :span="4">
+          <span class="title-main">Students</span>
         </el-col>
-        <el-col :span="4" style="float: right;margin-top: 5%">
+        <el-col :span="4" class="col-one">
           <el-tooltip class="item" effect="dark" content="Add New Student" placement="top">
-              <el-button @click="addStudent()" style="background-color: #A40004"><i class="el-icon-plus" style="color: white"></i></el-button>
+              <el-button @click="addStudent()" class="button-only"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
@@ -124,4 +124,21 @@ export default {
 </script>
 
 <style scoped>
+  .col-half {
+    margin-top: 5%;
+  }
+  .title-main {
+    font-family: inherit;
+    font-size: 30px;
+  }
+  .col-one {
+    float: right;
+    margin-top: 5%;
+  }
+  .button-only {
+    background-color: #A40004;
+  }
+  .el-icon-plus {
+    color: white!important;
+  }
 </style>

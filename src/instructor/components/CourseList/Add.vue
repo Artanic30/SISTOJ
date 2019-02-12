@@ -1,14 +1,14 @@
 <template>
   <div>
-    <el-row style="margin-top: 5%;margin-left: 5%" :gutter="8">
+    <el-row class="row-one" :gutter="8">
       <el-col :span="8">
-        <span style="font-size: 30px;">Add New Student</span>
+        <span class="title-main">Add New Student</span>
       </el-col>
-      <el-col :span="8" style="float: right">
-        <el-button style="background-color: #A40004;float: right" @click="goBack()"><span style="color: white">back</span></el-button>
+      <el-col :span="8" class="col-one">
+        <el-button class="button-back" @click="goBack()"><span class="title-back">back</span></el-button>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 5%">
+    <el-row class="row-quarter">
       <el-col>
         <el-form :model="studentInfo" status-icon :rules="rules" ref="studentInfo" label-width="100px">
           <el-form-item label="Name:" prop="name">
@@ -123,4 +123,24 @@ export default {
 }
 </script>
 <style scoped>
+  .row-one {
+    margin-top: 5%;
+    margin-left: 5%;
+  }
+  .title-main {
+    font-size: 30px;
+  }
+  .col-one {
+    float: right;
+  }
+  .button-back {
+    background-color: #A40004;
+    float: right;
+  }
+  .row-quarter {
+    margin-top: 5%;
+  }
+  .title-back {
+    color: white;
+  }
 </style>

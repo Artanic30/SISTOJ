@@ -2,8 +2,8 @@
   <div>
     <el-row class="tle">
       <el-col :span="7">
-          <div style="margin-right: 5%;">
-            <span style="font-size: 30px;" >{{ coInfo.name }}</span>
+          <div class="div-quarter">
+            <span class="title-main">{{ coInfo.name }}</span>
           </div>
       </el-col>
       <el-col :span="2">
@@ -11,7 +11,7 @@
       </el-col>
       <el-col :span="15">
           <div>
-            <span style="font-size: 35px;">{{ coInfo.semester }}</span>
+            <span class="title-sup">{{ coInfo.semester }}</span>
           </div>
       </el-col>
     </el-row>
@@ -32,7 +32,7 @@
           width="180">
           <template slot-scope="scope">
             <el-button :style="colors(scope.row.state)" @click="updateAss(scope.row)">
-              <router-link :to="getstate(scope.row)" style="text-decoration: none;color: white;">{{ scope.row.state }}</router-link>
+              <router-link :to="getstate(scope.row)" class="fake-href">{{ scope.row.state }}</router-link>
             </el-button>
           </template>
         </el-table-column>
@@ -52,7 +52,7 @@
     <el-row style="margin-top: 10%">
       <el-col>
         <el-tooltip class="item" effect="dark" content="Those who disrespect rules and cause harm to system will be on the list" placement="top">
-          <el-button size="mini" @click="showPending" style="float: right">Show shot list</el-button>
+          <el-button size="mini" @click="showPending" class="button-shot">Show shot list</el-button>
         </el-tooltip>
       </el-col>
     </el-row>
@@ -60,7 +60,7 @@
       <el-col>
         <el-table
         :data="pendingList"
-        style="width: 100%"
+        class="table-only"
         stripe>
         <el-table-column
           prop="git_commit_id"
@@ -182,5 +182,24 @@ export default {
   .name{
     border: none!important;
     padding: 0 0 2px 0!important;
+  }
+  .div-quarter {
+    margin-right: 5%;
+  }
+  .title-main {
+    font-size: 30px;
+  }
+  .title-sup {
+    font-size: 35px;
+  }
+  .fake-href {
+    text-decoration: none;
+    color: white;
+  }
+  .button-shot {
+    float: right;
+  }
+  .table-only {
+    width: 100%;
   }
 </style>

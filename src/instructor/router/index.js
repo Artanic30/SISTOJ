@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import index from '../components/Home/Index'
 import addAssignment from '../components/AddAssignment/Index'
 import courses from '../components/CourseList/Index'
-import wall from '../../public/Wall'
+import pageNotFound from '../../public/PageNotFound'
 import profile from '../../public/Profile'
 import instructorProfile from '../../public/InstructorProfile'
 import judge from '../components/Judges/Index'
@@ -50,7 +50,7 @@ export default new Router({
     {
       path: '*',
       name: 'NotFound',
-      component: wall
+      component: pageNotFound
     }
   ]
 })

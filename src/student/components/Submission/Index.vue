@@ -2,12 +2,12 @@
     <div>
         <el-row :gutter="2">
             <el-col :span="4">
-              <el-menu style="float: left;margin-right: 5%;width: 220px;min-height: 1000px;">
+              <el-menu class="menu-only">
                 <v-aside :deliverDetail="assignmentDetail"></v-aside>
               </el-menu>
             </el-col>
-            <el-col :span="18" style="float: right">
-              <v-main style="margin: 5%" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
+            <el-col :span="18" class="col-one">
+              <v-main class="main" :deliverDetail="submission" :deliverInfo="assignmentDetail"></v-main>
             </el-col>
         </el-row>
     </div>
@@ -63,4 +63,16 @@ export default {
 }
 </script>
 <style scoped>
+  .menu-only {
+    float: left;
+    margin-right: 5%;
+    width: 220px;
+    min-height: 1000px;
+  }
+  .col-one {
+    float: right;
+  }
+  .main {
+    margin: 5%;
+  }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row style="height: 100%" :gutter="2">
-      <el-col :span="4" style="margin-right: 5%">
-          <el-menu class="el-menu-vertical-demo" style="float: left;margin: 0 5% 0 0">
+    <el-row class="row-main" :gutter="2">
+      <el-col :span="4" class="col-quarter">
+          <el-menu class="el-menu-vertical-demo">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
@@ -55,5 +55,15 @@ export default {
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     min-width: 100px;
     min-height: 1000px;
+  }
+  .row-main {
+    height: 100%;
+  }
+  .el-menu-vertical-demo {
+    float: left!important;
+    margin: 0 5% 0 0!important;
+  }
+  .col-quarter {
+    margin-right: 5%;
   }
 </style>

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <el-row style="margin-top: 5%;margin-left: 5%" :gutter="8">
+    <el-row class="row-main" :gutter="8">
       <el-col :span="8">
-        <span style="font-size: 30px;">Add New Judge</span>
+        <span class="title-main">Add New Judge</span>
       </el-col>
-      <el-col :span="8" style="float: right">
-        <el-button style="background-color: #A40004;float: right" @click="goBack()"><span style="color: white">back</span></el-button>
+      <el-col :span="8" class="col-one">
+        <el-button class="button-back" @click="goBack()"><span class="title-back">back</span></el-button>
       </el-col>
     </el-row>
     <el-row class="rows">
       <el-col>
-        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
+        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judge Info" label-width="100px">
           <el-form-item label="Uid:" prop="uid">
             <el-input type="text" v-model="judgeInfo.uid" autocomplete="off" placeholder="Professor's uid"></el-input>
           </el-form-item>
@@ -30,7 +30,7 @@
     <el-row class="rows">
       <el-col :span="24"><span class="text">Please upload the Cert file here:</span></el-col>
     </el-row>
-    <el-row class="rows" style="margin-top: 2%!important;">
+    <el-row class="rows-two">
       <el-col>
         <!--todo: action url  -->
         <el-upload
@@ -135,5 +135,26 @@ export default {
 }
   .text {
     font-size: 25px;
+  }
+  .row-main {
+    margin-top: 5%;
+    margin-left: 5%;
+  }
+  .title-main {
+    font-size: 30px;
+  }
+  .col-one {
+    float: right;
+  }
+  .button-back {
+    background-color: #A40004;
+    float: right;
+  }
+  .title-back {
+    color: white;
+  }
+  .rows-two {
+  margin-top: 2%;
+  margin-left: 5%;
   }
 </style>

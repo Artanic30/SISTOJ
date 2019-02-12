@@ -1,8 +1,8 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 40px">
+    <el-row class="row-two">
       <el-col>
-        <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+        <span class="title-main">{{ coInfo.name }}</span>
       </el-col>
     </el-row>
     <el-row>
@@ -12,7 +12,7 @@
     </el-row>
     <el-row class="mt-10percent">
       <el-col :span="5">
-        <i class="el-icon-menu" style="margin-left: 10px"></i>
+        <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
         <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
@@ -20,20 +20,20 @@
     </el-row>
     <el-row class="mt-10percent">
       <el-col :span="5">
-        <i class="el-icon-menu" style="margin-left: 10px"></i>
+        <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
           <router-link :to="{ path: `/home/course/${this.coInfo.uid}/assignment`}" class="sub-title">Assignments</router-link>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="row-one">
       <el-col>
         <span class="subtitle">INSTRUCTOR</span>
       </el-col>
     </el-row>
-    <el-row v-for="a in instructors" :key="a.uid" style="margin-top: 5%">
+    <el-row v-for="a in instructors" :key="a.uid" class="row-half">
       <el-col :span="6">
-        <i class="el-icon-info" style="margin-left: 10px"></i>
+        <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
         <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.uid }}">{{ a.name }}</router-link>
@@ -101,4 +101,23 @@ export default {
    text-decoration: none;
    color: black;
  }
+  .row-two {
+    margin-top: 40px;
+  }
+  .title-main {
+    font-size: 30px;
+    font-style: inherit;
+  }
+  .el-icon-menu {
+    margin-left: 10px!important;
+  }
+  .row-one {
+    margin-top: 10%;
+  }
+  .row-half {
+    margin-top: 5%;
+  }
+  .el-icon-info {
+    margin-left: 10px!important;
+  }
 </style>

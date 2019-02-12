@@ -4,7 +4,7 @@ import index from '../components/Home/Index'
 import course from '../components/Course/Index'
 import score from '../components/ScoreBoard/Index'
 import submission from '../components/Submission/Index'
-import wall from '../../public/Wall'
+import pageNotFound from '../../public/PageNotFound'
 import profile from '../../public/Profile'
 import instructorProfile from '../../public/InstructorProfile'
 
@@ -50,7 +50,7 @@ export default new Router({
     {
       path: '*',
       name: 'notFound',
-      component: wall
+      component: pageNotFound
     }
   ]
 })

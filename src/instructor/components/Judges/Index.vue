@@ -2,13 +2,13 @@
     <div>
       <el-row :gutter="2">
         <el-col :span="4">
-          <el-menu class="el-menu-vertical-demo" style="float: left;margin: 0 5% 0 0">
+          <el-menu class="el-menu-vertical-demo">
             <v-aside></v-aside>
         </el-menu>
         </el-col>
-        <el-col :span="18" style="float: right;">
+        <el-col :span="18" class="col-one">
             <v-state v-if="change" v-on:changeState="changeState"></v-state>
-            <v-add v-else v-on:goBack="goBack" style="margin-right: 15%"></v-add>
+            <v-add v-else v-on:goBack="goBack" class="add"></v-add>
         </el-col>
       </el-row>
     </div>
@@ -48,5 +48,13 @@ export default {
     min-width: 90%;
     min-height: 1000px;
     max-width: 180px;
+    float: left!important;
+    margin: 0 5% 0 0!important;
+  }
+  .col-one {
+    float: right;
+  }
+  .add {
+    margin-right: 15%;
   }
 </style>
