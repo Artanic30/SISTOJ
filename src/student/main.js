@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/base.css'
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 import axios from 'axios'
 import store from './store'
+import 'lib-flexible/flexible.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
