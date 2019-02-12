@@ -4,44 +4,68 @@
       <el-col :span="8">
         <span style="font-size: 30px;">Add New Assignment</span>
       </el-col>
-      <el-col :span="8" style="float: right">
+      <el-col :span="8" style="float: right;margin-right: 2%">
         <el-button style="background-color: #A40004;float: right" @click="goBack()"><span style="color: white">back</span></el-button>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%;margin-left: 5%">
+    <el-row style="margin-top: 5%;">
       <el-col>
-        <el-steps :active="steps">
+        <el-steps :active="steps" align-center>
           <el-step title="步骤 1" description="Please enter the information of new assignment"></el-step>
-          <el-step title="步骤 2" description="Please go to the complete the details"></el-step>
-          <el-step title="步骤 3" description="You are done!"></el-step>
+          <el-step title="步骤 2" description="Please go to the given url and complete the detail collection"></el-step>
+          <el-step title="步骤 3" description="Assignment successfully added"></el-step>
         </el-steps>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row style="margin-top: 5%" v-if="this.steps === 1">
       <el-col>
-        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="Name" prop="name">
-            <el-input type="password" v-model="ruleForm2.name" autocomplete="off"></el-input>
+        <el-form :model="studentInfo" status-icon :rules="rules" ref="studentInfo" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="Uid:" prop="uid">
+            <el-input v-model="studentInfo.uid" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="deadline" prop="deadline">
-            <el-input type="password" v-model="ruleForm2.deadline" autocomplete="off"></el-input>
+          <el-form-item label="Course uid:" prop="course_uid">
+            <el-input v-model="studentInfo.course_uid" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="courseId" prop="courseId">
-            <el-input v-model.number="ruleForm2.courseId"></el-input>
+          <el-form-item label="Name:" prop="name">
+            <el-input v-model="studentInfo.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Describe link:" prop="descr_link">
+            <el-input v-model="studentInfo.descr_link" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Deadline:" prop="deadline">
+            <el-date-picker
+              v-model="studentInfo.deadline"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy-MM-dd "
+              value-format="timestamp">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="Release date:" prop="release_date">
+            <el-date-picker
+              v-model="studentInfo.release_date"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy-MM-dd "
+              value-format="timestamp">
+            </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-            <el-button @click="resetForm('ruleForm2')">重置</el-button>
+            <el-button type="primary" @click="submitForm('studentInfo')">提交</el-button>
+            <el-button @click="resetForm('studentInfo')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
-    <el-row v-if="url.magic" style="margin-top: 5%">
+    <el-row v-if="this.steps === 2" style="margin-top: 5%">
       <el-col>
-        <el-card shadow="hover">
-          <el-row style="margin: 5% 5% 5% 5%">
-            <el-col :span="16"><span style="font-size: 20px">Please press the following button to complete:</span></el-col>
-            <el-col :span="8" ><el-button @click="goOutside" style="background-color: #A40004;float: right;margin-right: 40%;color: white">前往</el-button></el-col>
+        <el-card>
+          <el-row class="card-rows" type="flex" align="middle">
+            <el-col :span="16"><span style="font-size: 20px">Please go to the following url and submit the detailed information of the assignment:</span></el-col>
+          </el-row>
+          <el-row class="card-rows" type="flex" align="middle">
+            <el-col :span="20"><span style="font-size: 20px">{{ this.site }}</span></el-col>
+            <el-col :span="4" ><el-button @click="goOutside" style="background-color: #A40004;float: right;color: white">前往</el-button></el-col>
           </el-row>
         </el-card>
       </el-col>
@@ -50,6 +74,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     var check = (rule, value, callback) => {
@@ -58,40 +84,67 @@ export default {
       }
       setTimeout(() => {
         callback()
-      }, 1000)
+      }, 500)
     }
     return {
-      ruleForm2: {
+      studentInfo: {
+        uid: '',
+        course_uid: '',
         name: '',
         deadline: '',
-        courseId: ''
+        release_date: '',
+        descr_link: '',
+        state: 1
       },
-      rules2: {
+      rules: {
         name: [
           { validator: check, trigger: 'blur' }
         ],
         deadline: [
           { validator: check, trigger: 'blur' }
         ],
-        courseId: [
+        uid: [
+          { validator: check, trigger: 'blur' }
+        ],
+        course_uid: [
+          { validator: check, trigger: 'blur' }
+        ],
+        descr_link: [
+          { validator: check, trigger: 'blur' }
+        ],
+        release_date: [
           { validator: check, trigger: 'blur' }
         ]
       },
       steps: 1,
-      url: [{
-        site: 'www.google.com',
-        magic: false
-      }]
+      site: 'http://www.baidu.com'
     }
   },
   methods: {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
           this.steps += 1
-          this.url.magic = true
-          // todo:axios post
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
+          if (this.getAuth) {
+            this.axios({
+              method: 'post',
+              url: `/course/${this.getUid}/assignment/${this.studentInfo.uid}`,
+              data: this.studentInfo
+            }).then((response) => {
+              if (response.status === 200) {
+                loading.close()
+                alert('submit!')
+              } else if (response.status === 403) {
+                // todo: 跳转报错页面（%参数加上当前页面地址）
+              }
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -114,14 +167,18 @@ export default {
       }, 500)
     },
     goOutside () {
-      window.location.href = 'http://www.baidu.com'
-    },
-    created () {
+      window.location.href = this.site
     }
-  }
+  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.student_id
+  })
 }
 </script>
 
 <style scoped>
-
+.card-rows {
+  margin: 2% 2% 2% 2%;
+}
 </style>

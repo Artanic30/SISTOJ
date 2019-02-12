@@ -12,7 +12,7 @@
       </el-row>
       <el-row style="margin-top: 5%" type="flex" align="middle" justify="center">
         <el-col>
-          <span style="margin-top: 5%;font-size: 20px">You can check students' assignments state and add new assignment here</span>
+          <span style="margin-top: 5%;font-size: 20px">You can check all the judges here and manage your judges.</span>
         </el-col>
       </el-row>
       <el-row style="margin-top: 10%">
@@ -23,14 +23,6 @@
           <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 10%">
-        <el-col :span="5">
-          <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
-        </el-col>
-        <el-col :span="15">
-          <router-link :to="{ path: `/home/course/${this.getCourseUid}` }" class="sub-title">Student List</router-link>
-        </el-col>
-      </el-row>
     </div>
 </template>
 
@@ -39,11 +31,6 @@ export default {
   data () {
     return {
       name: ''
-    }
-  },
-  computed: {
-    getCourseUid () {
-      return this.$store.state.coInfo.uid
     }
   }
 }

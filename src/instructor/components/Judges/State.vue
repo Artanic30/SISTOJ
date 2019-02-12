@@ -2,31 +2,36 @@
     <div>
       <el-row :gutter="16" style="margin-top: 5%">
         <el-col :span="4">
-          <span style="font-size: 30px">Assignment</span>
+          <span style="font-size: 30px">Judges</span>
         </el-col>
         <el-col :span="4" style="float: right">
           <el-tooltip class="item" effect="dark" content="Add New Assignment" placement="top">
-              <el-button @click="addHomework()" style="background-color: #A40004"><i class="el-icon-plus" style="color: white"></i></el-button>
+              <el-button @click="manageJudges()" style="background-color: #A40004"><i class="el-icon-plus" style="color: white"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row style="margin-top: 5%">
         <el-col>
           <el-table
-          :data="coState"
+          :data="judges"
           style="width: 90%">
           <el-table-column
             fixed
-            prop="name"
-            label="NAME">
+            prop="uid"
+            label="Uid">
           </el-table-column>
           <el-table-column
-            prop="release_date"
-            label="RELEASE">
+            prop="host"
+            label="Host">
           </el-table-column>
           <el-table-column
-            prop="deadline"
-            label="DUE"
+            prop="max_job"
+            label="Max job"
+            >
+          </el-table-column>
+            <el-table-column
+            prop="cert"
+            label="Cert"
             >
           </el-table-column>
           <el-table-column
@@ -55,18 +60,16 @@ export default {
   data () {
     return {
       childChange: false,
-      coState: [{
-        name: '',
-        descr_link: '',
-        release_date: '',
-        deadline: '',
-        uid: '',
-        course_id: ''
+      judges: [{
+        uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
+        host: '10.19.171.56:443',
+        cert: 'thisisthecert',
+        max_job: 4
       }]
     }
   },
   methods: {
-    addHomework () {
+    manageJudges () {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -79,7 +82,7 @@ export default {
       }, 500)
     },
     deleteRow (index, rows) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该服务器, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -91,18 +94,11 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows.uid}/`,
+            url: `/judge/${rows.uid}/`,
             data: rows.splice(index, 1)
+          }).catch((err) => {
+            console.log(err)
           })
-            .then((response) => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
         }
       }).catch(() => {
         this.$message({
@@ -114,10 +110,10 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/assignment/`)
+      this.axios.get(`/judge/`)
         .then((response) => {
           if (response.status === 200) {
-            this.coState = response.data
+            this.judges = response.data
           } else {
             this.$router.push('/403')
           }

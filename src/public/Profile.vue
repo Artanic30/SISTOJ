@@ -1,9 +1,9 @@
 <template>
     <div>
-    <el-row>
+    <el-row class="rows">
       <el-col align="middle" v-if="!getState"><span class="title">{{ this.Info.nickname }}</span></el-col>
     </el-row>
-    <el-row :gutter="2">
+    <el-row :gutter="2" class="rows">
       <el-col :span="24" align="middle">
         <el-card class="cards">
           <img v-bind:src="imgStudent" class="img-profile" v-if="getState">
@@ -99,7 +99,6 @@ export default {
         }
       })
     }
-    console.log(this.$route.params)
   }
 }
 </script>
@@ -126,5 +125,8 @@ export default {
   }
   .card-row2 {
     margin: 3% 0 2% 5%;
+  }
+  .rows {
+    margin-top: 2%;
   }
 </style>
