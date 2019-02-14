@@ -20,4 +20,7 @@ export default {
   body {
     margin: 0 !important;
   }
+  html {
+    font-size: 400px!important;
+  }
 </style>
