@@ -118,11 +118,11 @@ export default {
     },
     colors (situation) { // don't use state as the variable name
       if (situation === 'Failed') {
-        return 'background-color: #ed3f14;width: 100px'
+        return 'background-color: #ed3f14;width: 7rem;'
       } else if (situation === 'Ongoing') {
-        return 'background-color: #19be6b;;width: 100px'
+        return 'background-color: #19be6b;width: 7rem;'
       } else {
-        return 'background-color: #2d8cf0;;width: 100px'
+        return 'background-color: #2d8cf0;width: 7rem;'
       }
     },
     showPending () {

@@ -107,6 +107,7 @@ export default {
   }
   .el-icon-info {
     margin-left: 10px!important;
+    height: 17px!important;
   }
   .row-quarter {
     margin-top: 5%;

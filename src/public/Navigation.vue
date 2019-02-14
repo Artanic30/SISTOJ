@@ -67,7 +67,7 @@ export default {
     padding:0 1rem;
   }
   .img-logo {
-    width: 100px;
+    width: 100%;
   }
   .text-logo {
     color: white;
