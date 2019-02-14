@@ -51,7 +51,7 @@
     </el-row>
     <el-row style="margin-top: 10%">
       <el-col>
-        <el-tooltip class="item" effect="dark" content="Those who disrespect rules and cause harm to system will be on the list" placement="top">
+        <el-tooltip class="item" effect="dark" content="Those who disrespect rules and cause harm to system will be on the list" placement="left">
           <el-button size="mini" @click="showPending" class="button-shot">Show shot list</el-button>
         </el-tooltip>
       </el-col>

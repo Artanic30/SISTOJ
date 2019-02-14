@@ -5,7 +5,7 @@
           <span class="title-main">Students</span>
         </el-col>
         <el-col :span="4" class="col-one">
-          <el-tooltip class="item" effect="dark" content="Add New Student" placement="top">
+          <el-tooltip class="item" effect="dark" content="Add New Student" placement="left">
               <el-button @click="addStudent()" class="button-only"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>

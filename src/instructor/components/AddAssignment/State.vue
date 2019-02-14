@@ -5,7 +5,7 @@
           <span class="title-main">Assignment</span>
         </el-col>
         <el-col :span="4" class="col-one">
-          <el-tooltip class="item" effect="dark" content="Add New Assignment" placement="top">
+          <el-tooltip class="item" effect="dark" content="Add New Assignment" placement="left">
               <el-button @click="addHomework()" class="button-add"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>

@@ -37,7 +37,7 @@
               v-model="studentInfo.deadline"
               type="date"
               placeholder="选择日期"
-              format="yyyy-MM-dd "
+              format="yyyy-MM-dd"
               value-format="timestamp">
             </el-date-picker>
           </el-form-item>
@@ -46,7 +46,7 @@
               v-model="studentInfo.release_date"
               type="date"
               placeholder="选择日期"
-              format="yyyy-MM-dd "
+              format="yyyy-MM-dd"
               value-format="timestamp">
             </el-date-picker>
           </el-form-item>

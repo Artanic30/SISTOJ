@@ -10,7 +10,7 @@
     </el-row>
     <el-row class="rows">
       <el-col>
-        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judge Info" label-width="100px">
+        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
           <el-form-item label="Uid:" prop="uid">
             <el-input type="text" v-model="judgeInfo.uid" autocomplete="off" placeholder="Professor's uid"></el-input>
           </el-form-item>
