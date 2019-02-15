@@ -1,23 +1,23 @@
 <template>
     <div>
-      <el-row style="margin-top: 20%">
+      <el-row class="row-one">
         <el-col>
-          <span style="margin-top: 20px;font-size: 200%;">Welcome</span>
+          <span class="title-main">Welcome</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 5%">
+      <el-row class="row-quarter">
         <el-col>
-          <span style="font-size: 150%;margin-top: 5%">instructor<br>{{ name }}</span>
+          <span class="title-instr">instructor<br>{{ name }}</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 5%" type="flex" align="middle" justify="center">
+      <el-row class="row-quarter" type="flex" align="middle" justify="center">
         <el-col>
-          <span style="margin-top: 5%;font-size: 20px">You can check all the judges here and manage your judges.</span>
+          <span class="title-msg">You can check all the judges here and manage your judges.</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 10%">
+      <el-row class="row-half">
         <el-col :span="5">
-          <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
+          <i class="el-icon-menu"></i>
         </el-col>
         <el-col :span="15">
           <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
@@ -42,4 +42,28 @@ export default {
    text-decoration: none;
    color: black;
  }
+  .row-one {
+    margin-top: 20%;
+  }
+  .title-main {
+    margin-top: 20px;
+    font-size: 200%;
+  }
+  .row-quarter {
+    margin-top: 5%;
+  }
+  .title-instr {
+    font-size: 150%;
+    margin-top: 5%;
+  }
+  .title-msg {
+    margin-top: 5%;
+    font-size: 20px;
+  }
+  .row-half {
+    margin-top: 10%;
+  }
+  .el-icon-menu {
+    margin: 5px 0 0 10px!important;
+  }
 </style>

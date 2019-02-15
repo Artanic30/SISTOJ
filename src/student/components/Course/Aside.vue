@@ -1,8 +1,8 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 40px">
+    <el-row class="row-main">
       <el-col>
-        <span style="font-size: 30px;font-style: inherit">{{ coInfo.name }}</span>
+        <span class="title-main">{{ coInfo.name }}</span>
       </el-col>
     </el-row>
     <el-row>
@@ -12,20 +12,20 @@
     </el-row>
     <el-row class="mt-10percent">
       <el-col :span="5">
-        <i class="el-icon-menu" style="margin-left: 10px"></i>
+        <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
         <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="row-half">
       <el-col>
         <span class="subtitle">INSTRUCTOR</span>
       </el-col>
     </el-row>
-    <el-row v-for="a in instructors" :key="a.uid" style="margin-top: 5%">
+    <el-row v-for="a in instructors" :key="a.uid" class="row-quarter">
       <el-col :span="6">
-        <i class="el-icon-info" style="margin-left: 10px"></i>
+        <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
         <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.uid }}">{{ a.name }}</router-link>
@@ -92,4 +92,24 @@ export default {
    text-decoration: none;
    color: black;
  }
+  .row-main {
+    margin-top: 40px;
+  }
+  .title-main {
+    font-size: 30px;
+    font-style: inherit;
+  }
+  .el-icon-menu {
+    margin-left: 10px!important;
+  }
+  .row-half {
+    margin-top: 10%;
+  }
+  .el-icon-info {
+    margin-left: 10px!important;
+    height: 17px!important;
+  }
+  .row-quarter {
+    margin-top: 5%;
+  }
 </style>

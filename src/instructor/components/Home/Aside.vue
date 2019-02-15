@@ -1,13 +1,13 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 20px">
+    <el-row class="row-main">
       <el-col>
         <span class="title1">Your Courses</span>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 5%">
+    <el-row class="row-quarter">
       <el-col>
-        <span style="font-family: inherit;font-size: 20px">Instructor {{ this.$store.state.coInfo.name }}</span>
+        <span class="title-main">Instructor {{ this.$store.state.coInfo.name }}</span>
       </el-col>
     </el-row>
     <el-row>
@@ -20,9 +20,9 @@
           <span class="message">{{judge}}</span>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="row-half">
         <el-col :span="5">
-          <i class="el-icon-menu" style="margin: 5px 0 0 10px"></i>
+          <i class="el-icon-menu"></i>
         </el-col>
         <el-col :span="15">
           <router-link :to="{ path: '/judge'}" class="sub-title">Judges</router-link>
@@ -62,5 +62,21 @@ export default {
   }
   .message {
     font-size: 18px;
+  }
+  .row-main {
+    margin-top: 20px;
+  }
+  .row-quarter {
+    margin-top: 5%;
+  }
+  .title-main {
+    font-family: inherit;
+    font-size: 20px;
+  }
+  .row-half {
+    margin-top: 10%;
+  }
+  .el-icon-menu {
+    margin: 5px 0 0 10px!important;
   }
 </style>

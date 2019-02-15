@@ -1,16 +1,16 @@
 <template>
     <div>
-      <el-row :gutter="16" style="margin-top: 5%">
+      <el-row :gutter="16" class="row-quarter">
         <el-col :span="4">
-          <span style="font-size: 30px">Judges</span>
+          <span class="title-main">Judges</span>
         </el-col>
-        <el-col :span="4" style="float: right">
+        <el-col :span="4" class="col-one">
           <el-tooltip class="item" effect="dark" content="Add New Assignment" placement="top">
-              <el-button @click="manageJudges()" style="background-color: #A40004"><i class="el-icon-plus" style="color: white"></i></el-button>
+              <el-button @click="manageJudges()" class="button-judge"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 5%">
+      <el-row class="row-quarter">
         <el-col>
           <el-table
           :data="judges"
@@ -131,5 +131,19 @@ export default {
 </script>
 
 <style scoped>
-
+.row-quarter {
+  margin-top: 5%;
+}
+  .title-main {
+    font-size: 30px;
+  }
+  .col-one {
+    float: right;
+  }
+  .el-icon-plus {
+    color: white!important;
+  }
+  .button-judge {
+    background-color: #A40004;
+  }
 </style>

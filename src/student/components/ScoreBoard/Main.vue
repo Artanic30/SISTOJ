@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-row style="margin: 5% 0 2% 0">
+    <el-row class="row-main">
       <el-col>
-        <span style="font-size: 35px;font-style: inherit ">ScoreBoard</span>
+        <span class="title-main">ScoreBoard</span>
       </el-col>
     </el-row>
     <el-row>
       <el-col>
         <el-table
         :data="scoreInfo.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-        style="width: 100%;background-color: #606266"
+        class="table-only"
         highlight-current-row
         border-top
         v-loading="loading"
@@ -42,7 +42,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col style="position: center!important;">
+      <el-col>
         <el-pagination
         background
         :page-size="pagesize"
@@ -100,5 +100,16 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+  .row-main {
+    margin: 5% 0 2% 0;
+  }
+  .title-main {
+    font-size: 35px;
+    font-style: inherit;
+  }
+  .table-only {
+    width: 100%;
+    background-color: #606266;
+  }
 </style>

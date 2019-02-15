@@ -1,18 +1,18 @@
 <template>
   <div>
-    <el-row style="margin-bottom: 10px">
+    <el-row class="row-main">
       <el-col>
         <el-card shadow="always">
           <el-row class="margins">
             <el-col>
-               <span style="font-size: 25px">{{ assignmentDetail.name }} Submission </span>
+               <span class="title-main">{{ assignmentDetail.name }} Submission </span>
             </el-col>
           </el-row>
         </el-card>
       </el-col>
       <el-row>
         <el-col>
-          <el-card style="background-color: black">
+          <el-card class="card-only">
             <el-row class="margins">
               <el-col>
                 <span class="code">{{ message }}</span>
@@ -25,7 +25,7 @@
         <el-col>
             <el-table
             :data="submission"
-            style="width: 100%"
+            class="table-only"
             :default-sort = "{prop: 'date', order: 'descending'}"
             >
             <el-table-column
@@ -120,5 +120,17 @@ export default {
     font-size: 15px;
     font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
     color: white;
+  }
+  .row-main {
+    margin-bottom: 10px;
+  }
+  .title-main {
+    font-size: 25px;
+  }
+  .card-only {
+    background-color: black;
+  }
+  .table-only {
+    width: 100%;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="aside">
-    <el-row style="margin-top: 20px">
+    <el-row class="row-one">
       <el-col>
         <span class="title1">Your Courses</span>
       </el-col>
@@ -35,5 +35,8 @@ export default {
   .content1 {
     margin-top: 20px;
     font-size: 15px;
+  }
+  .row-one {
+    margin-top: 20px;
   }
 </style>
