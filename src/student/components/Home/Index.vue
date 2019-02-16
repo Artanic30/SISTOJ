@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row class="row-height" :gutter="2">
+    <el-row class="row-height" :gutter="2" v-if="this.getAuth">
       <el-col :span="4" class="col-one">
           <el-menu class="menu-only">
             <v-aside></v-aside>
@@ -10,6 +10,11 @@
          <v-main :passCoInfo="courseInfo"></v-main>
       </el-col>
     </el-row>
+    <el-row v-else>
+      <el-col class="car">
+        <v-car></v-car>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -17,6 +22,7 @@ import na from '../../../public/Navigation'
 import main from '../../../public/MainCourse'
 import aside from './Aside'
 import { mapState } from 'vuex'
+import car from '../../../public/Carousel'
 
 export default {
   data () {
@@ -27,13 +33,14 @@ export default {
   components: {
     'v-main': main,
     'v-na': na,
-    'v-aside': aside
+    'v-aside': aside,
+    'v-car': car
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id
+    getID: state => state.baseInfo.uid
   }),
-  created () {
+  mounted () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
@@ -61,5 +68,8 @@ export default {
     margin-right: 5%;
     min-width: 100px;
     min-height: 1000px;
+  }
+  .car {
+    margin-top: 10%;
   }
 </style>

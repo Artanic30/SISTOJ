@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -45,17 +47,11 @@ export default {
       }
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
-    getID () {
-      return this.$store.state.student_id
-    },
-    getCourseUid () {
-      return this.$store.state.coInfo.uid
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.baseInfo.uid,
+    getCourseUid: state => state.coInfo.uid
+  }),
   created () {
     if (this.getAuth) {
       this.axios({

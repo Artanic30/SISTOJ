@@ -21,7 +21,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png'),
       courseInfo: {}
     }
   },
@@ -32,10 +31,11 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id
+    getID: state => state.baseInfo.uid,
+    getState: state => state.baseInfo.isInstructor
   }),
   created () {
-    if (this.getAuth) {
+    if (this.getAuth && this.getState) {
       this.axios({
         method: 'GET',
         url: `/instructor/${this.getID}/course/`

@@ -27,21 +27,20 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="state"
           label="STATUS"
           width="180">
           <template slot-scope="scope">
             <el-button :style="colors(scope.row.state)" @click="updateAss(scope.row)">
-              <router-link :to="getstate(scope.row)" class="fake-href">{{ scope.row.state }}</router-link>
+              <router-link :to="getstate(scope.row)" class="fake-href">{{ getScore(scope.row) }}</router-link>
             </el-button>
           </template>
         </el-table-column>
         <el-table-column
-          prop="release"
+          prop="release_date"
           label="RELEASE">
         </el-table-column>
         <el-table-column
-          prop="due"
+          prop="deadline"
           label="DUE(CST"
           width="180"
           >
@@ -95,11 +94,12 @@ export default {
         name: '',
         deadline: 0,
         release_date: 0,
-        descr_link: ''
+        descr_link: '',
+        score: 0,
+        overall_score: 0
       }],
       coInfo: {
       },
-      student_id: 0,
       show: false,
       pendingList: [{
         git_commit_id: '',
@@ -130,16 +130,17 @@ export default {
     },
     updateAss (info) {
       this.$store.commit('updateAss', info)
+    },
+    getScore (row) {
+      return row.score + '/' + row.overall_score
     }
   },
   mounted () {
     this.coInfo = this.getCoInfo
-    this.student_id = this.getID
-    this.instructor = this.getInstr
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getID}/assignment/`)
+      this.axios.get(`/student/${this.getID}/course/${this.getUid}/assignment/`)
         .then((response) => {
           this.coState = response.data
         })
@@ -159,9 +160,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id,
+    getID: state => state.baseInfo.uid,
     getUid: state => state.coInfo.uid,
-    getInstr: state => state.instructor,
     getCoInfo: state => state.coInfo
   })
 }

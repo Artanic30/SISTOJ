@@ -31,7 +31,7 @@
         <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
-          <router-link :to="{ path: `/home/course/${this.coInfo.uid}/instructor`}" class="sub-title">Instructors</router-link>
+          <router-link :to="{ path: `/home/course/${this.coInfo.uid}/`}" class="sub-title">Student List</router-link>
       </el-col>
     </el-row>
     <el-row class="mt-10percent">

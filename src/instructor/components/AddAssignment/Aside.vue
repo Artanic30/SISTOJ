@@ -31,6 +31,22 @@
           <router-link :to="{ path: `/home/course/${this.getCourseUid}` }" class="sub-title">Student List</router-link>
         </el-col>
       </el-row>
+      <el-row class="row-half">
+        <el-col :span="5">
+          <i class="el-icon-menu"></i>
+        </el-col>
+        <el-col :span="15">
+          <router-link :to="{ path: `/home/course/${this.getCourseUid}/instructor` }" class="sub-title">Instructor</router-link>
+        </el-col>
+      </el-row>
+      <el-row class="row-half">
+      <el-col :span="5">
+        <i class="el-icon-menu"></i>
+      </el-col>
+      <el-col :span="18">
+          <router-link :to="{ path: `/home/course/${this.getCourseUid}/judge`}" class="sub-title">Judges List</router-link>
+      </el-col>
+    </el-row>
     </div>
 </template>
 

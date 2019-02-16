@@ -20,7 +20,6 @@ import aside from './Aside'
 export default {
   data () {
     return {
-      img: require('../../../assets/logo.png')
     }
   },
   components: {

@@ -6,8 +6,8 @@
     <el-row :gutter="2" class="rows">
       <el-col :span="24" align="middle">
         <el-card class="cards">
-          <img v-bind:src="imgStudent" class="img-profile" v-if="getState">
-          <img v-bind:src="imgInstructor" class="img-profile" v-else>
+          <img v-bind:src="imgInstructor" class="img-profile" v-if="getState">
+          <img v-bind:src="imgStudent" class="img-profile" v-else>
         </el-card>
       </el-col>
     </el-row>
@@ -55,6 +55,7 @@
 
 <script>
 import na from './Navigation'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -74,30 +75,38 @@ export default {
   components: {
     'v-na': na
   },
-  computed: {
-    getState () {
-      return this.$store.state.instructor
-    },
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
-    getID () {
-      return this.$store.state.student_id
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.baseInfo.uid,
+    getState: state => state.baseInfo.isInstructor
+  }),
   created () {
     if (this.getAuth) {
-      this.axios({
-        method: 'GET',
-        url: `/student/${this.getID}/`
-      }).then((response) => {
-        if (response.status === 200) {
-          this.Info = response.data
-        } else {
-          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
-          this.$router.push({path: '/403', query: { path: this.$route.path }})
-        }
-      })
+      if (this.getState) {
+        this.axios({
+          method: 'GET',
+          url: `/instructor/${this.getID}/`
+        }).then((response) => {
+          if (response.status === 200) {
+            this.Info = response.data
+          } else {
+            // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
+            this.$router.push({path: '/403', query: { path: this.$route.path }})
+          }
+        })
+      } else {
+        this.axios({
+          method: 'GET',
+          url: `/student/${this.getID}/`
+        }).then((response) => {
+          if (response.status === 200) {
+            this.Info = response.data
+          } else {
+            // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
+            this.$router.push({path: '/403', query: { path: this.$route.path }})
+          }
+        })
+      }
     }
   }
 }

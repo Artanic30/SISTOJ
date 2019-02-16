@@ -15,11 +15,11 @@
           <el-table
           :data="coState"
           style="width: 90%">
-          <el-table-column
-            fixed
-            prop="name"
-            label="NAME">
-          </el-table-column>
+          <el-table-column label="NAME" fix>
+          <template slot-scope="scope" >
+            <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
+          </template>
+        </el-table-column>
           <el-table-column
             prop="release_date"
             label="RELEASE">
@@ -38,7 +38,7 @@
                 @click.native.prevent="deleteRow(scope.$index, coState)"
                 type="text"
                 size="small">
-                移除
+                移除作业
               </el-button>
             </template>
           </el-table-column>
@@ -61,7 +61,7 @@ export default {
         release_date: '',
         deadline: '',
         uid: '',
-        course_id: ''
+        course_uid: ''
       }]
     }
   },
@@ -79,7 +79,7 @@ export default {
       }, 500)
     },
     deleteRow (index, rows) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该作业, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -92,7 +92,7 @@ export default {
           this.axios({
             methods: 'delete',
             url: `/course/${this.getUid}/assignment/${rows.uid}/`,
-            data: rows.splice(index, 1)
+            data: rows.splice(index, 1) // todo: Is data required?
           })
             .then((response) => {
               this.$message({
@@ -110,6 +110,9 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    getpath (scope) {
+      window.location.href = scope.row.descr_link
     }
   },
   created () {
@@ -129,7 +132,7 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id
+    getUid: state => state.coInfo.uid
   })
 }
 </script>
@@ -149,5 +152,9 @@ export default {
   }
   .el-icon-plus {
     color: white!important;
+  }
+  .name{
+    border: none!important;
+    padding: 0 0 2px 0!important;
   }
 </style>
