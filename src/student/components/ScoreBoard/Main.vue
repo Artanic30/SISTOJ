@@ -56,6 +56,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -68,15 +70,13 @@ export default {
       }],
       loading: false, // todo:loading related functions
       currentPage: 1,
-      pagesize: 10,
+      pagesize: 20,
       total: 0
     }
   },
   created () {
-    let courseId = 0
-    let assignmentId = 0 // todo:specified axios
     if (this.getAuth) {
-      this.axios.get(`/course/${courseId}/assignment/${assignmentId}/scores/`)
+      this.axios.get(`/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
         .then((response) => {
           this.scoreInfo = response.data
           // 很诡异 只有这种写法跑的起来(非同步跟新)
@@ -93,11 +93,13 @@ export default {
     },
     handleSizeChange (val) {
       this.pagesize = val
-    },
-    getAuth () {
-      return this.$store.state.isAuthorized
     }
-  }
+  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getUid: state => state.coInfo.uid,
+    getAssUid: state => state.assignments.uid
+  })
 }
 </script>
 <style scoped>

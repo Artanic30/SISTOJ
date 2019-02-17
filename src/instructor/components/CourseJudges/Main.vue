@@ -1,32 +1,24 @@
 <template>
     <div>
-      <el-row :gutter="16">
-        <el-col class="col-half" :span="4">
-          <span class="title-main">Students</span>
+      <el-row :gutter="13">
+        <el-col class="col-half" :span="7">
+          <span class="title-main">Course Judges</span>
         </el-col>
         <el-col :span="4" class="col-one">
-          <el-tooltip class="item" effect="dark" content="Add New Student" placement="left">
-              <el-button @click="addStudent()" class="button-only"><i class="el-icon-plus"></i></el-button>
+          <el-tooltip class="item" effect="dark" content="Add New Judges" placement="left">
+              <el-button @click="addJudges()" class="button-only"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row>
         <el-col>
           <el-table
-          :data="studentList"
+          :data="judgeList"
           style="width: 100%"
           stripe>
           <el-table-column
-            prop="name"
-            label="name">
-          </el-table-column>
-          <el-table-column
-            prop="email"
-            label="email">
-          </el-table-column>
-          <el-table-column
-            prop="student_id"
-            label="student id">
+            prop="uid"
+            label="Uid">
           </el-table-column>
             <el-table-column
             fixed="right"
@@ -34,10 +26,10 @@
             width="120">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteRow(scope.$index, studentList)"
+                @click.native.prevent="deleteRow(scope.$index, judgeList)"
                 type="text"
                 size="small">
-                移除学生
+                移除服务器
               </el-button>
             </template>
           </el-table-column>
@@ -53,18 +45,15 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      studentList: [{
-        uid: '3545',
-        name: 'willion',
-        email: 'jbk@qq.com',
-        student_id: '23565765875'
+      judgeList: [{
+        uid: '3545'
       }],
       childChange: false
     }
   },
   methods: {
     deleteRow (index, rows) {
-      this.$confirm('此操作将永久删除该学生, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该服务器, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -72,8 +61,8 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/students/${rows.uid}`,
-            data: rows.splice(index, 1) // todo: Is data required?
+            url: `/course/${this.getUid}/judge/${rows.uid}`,
+            data: rows.splice(index, 1)
           })
             .then((response) => {
               this.$message({
@@ -92,7 +81,7 @@ export default {
         })
       })
     },
-    addStudent () {
+    addJudges () {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -107,9 +96,9 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/students/`)
+      this.axios.get(`/course/${this.getUid}/judge/`)
         .then((response) => {
-          this.studentList = response.data
+          this.judgeList = response.data
         })
         .catch((err) => {
           console.log(err)

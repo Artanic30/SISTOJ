@@ -2,18 +2,18 @@
     <div>
       <el-row :gutter="16">
         <el-col class="col-half" :span="4">
-          <span class="title-main">Students</span>
+          <span class="title-main">Instructors</span>
         </el-col>
         <el-col :span="4" class="col-one">
-          <el-tooltip class="item" effect="dark" content="Add New Student" placement="left">
-              <el-button @click="addStudent()" class="button-only"><i class="el-icon-plus"></i></el-button>
+          <el-tooltip class="item" effect="dark" content="Add New Instructor" placement="left">
+              <el-button @click="addInstructor()" class="button-only"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row>
         <el-col>
           <el-table
-          :data="studentList"
+          :data="instructorList"
           style="width: 100%"
           stripe>
           <el-table-column
@@ -24,17 +24,13 @@
             prop="email"
             label="email">
           </el-table-column>
-          <el-table-column
-            prop="student_id"
-            label="student id">
-          </el-table-column>
             <el-table-column
             fixed="right"
             label="操作"
             width="120">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteRow(scope.$index, studentList)"
+                @click.native.prevent="deleteRow(scope.$index, instructorList)"
                 type="text"
                 size="small">
                 移除学生
@@ -53,18 +49,17 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      studentList: [{
+      instructorList: [{
         uid: '3545',
         name: 'willion',
-        email: 'jbk@qq.com',
-        student_id: '23565765875'
+        email: 'jbk@qq.com'
       }],
       childChange: false
     }
   },
   methods: {
     deleteRow (index, rows) {
-      this.$confirm('此操作将永久删除该学生, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该助教, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -72,8 +67,8 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/students/${rows.uid}`,
-            data: rows.splice(index, 1) // todo: Is data required?
+            url: `/course/${this.getUid}/instructor/${rows.uid}`,
+            data: rows.splice(index, 1)
           })
             .then((response) => {
               this.$message({
@@ -92,7 +87,7 @@ export default {
         })
       })
     },
-    addStudent () {
+    addInstructor () {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -107,9 +102,9 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/students/`)
+      this.axios.get(`/course/${this.getUid}/instructor/`)
         .then((response) => {
-          this.studentList = response.data
+          this.instructorList = response.data
         })
         .catch((err) => {
           console.log(err)

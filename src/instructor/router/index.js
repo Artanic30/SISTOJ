@@ -7,6 +7,8 @@ import pageNotFound from '../../public/PageNotFound'
 import profile from '../../public/Profile'
 import instructorProfile from '../../public/InstructorProfile'
 import judge from '../components/Judges/Index'
+import instructors from '../components/Instructors/Index'
+import judges from '../components/CourseJudges/Index'
 
 Vue.use(Router)
 
@@ -46,6 +48,16 @@ export default new Router({
       path: '/judge',
       name: 'judge',
       component: judge
+    },
+    {
+      path: '/home/course/:id/instructor',
+      name: 'instructor',
+      component: instructors
+    },
+    {
+      path: '/home/course/:id/judge',
+      name: 'courseJudge',
+      component: judges
     },
     {
       path: '*',

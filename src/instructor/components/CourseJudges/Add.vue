@@ -2,7 +2,7 @@
   <div>
     <el-row class="row-one" :gutter="8">
       <el-col :span="8">
-        <span class="title-main">Add New Student</span>
+        <span class="title-main">Add New Judge</span>
       </el-col>
       <el-col :span="8" class="col-one">
         <el-button class="button-back" @click="goBack()"><span class="title-back">back</span></el-button>
@@ -10,22 +10,13 @@
     </el-row>
     <el-row class="row-quarter">
       <el-col>
-        <el-form :model="studentInfo" status-icon :rules="rules" ref="studentInfo" label-width="100px">
-          <el-form-item label="Name:" prop="name">
-            <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
-          </el-form-item>
+        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
           <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="studentInfo.uid" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Email:" prop="email">
-            <el-input type="email" v-model.number="studentInfo.email"></el-input>
-          </el-form-item>
-          <el-form-item label="Student ID:" prop="student_id">
-            <el-input v-model.number="studentInfo.student_id"></el-input>
+            <el-input type="text" v-model="judgeInfo.uid" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('studentInfo')">提交</el-button>
-            <el-button @click="resetForm('studentInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('judgeInfo')">提交</el-button>
+            <el-button @click="resetForm('judgeInfo')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -45,22 +36,9 @@ export default {
         callback()
       }, 500)
     }
-    var checkEmail = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('不能为空'))
-      } else if (!value.includes('@shanghaitech.edu.cn')) {
-        return callback(new Error('请输入正确邮箱'))
-      }
-      setTimeout(() => {
-        callback()
-      }, 1000)
-    }
     return {
-      studentInfo: {
-        name: '',
-        uid: '',
-        email: '@shanghaitech.edu.cn',
-        student_id: ''
+      judgeInfo: {
+        uid: ''
       },
       rules: {
         name: [
@@ -70,7 +48,7 @@ export default {
           { validator: check, trigger: 'blur' }
         ],
         email: [
-          { validator: checkEmail, trigger: 'blur' }
+          { validator: check, trigger: 'blur' }
         ],
         student_id: [
           { validator: check, trigger: 'blur' }
@@ -97,8 +75,8 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/students/${this.studentInfo.uid}`,
-              data: this.studentInfo
+              url: `/course/${this.getUid}/judge/${this.judgeInfo.uid}`,
+              data: this.judgeInfo
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')

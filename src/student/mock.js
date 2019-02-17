@@ -37,9 +37,10 @@ const returnCourseAssignment = function () {
       'course_uid': courseId,
       'name': Random.name(),
       'descr_link': Random.url(),
-      'state': Random.status(),
-      'release': Random.date(),
-      'due': Random.date()
+      'score': Random.natural(0, 5),
+      'overall_score': Random.natural(10, 15),
+      'release_date': Random.date(),
+      'deadline': Random.date()
     }
     assignments.push(assignment)
   }
@@ -65,7 +66,7 @@ const returnSubmissionHistory = function () {
 
 const returnAssignmentScoreboard = function () {
   let scoreBoard = []
-  for (let i = 0; i <= 34; i++) {
+  for (let i = 0; i <= 200; i++) {
     let scores = {
       'nickname': Random.name(),
       'score': Random.natural(10, 100),
@@ -114,10 +115,10 @@ const returnInstructor = function () {
 }
 
 // Mock.mock( url, post/get , 返回的数据)；
+Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/scores/, 'get', returnAssignmentScoreboard())
+Mock.mock(/student\/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/history/, 'get', returnSubmissionHistory)
+Mock.mock(/student\/[-a-zA-Z0-9]+\/course\/[-a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
 Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
-Mock.mock(/course\/[0-9]+\/assignment\/[0-9]+\/scores/, 'get', returnAssignmentScoreboard())
-Mock.mock(/student\/[0-9]+\/course\/[0-9]+\/assignment\/[0-9]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/student\/[0-9]+\/course/, 'get', returnStudentCourseList)
-Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
 Mock.mock(/course\/[-a-zA-Z0-9]+\/queue/, 'get', returnPendingAssignment())
 Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructors)

@@ -43,7 +43,7 @@
                 @click.native.prevent="deleteRow(scope.$index, coState)"
                 type="text"
                 size="small">
-                移除
+                移除服务器
               </el-button>
             </template>
           </el-table-column>

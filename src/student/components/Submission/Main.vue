@@ -35,7 +35,7 @@
             </el-table-column>
             <el-table-column
               prop="git_commit_id"
-              label="ID">
+              label="Git ID">
             </el-table-column>
             <el-table-column
               prop="score"

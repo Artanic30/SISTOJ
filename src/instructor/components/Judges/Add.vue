@@ -50,6 +50,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     var check = (rule, value, callback) => {
@@ -125,7 +127,11 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     }
-  }
+  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getUid: state => state.coInfo.uid
+  })
 }
 </script>
 <style scoped>

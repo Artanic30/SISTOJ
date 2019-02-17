@@ -11,7 +11,7 @@
               </el-col>
             </el-row>
           </el-col>
-          <el-col style="width: auto" v-if="getAuth">
+          <el-col class="menu-top" v-if="this.getAuth">
              <el-menu
               :default-active="$route.path"
               mode="horizontal"
@@ -28,31 +28,43 @@
                 </el-submenu>
               </el-menu>
           </el-col>
+         <el-col v-else>
+           <el-button @click="login" class="button-login">Login in</el-button>
+         </el-col>
    </el-row>
  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
-      img: require('../assets/logo.png')
+      img: require('../assets/logo.png'),
+      isAuth: false
     }
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getID: state => state.baseInfo.uid,
+    getUid: state => state.coInfo.uid,
+    getCoInfo: state => state.coInfo,
     profilePage () {
       return (this.$route.name === 'instrProfile') || (this.$route.name === 'profile')
     }
-  },
+  }),
   methods: {
     logout () {
-      console.log(2333)
+      this.$store.commit('logOut')
+      window.location.reload()
     },
     goBack () {
-      this.$route.go(-1)
+      this.$router.go(-2)
+    },
+    login () {
+      this.$store.commit('login')
+      window.location.reload() // another solution: vuex + watch
     }
   }
 }
@@ -74,5 +86,14 @@ export default {
   }
   .submenu {
     float: right;
+  }
+  .button-login {
+    float: right;
+    height: 40px;
+    margin: 10px;
+  }
+  .menu-top {
+    width: auto;
+    height: 60px;
   }
 </style>
