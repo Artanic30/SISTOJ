@@ -50,9 +50,9 @@ export default {
   data () {
     return {
       instructorList: [{
-        uid: '3545',
-        name: 'willion',
-        email: 'jbk@qq.com'
+        uid: '',
+        name: '',
+        email: ''
       }],
       childChange: false
     }
@@ -67,15 +67,13 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/instructor/${rows.uid}`,
-            data: rows.splice(index, 1)
-          })
-            .then((response) => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
+            url: `/course/${this.getUid}/instructor/${rows.uid}`
+          }).then((response) => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
             })
+          })
             .catch((err) => {
               console.log(err)
             })

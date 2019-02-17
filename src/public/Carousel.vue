@@ -43,6 +43,4 @@ export default {
 }
 </script>
 <style>
-  .img-policy {
-  }
 </style>

@@ -14,9 +14,6 @@
           <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="instructorInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="instructorInfo.uid" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="Email:" prop="email">
             <el-input type="email" v-model.number="instructorInfo.email"></el-input>
           </el-form-item>
@@ -45,15 +42,11 @@ export default {
     return {
       instructorInfo: {
         name: '',
-        uid: '',
         email: '@shanghaitech.edu.cn'
       },
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
-        ],
-        uid: [
-          { validator: check, trigger: 'blur' }
         ],
         email: [
           { validator: check, trigger: 'blur' }
@@ -81,7 +74,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/instructor/${this.instructorInfo.uid}`,
+              url: `/course/${this.getUid}/instructor/`,
               data: this.instructorInfo
             }).then((response) => {
               if (response.status === 200) {

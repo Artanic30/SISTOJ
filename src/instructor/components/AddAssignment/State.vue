@@ -91,8 +91,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows.uid}/`,
-            data: rows.splice(index, 1) // todo: Is data required?
+            url: `/course/${this.getUid}/assignment/${rows.uid}/`
           })
             .then((response) => {
               this.$message({

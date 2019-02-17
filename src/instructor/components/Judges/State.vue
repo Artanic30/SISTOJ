@@ -94,8 +94,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/judge/${rows.uid}/`,
-            data: rows.splice(index, 1)
+            url: `/judge/${rows.uid}/`
           }).catch((err) => {
             console.log(err)
           })

@@ -10,9 +10,20 @@
     </el-row>
     <el-row class="row-quarter">
       <el-col>
-        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
+        <span class="title-sub">Choose one of your judges and add it to current course:</span>
+      </el-col>
+    </el-row>
+    <el-row class="row-quarter">
+      <el-col>
+        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo">
           <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="judgeInfo.uid" autocomplete="off"></el-input>
+            <el-select v-model="judgeInfo.uid" placeholder="请选择服务器">
+              <el-option
+                v-for="item in judgeInfo"
+                :key="item.uid"
+                :value="item.uid">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('judgeInfo')">提交</el-button>
@@ -41,16 +52,7 @@ export default {
         uid: ''
       },
       rules: {
-        name: [
-          {validator: check, trigger: 'blur'}
-        ],
         uid: [
-          { validator: check, trigger: 'blur' }
-        ],
-        email: [
-          { validator: check, trigger: 'blur' }
-        ],
-        student_id: [
           { validator: check, trigger: 'blur' }
         ]
       }
@@ -95,6 +97,21 @@ export default {
       this.$refs[formName].resetFields()
     }
   },
+  created () {
+    if (this.getAuth) {
+      this.axios.get(`/judge/`)
+        .then((response) => {
+          if (response.status === 200) {
+            this.judgeInfo = response.data
+          } else {
+            this.$router.push('/403')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getUid: state => state.coInfo.uid
@@ -121,5 +138,8 @@ export default {
   }
   .title-back {
     color: white;
+  }
+  .title-sub {
+    font-size: 20px;
   }
 </style>

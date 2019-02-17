@@ -24,12 +24,12 @@
                   <el-menu-item index="/profile" v-if="!profilePage">Profile</el-menu-item>
                   <el-menu-item index="/" v-else>Dashboard</el-menu-item>
                   <el-menu-item index="/" v-if="profilePage" @click="goBack">Go back</el-menu-item>
-                  <el-menu-item index="/" @click="logout">Log out</el-menu-item>
+                  <el-menu-item index="/" @click="logout">Logout</el-menu-item>
                 </el-submenu>
               </el-menu>
           </el-col>
          <el-col v-else>
-           <el-button @click="login" class="button-login">Login in</el-button>
+           <el-button @click="login" class="button-login">Login</el-button>
          </el-col>
    </el-row>
  </div>

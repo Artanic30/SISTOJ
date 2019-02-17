@@ -1,10 +1,6 @@
 const Mock = require('mockjs')
 const Random = Mock.Random
 Random.extend({
-  status: function () {
-    const status = ['Failed', 'Ongoing', '59/100']
-    return this.pick(status)
-  },
   season: function () {
     const seasons = ['Fall', 'Summer', 'Spring', 'Winter']
     return this.pick(seasons)
@@ -141,11 +137,11 @@ const returnCourseJudge = function () {
   return List
 }
 // Mock.mock( url, post/get , 返回的数据);
-Mock.mock(/course\/[-0-9a-zA-Z]+\/students\/[-0-9a-zA-Z]+/, 'post', 'success')
+Mock.mock(/course\/[-0-9a-zA-Z]+\/students/, 'post', 'success')
 Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'post', 'success')
 Mock.mock(/course\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'post', 'success')
 Mock.mock(/course\/[-0-9a-zA-Z]+\/judge/, 'get', returnCourseJudge())
-Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+/, 'post', 'success')
+Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment/, 'post', {url: Random.url(), uid: Random.guid()})
 Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructorList())
 Mock.mock(/course\/[-0-9a-zA-Z]+\/students/, 'get', returnStudentList())
 Mock.mock(/judge/, 'get', returnJudges)

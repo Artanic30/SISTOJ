@@ -61,8 +61,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/judge/${rows.uid}`,
-            data: rows.splice(index, 1)
+            url: `/course/${this.getUid}/judge/${rows.uid}`
           })
             .then((response) => {
               this.$message({

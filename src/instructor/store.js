@@ -31,12 +31,21 @@ const store = new Vuex.Store({
     },
     baseInfo: {
       uid: '23123',
-      isInstructor: true
+      isInstructor: false
     }
   },
   mutations: {
     updateCoInfo (state, value) {
       state.coInfo = value
+    },
+    updateAss (state, value) {
+      state.assignments = value
+    },
+    login (state) {
+      state.isAuthorized = true
+    },
+    logOut (state) {
+      state.isAuthorized = false
     }
   },
   plugins: [vuexLocal.plugin]

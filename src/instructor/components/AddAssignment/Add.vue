@@ -20,9 +20,6 @@
     <el-row class="row-two" v-if="this.steps === 1">
       <el-col>
         <el-form :model="assignmentInfo" status-icon :rules="rules" ref="assignmentInfo" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="Uid:" prop="uid">
-            <el-input v-model="assignmentInfo.uid" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="Course uid:" prop="course_uid">
             <el-input v-model="assignmentInfo.course_uid" autocomplete="off"></el-input>
           </el-form-item>
@@ -64,7 +61,7 @@
             <el-col :span="16"><span class="title-info">Please go to the following url and submit the detailed information of the assignment:</span></el-col>
           </el-row>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="20"><span class="title-info">{{ this.site }}</span></el-col>
+            <el-col :span="20"><span class="title-info">{{ this.reply.site }}</span></el-col>
             <el-col :span="4" ><el-button @click="goOutside" class="button-out">前往</el-button></el-col>
           </el-row>
         </el-card>
@@ -88,7 +85,6 @@ export default {
     }
     return {
       assignmentInfo: {
-        uid: '',
         course_uid: '',
         name: '',
         deadline: '',
@@ -117,7 +113,10 @@ export default {
         ]
       },
       steps: 1,
-      site: 'http://www.baidu.com'
+      reply: {
+        site: '',
+        uid: ''
+      }
     }
   },
   methods: {
@@ -134,10 +133,12 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/assignment/${this.assignmentInfo.uid}`,
+              url: `/course/${this.getUid}/assignment/`,
               data: this.assignmentInfo
             }).then((response) => {
               if (response.status === 200) {
+                console.log(response.data.url)
+                this.reply.site = response.data.url
                 loading.close()
                 alert('submit!')
               } else if (response.status === 403) {
@@ -167,6 +168,12 @@ export default {
       }, 500)
     },
     goOutside () {
+      this.steps += 1
+      this.axios({
+        method: 'post',
+        url: `/course/${this.getUid}/assignment/${this.reply.uid}`,
+        data: {state: 2}
+      })
       window.location.href = this.site
     }
   },

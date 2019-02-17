@@ -11,13 +11,19 @@
     <el-row class="rows">
       <el-col>
         <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
-          <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="judgeInfo.uid" autocomplete="off" placeholder="Professor's uid"></el-input>
-          </el-form-item>
           <el-form-item label="Host:" prop="host">
             <el-input type="text" v-model="judgeInfo.host" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Max job" prop="max_job">
+          <el-form-item label="Client Key:" prop="client_key">
+            <el-input type="text" v-model="judgeInfo.client_key" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Client Cert:" prop="client_cert">
+            <el-input type="text" v-model="judgeInfo.client_cert" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Cert CA:" prop="cert_ca">
+            <el-input type="text" v-model="judgeInfo.cert_ca" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Max job:" prop="max_job">
             <el-input v-model.number="judgeInfo.max_job"></el-input>
           </el-form-item>
           <el-form-item>
@@ -25,26 +31,6 @@
             <el-button @click="resetForm('judgeInfo')">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-col>
-    </el-row>
-    <el-row class="rows">
-      <el-col :span="24"><span class="text">Please upload the Cert file here:</span></el-col>
-    </el-row>
-    <el-row class="rows-two">
-      <el-col>
-        <!--todo: action url  -->
-        <el-upload
-          class="upload-demo"
-          action=""
-          :before-remove="beforeRemove"
-          multiple
-          drag
-          :limit="1"
-          :on-exceed="handleExceed"
-          :file-list="fileList">
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        </el-upload>
       </el-col>
     </el-row>
   </div>
@@ -64,16 +50,23 @@ export default {
     }
     return {
       judgeInfo: {
-        uid: '',
         host: '',
-        cert: '',
+        client_key: '',
+        client_cert: '',
+        cert_ca: '',
         max_job: 4
       },
       rules: {
         host: [
           {validator: check, trigger: 'blur'}
         ],
-        uid: [
+        client_key: [
+          { validator: check, trigger: 'blur' }
+        ],
+        client_cert: [
+          { validator: check, trigger: 'blur' }
+        ],
+        cert_ca: [
           { validator: check, trigger: 'blur' }
         ],
         max_job: [
@@ -118,12 +111,6 @@ export default {
         }
       })
     },
-    handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-    },
-    beforeRemove (file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
-    },
     resetForm (formName) {
       this.$refs[formName].resetFields()
     }
@@ -139,9 +126,6 @@ export default {
   margin-top: 5%;
   margin-left: 5%;
 }
-  .text {
-    font-size: 25px;
-  }
   .row-main {
     margin-top: 5%;
     margin-left: 5%;
@@ -158,9 +142,5 @@ export default {
   }
   .title-back {
     color: white;
-  }
-  .rows-two {
-  margin-top: 2%;
-  margin-left: 5%;
   }
 </style>
