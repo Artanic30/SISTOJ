@@ -49,10 +49,10 @@ export default {
         method: 'GET',
         url: `/student/${this.getID}/course/${this.getUID}/assignment/${this.getAssUID}/history/`
       }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
+        if (response.status === 200) {
           this.submission = response.data
+        } else {
+          this.$router.push('403')
         }
       })
     }

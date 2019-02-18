@@ -113,8 +113,16 @@ const returnInstructor = function () {
     'email': Random.email()
   }
 }
+const returnRole = function () {
+  return {
+    'uid': Random.guid(),
+    'is_student': Random.boolean(),
+    'is_instructor': !Random.boolean()
+  }
+}
 
-// Mock.mock( url, post/get , 返回的数据)；
+// Mock.mock( url, post/get , 返回的数据)
+Mock.mock(/user\/role/, 'get', returnRole)
 Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/scores/, 'get', returnAssignmentScoreboard())
 Mock.mock(/student\/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/student\/[-a-zA-Z0-9]+\/course\/[-a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)

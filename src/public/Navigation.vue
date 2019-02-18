@@ -41,8 +41,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      img: require('../assets/logo.png'),
-      isAuth: false
+      img: require('../assets/logo.png')
     }
   },
   computed: mapState({
@@ -63,6 +62,32 @@ export default {
       this.$router.go(-2)
     },
     login () {
+      this.axios({
+        method: 'get',
+        url: `/user/role`
+      }).then((response) => {
+        if (response.status === 200) {
+          if (response.data.is_student) {
+            this.$store.commit('updateStudent', response.data.uid)
+            window.location.href = 'http://localhost:8080/#/' // todo: add url
+          } else {
+            this.$store.commit('updateInstructor', response.data.uid)
+            window.location.href = 'http://localhost:8080/instructor.html#/' // todo: add url
+          }
+        } else {
+          alert('login failed')
+        }
+      })
+      this.axios({
+        method: 'get',
+        url: `/user/login/oauth/param`
+      }).then((response) => {
+        if (response.status === 200) {
+          window.location.href = response.data.login_url + '?' + 'param'
+        } else {
+          this.$router.push('/error')
+        }
+      })
       this.$store.commit('login')
       window.location.reload() // another solution: vuex + watch
     }

@@ -141,8 +141,8 @@ export default {
                 this.reply.site = response.data.url
                 loading.close()
                 alert('submit!')
-              } else if (response.status === 403) {
-                // todo: 跳转报错页面（%参数加上当前页面地址）
+              } else {
+                this.$router.push('/error')
               }
             })
           }

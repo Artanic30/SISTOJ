@@ -9,6 +9,7 @@ import instructorProfile from '../../public/InstructorProfile'
 import judge from '../components/Judges/Index'
 import instructors from '../components/Instructors/Index'
 import judges from '../components/CourseJudges/Index'
+import unAuth from '../../public/Unauthorized'
 
 Vue.use(Router)
 
@@ -58,6 +59,11 @@ export default new Router({
       path: '/home/course/:id/judge',
       name: 'courseJudge',
       component: judges
+    },
+    {
+      path: '/error',
+      name: 'unauthorized',
+      component: unAuth
     },
     {
       path: '*',

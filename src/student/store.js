@@ -46,6 +46,14 @@ const store = new Vuex.Store({
     },
     logOut (state) {
       state.isAuthorized = false
+    },
+    updateInstructor (state, uid) {
+      state.baseInfo.uid = uid
+      state.baseInfo.isInstructor = true
+    },
+    updateStudent (state, uid) {
+      state.baseInfo.uid = uid
+      state.baseInfo.isInstructor = false
     }
   },
   plugins: [vuexLocal.plugin]

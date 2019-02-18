@@ -7,6 +7,7 @@ import submission from '../components/Submission/Index'
 import pageNotFound from '../../public/PageNotFound'
 import profile from '../../public/Profile'
 import instructorProfile from '../../public/InstructorProfile'
+import unAuth from '../../public/Unauthorized'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/instrProfile',
       name: 'instrProfile',
       component: instructorProfile
+    },
+    {
+      path: '/error',
+      name: 'unauthorized',
+      component: unAuth
     },
     {
       path: '*',

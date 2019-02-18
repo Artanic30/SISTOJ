@@ -50,8 +50,7 @@ export default {
         if (response.status === 200) {
           this.courseInfo = response.data
         } else {
-          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
-          this.$router.push({path: '/404', query: { path: this.$route.path }})
+          this.$router.push('/error')
         }
       })
     }

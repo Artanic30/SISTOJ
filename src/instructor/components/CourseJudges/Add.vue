@@ -83,7 +83,7 @@ export default {
               if (response.status === 200) {
                 alert('submit!')
               } else if (response.status === 403) {
-                // todo: 跳转报错页面（%参数加上当前页面地址）
+                this.$router.push('/error')
               }
             })
           }
