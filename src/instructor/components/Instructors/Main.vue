@@ -33,7 +33,7 @@
                 @click.native.prevent="deleteRow(scope.$index, instructorList)"
                 type="text"
                 size="small">
-                移除学生
+                移除助教
               </el-button>
             </template>
           </el-table-column>
@@ -73,6 +73,7 @@ export default {
               type: 'success',
               message: '删除成功!'
             })
+            rows.splice(index, 1)
           })
             .catch((err) => {
               console.log(err)
@@ -102,7 +103,13 @@ export default {
     if (this.getAuth) {
       this.axios.get(`/course/${this.getUid}/instructor/`)
         .then((response) => {
-          this.instructorList = response.data
+          if (response.status === 200) {
+            this.instructorList = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)

@@ -42,19 +42,20 @@ export default {
     getState: state => state.baseInfo.isInstructor
   }),
   created () {
-    if (this.getAuth) { // todo; add getstate
+    if (this.getAuth) {
       this.axios({
         method: 'GET',
         url: `/instructor/${this.getID}/course/`
       }).then((response) => {
         if (response.status === 200) {
           this.courseInfo = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
           this.$router.push('/error')
         }
       })
     }
-    console.log(this.getAuth)
   }
 }
 </script>

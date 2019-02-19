@@ -1,28 +1,43 @@
 <template>
   <div>
-    <el-row class="row-one" :gutter="8">
+    <el-row class="row-main" :gutter="8">
       <el-col :span="8">
-        <span class="title-main">Add New Student</span>
+        <span class="title-main">Add New Course</span>
       </el-col>
       <el-col :span="8" class="col-one">
         <el-button class="button-back" @click="goBack()"><span class="title-back">back</span></el-button>
       </el-col>
     </el-row>
-    <el-row class="row-quarter">
+    <el-row class="rows">
       <el-col>
-        <el-form :model="studentInfo" status-icon :rules="rules" ref="studentInfo" label-width="100px">
+        <el-form :model="courseInfo" status-icon :rules="rules" ref="courseInfo" label-width="100px">
           <el-form-item label="Name:" prop="name">
-            <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
+            <el-input type="text" v-model="courseInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Email:" prop="email">
-            <el-input type="email" v-model.number="studentInfo.email"></el-input>
+          <el-form-item label="Code:" prop="code">
+            <el-input type="text" v-model="courseInfo.code" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Student ID:" prop="student_id">
-            <el-input v-model.number="studentInfo.student_id"></el-input>
+          <el-form-item label="Semester:" prop="semester">
+            <el-input type="text" v-model="courseInfo.semester" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Year:" prop="year">
+            <el-input type="text" v-model="courseInfo.year" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Homepage:" prop="homepage">
+            <el-input v-model="courseInfo.homepage"></el-input>
+          </el-form-item>
+          <el-form-item label="Instructor:" prop="instructor">
+            <el-input v-model="courseInfo.instructor" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="Add Instructor:">
+            <template slot-scope="scope">
+              <el-input v-model="scope.tem_instr" class="input-short" prop="Instructor"></el-input>
+              <el-button @click="AddInstructor(scope.tem_instr)"><i class="el-icon-plus"></i></el-button>
+            </template>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('studentInfo')">提交</el-button>
-            <el-button @click="resetForm('studentInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('courseInfo')">提交</el-button>
+            <el-button @click="resetForm('courseInfo')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -42,30 +57,30 @@ export default {
         callback()
       }, 500)
     }
-    var checkEmail = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('不能为空'))
-      } else if (!value.includes('@shanghaitech.edu.cn')) {
-        return callback(new Error('请输入正确邮箱'))
-      }
-      setTimeout(() => {
-        callback()
-      }, 1000)
-    }
     return {
-      studentInfo: {
+      courseInfo: {
         name: '',
-        email: '@shanghaitech.edu.cn',
-        student_id: ''
+        code: '',
+        semester: '',
+        year: '',
+        homepage: '',
+        instructor: []
       },
+      tem_instr: '',
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
         ],
-        email: [
-          { validator: checkEmail, trigger: 'blur' }
+        code: [
+          { validator: check, trigger: 'blur' }
         ],
-        student_id: [
+        semester: [
+          { validator: check, trigger: 'blur' }
+        ],
+        year: [
+          { validator: check, trigger: 'blur' }
+        ],
+        homepage: [
           { validator: check, trigger: 'blur' }
         ]
       }
@@ -90,8 +105,8 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/students/`,
-              data: this.studentInfo
+              url: `/instructor/${this.getID}/course`,
+              data: this.courseInfo
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')
@@ -111,16 +126,24 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    AddInstructor (value) {
+      this.courseInfo.instructor.push(value)
     }
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    getID: state => state.baseInfo.uid
   })
 }
 </script>
 <style scoped>
-  .row-one {
+.rows {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+  .row-main {
     margin-top: 5%;
     margin-left: 5%;
   }
@@ -134,10 +157,10 @@ export default {
     background-color: #A40004;
     float: right;
   }
-  .row-quarter {
-    margin-top: 5%;
-  }
   .title-back {
     color: white;
+  }
+  .input-short {
+    width: 200px;
   }
 </style>

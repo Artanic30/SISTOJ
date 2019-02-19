@@ -10,11 +10,6 @@
     </el-row>
     <el-row class="row-quarter">
       <el-col>
-        <span class="title-sub">Choose one of your judges and add it to current course:</span>
-      </el-col>
-    </el-row>
-    <el-row class="row-quarter">
-      <el-col>
         <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo">
           <el-form-item label="Uid:" prop="uid">
             <el-select v-model="judgeInfo.uid" placeholder="请选择服务器">
@@ -82,7 +77,10 @@ export default {
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')
-              } else if (response.status === 403) {
+                window.location.reload()
+              } else if (response.status === 401) {
+                this.$router.push('/unauthorized')
+              } else {
                 this.$router.push('/error')
               }
             })
@@ -103,8 +101,10 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.judgeInfo = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
           } else {
-            this.$router.push('/403')
+            this.$router.push('/error')
           }
         })
         .catch((err) => {

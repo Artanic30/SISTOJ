@@ -34,10 +34,10 @@ export default {
         uid: '',
         name: '',
         code: '',
-        semester: 'WinterFall',
-        year: 2013,
+        semester: '',
+        year: 0,
         homepage: '',
-        instructor: ['0', '0']
+        instructor: []
       }],
       student_id: 0
     }

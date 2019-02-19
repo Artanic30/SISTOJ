@@ -25,12 +25,12 @@ export default {
       submission: [
       ],
       assignmentDetail: {
-        uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-        course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-        name: 'Homework1: Postfix Calculator',
-        deadline: 157000100,
-        release_date: 157000000,
-        descr_link: 'https://shtech.org/course/si100c/17f/hw/1',
+        uid: '',
+        course_uid: '',
+        name: '',
+        deadline: 0,
+        release_date: 0,
+        descr_link: '',
         score: 0,
         overall_score: 0
       }
@@ -51,8 +51,10 @@ export default {
       }).then((response) => {
         if (response.status === 200) {
           this.submission = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
-          this.$router.push('403')
+          this.$router.push('/error')
         }
       })
     }

@@ -16,6 +16,7 @@
         >
         <el-table-column
           type="index"
+          :index="ranking"
           width="50">
         </el-table-column>
         <el-table-column
@@ -32,6 +33,7 @@
           </el-table-column>
           <el-table-column
           prop="submission_time"
+          :formatter="timestampToTime"
           label="submission time">
         </el-table-column>
           <el-table-column
@@ -62,13 +64,8 @@ export default {
   data () {
     return {
       scoreInfo: [{
-        user: '',
-        AC: 0,
-        Total: 0,
-        points: 0,
-        Rating: 0
       }],
-      loading: false, // todo:loading related functions
+      loading: false,
       currentPage: 1,
       pagesize: 20,
       total: 0
@@ -78,9 +75,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
         .then((response) => {
-          this.scoreInfo = response.data
-          // 很诡异 只有这种写法跑的起来(非同步跟新)
-          this.total = response.data.length
+          if (response.status === 200) {
+            this.scoreInfo = response.data
+            this.total = response.data.length
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -93,6 +95,19 @@ export default {
     },
     handleSizeChange (val) {
       this.pagesize = val
+    },
+    timestampToTime (row) {
+      let date = new Date(row.submission_time * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
+    ranking (index) {
+      return (this.currentPage - 1) * 20 + index
     }
   },
   computed: mapState({

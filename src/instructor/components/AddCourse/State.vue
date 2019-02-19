@@ -2,49 +2,58 @@
     <div>
       <el-row :gutter="16" class="row-quarter">
         <el-col :span="4">
-          <span class="title-main">Judges</span>
+          <span class="title-main">Course</span>
         </el-col>
         <el-col :span="4" class="col-one">
-          <el-tooltip class="item" effect="dark" content="Add New Judges" placement="top">
-              <el-button @click="manageJudges()" class="button-judge"><i class="el-icon-plus"></i></el-button>
+          <el-tooltip class="item" effect="dark" content="Add New Course" placement="top">
+              <el-button @click="manageCourse()" class="button-judge"><i class="el-icon-plus"></i></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row class="row-quarter">
         <el-col>
           <el-table
-          :data="judges"
+          :data="courseList"
           style="width: 90%"
           >
           <el-table-column
-            fixed
-            prop="uid"
-            label="Uid"
-            width="300px">
+            prop="name"
+            label="Name">
           </el-table-column>
           <el-table-column
-            prop="host"
-            label="Host">
-          </el-table-column>
-          <el-table-column
-            prop="max_job"
-            label="Max job"
+            prop="code"
+            label="Code"
             >
           </el-table-column>
             <el-table-column
-            prop="cert_ca"
-            label="Cert CA"
+            prop="semester"
+            label="Semester"
             >
           </el-table-column>
             <el-table-column
-            prop="client_cert"
-            label="Client Cert"
+            prop="year"
+            label="Year"
             >
           </el-table-column>
             <el-table-column
-            prop="client_key"
-            label="Client Key"
+            prop="homepage"
+            label="Homepage"
             >
+          </el-table-column>
+            <el-table-column
+            label="Instructors"
+            width="120"
+             prop="instructor">
+            <template slot-scope="scope">
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  Click here<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="item in scope.row.instructor" :key="item">{{ item }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -52,10 +61,10 @@
             width="120">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteRow(scope.$index, judges)"
+                @click.native.prevent="deleteRow(scope.$index, courseList)"
                 type="text"
                 size="small">
-                移除服务器
+                移除课程
               </el-button>
             </template>
           </el-table-column>
@@ -72,18 +81,19 @@ export default {
   data () {
     return {
       childChange: false,
-      judges: [{
+      courseList: [{
         uid: '',
-        host: '',
-        client_key: '',
-        client_cert: '',
-        cert_ca: '',
-        max_job: 4
+        name: '',
+        code: '',
+        semester: '',
+        year: 0,
+        homepage: '',
+        instructor: []
       }]
     }
   },
   methods: {
-    manageJudges () {
+    manageCourse () {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -96,7 +106,7 @@ export default {
       }, 500)
     },
     deleteRow (index, rows) {
-      this.$confirm('此操作将永久删除该服务器, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -104,7 +114,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/judge/${rows.uid}/`
+            url: `/course/${rows.uid}/`
           }).then((response) => {
             this.$message({
               type: 'success',
@@ -126,10 +136,10 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/judge/`)
+      this.axios.get(`/instructor/${this.getID}/course`)
         .then((response) => {
           if (response.status === 200) {
-            this.judges = response.data
+            this.courseList = response.data
           } else if (response.status === 401) {
             this.$router.push('/unauthorized')
           } else {

@@ -61,7 +61,7 @@
             <el-col :span="16"><span class="title-info">Please go to the following url and submit the detailed information of the assignment:</span></el-col>
           </el-row>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="20"><span class="title-info">{{ this.reply.site }}</span></el-col>
+            <el-col :span="20"><span class="title-info">{{ this.reply.url }}</span></el-col>
             <el-col :span="4" ><el-button @click="goOutside" class="button-out">前往</el-button></el-col>
           </el-row>
         </el-card>
@@ -114,7 +114,7 @@ export default {
       },
       steps: 1,
       reply: {
-        site: '',
+        url: '',
         uid: ''
       }
     }
@@ -137,10 +137,11 @@ export default {
               data: this.assignmentInfo
             }).then((response) => {
               if (response.status === 200) {
-                console.log(response.data.url)
-                this.reply.site = response.data.url
+                this.reply = response.data
                 loading.close()
                 alert('submit!')
+              } else if (response.status === 401) {
+                this.$router.push('/unauthorized')
               } else {
                 this.$router.push('/error')
               }
@@ -174,12 +175,22 @@ export default {
         url: `/course/${this.getUid}/assignment/${this.reply.uid}`,
         data: {state: 2}
       })
-      window.location.href = this.site
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      setTimeout(() => {
+        loading.close()
+        window.location.href = this.url
+      }, 500)
     }
   },
   computed: mapState({
+    getUid: state => state.coInfo.uid,
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id
+    getID: state => state.baseInfo.uid
   })
 }
 </script>

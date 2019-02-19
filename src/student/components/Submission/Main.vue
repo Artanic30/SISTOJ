@@ -31,6 +31,7 @@
             <el-table-column
               prop="submission_time"
               label="When"
+              :formatter="timestampToTime"
               sortable>
             </el-table-column>
             <el-table-column
@@ -82,9 +83,9 @@ export default {
       assignmentDetail: {
         uid: '',
         course_uid: '',
-        name: '23333',
-        deadline: 157000100,
-        release_date: 157000000,
+        name: '',
+        deadline: 0,
+        release_date: 0,
         descr_link: ''
       },
       message: ''
@@ -96,11 +97,18 @@ export default {
     this.assignmentDetail = this.deliverInfo
   },
   methods: {
-    formatter (row, column) {
-      return row.address
-    },
     showMessage (data) {
       this.message = data.message
+    },
+    timestampToTime (row) {
+      let date = new Date(row.submission_time * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
     }
   },
   watch: {

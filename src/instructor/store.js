@@ -10,6 +10,7 @@ const vuexLocal = new VuexPersistence({
 
 const store = new Vuex.Store({
   state: {
+    isRequest: false,
     isAuthorized: false,
     coInfo: {
       uid: '',
@@ -30,7 +31,7 @@ const store = new Vuex.Store({
       overall_socre: 0
     },
     baseInfo: {
-      uid: '',
+      uid: '23123',
       isInstructor: false
     }
   },
@@ -54,6 +55,9 @@ const store = new Vuex.Store({
     updateStudent (state, uid) {
       state.baseInfo.uid = uid
       state.baseInfo.isInstructor = false
+    },
+    changeRequest (state) {
+      state.isRequest = !state.isRequest
     }
   },
   plugins: [vuexLocal.plugin]

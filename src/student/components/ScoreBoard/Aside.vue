@@ -20,10 +20,10 @@
     </el-row>
     <el-row class="row-half">
       <el-col :span="5">
-        <i class="el-icon-star-on"></i>
+        <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="15">
-        <router-link :to="{ path: `/home/course/${this.coInfo.uid}` }" class="sub-title">Course</router-link>
+        <router-link :to="{ path: `/home/course/${this.coInfo.uid}` }" class="sub-title">Assignment</router-link>
       </el-col>
     </el-row>
     <el-row class="row-half">
@@ -63,6 +63,8 @@ export default {
       }).then((response) => {
         if (response.status === 200) {
           this.instructors = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
           this.$router.push('/error')
         }

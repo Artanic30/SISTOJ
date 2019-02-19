@@ -68,6 +68,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
               })
+              rows.splice(index, 1)
             })
             .catch((err) => {
               console.log(err)
@@ -97,7 +98,13 @@ export default {
     if (this.getAuth) {
       this.axios.get(`/course/${this.getUid}/judge/`)
         .then((response) => {
-          this.judgeList = response.data
+          if (response.status === 200) {
+            this.judgeList = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)

@@ -49,6 +49,7 @@ export default {
     getID: state => state.baseInfo.uid,
     getUid: state => state.coInfo.uid,
     getCoInfo: state => state.coInfo,
+    getReq: state => state.isRequest,
     profilePage () {
       return (this.$route.name === 'instrProfile') || (this.$route.name === 'profile')
     }
@@ -56,17 +57,36 @@ export default {
   methods: {
     logout () {
       this.$store.commit('logOut')
+      this.$store.commit('changeRequest')
       window.location.reload()
     },
     goBack () {
       this.$router.go(-2)
     },
     login () {
+      if (!this.getAuth) {
+        this.axios({
+          method: 'get',
+          url: `/user/login/oauth/param`
+        }).then((response) => {
+          if (response.status === 200) {
+            this.$store.commit('login')
+            window.location.href = response.data.login_url
+          } else {
+            this.$router.push('/error')
+          }
+        })
+      }
+    }
+  },
+  created () {
+    if (this.getAuth && !this.getReq) {
       this.axios({
         method: 'get',
         url: `/user/role`
       }).then((response) => {
         if (response.status === 200) {
+          this.$store.commit('changeRequest')
           if (response.data.is_student) {
             this.$store.commit('updateStudent', response.data.uid)
             window.location.href = 'http://localhost:8080/#/' // todo: add url
@@ -74,22 +94,12 @@ export default {
             this.$store.commit('updateInstructor', response.data.uid)
             window.location.href = 'http://localhost:8080/instructor.html#/' // todo: add url
           }
-        } else {
-          alert('login failed')
-        }
-      })
-      this.axios({
-        method: 'get',
-        url: `/user/login/oauth/param`
-      }).then((response) => {
-        if (response.status === 200) {
-          window.location.href = response.data.login_url + '?' + 'param'
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
           this.$router.push('/error')
         }
       })
-      this.$store.commit('login')
-      window.location.reload() // another solution: vuex + watch
     }
   }
 }

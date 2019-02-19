@@ -28,6 +28,14 @@
           <router-link :to="{ path: '/judge'}" class="sub-title">Judges</router-link>
         </el-col>
       </el-row>
+    <el-row class="row-half">
+        <el-col :span="5">
+          <i class="el-icon-menu"></i>
+        </el-col>
+        <el-col :span="15">
+          <router-link :to="{ path: '/course'}" class="sub-title">Course</router-link>
+        </el-col>
+      </el-row>
   </div>
 </template>
 <script>
@@ -35,7 +43,7 @@ export default {
   data () {
     return {
       msgWelcome: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.',
-      judge: 'You can manage all of your judges here:'
+      judge: 'You can manage all of your judges  and courses here:'
     }
   }
 }

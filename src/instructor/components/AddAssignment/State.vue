@@ -22,10 +22,12 @@
         </el-table-column>
           <el-table-column
             prop="release_date"
+            :formatter="timestampToTime1"
             label="RELEASE">
           </el-table-column>
           <el-table-column
             prop="deadline"
+            :formatter="timestampToTime2"
             label="DUE"
             >
           </el-table-column>
@@ -78,16 +80,32 @@ export default {
         this.$emit('changeState', this.childChange)
       }, 500)
     },
+    timestampToTime1 (row) {
+      let date = new Date(row.release_date * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
+    timestampToTime2 (row) {
+      let date = new Date(row.deadline * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
     deleteRow (index, rows) {
       this.$confirm('此操作将永久删除该作业, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
@@ -98,6 +116,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
               })
+              rows.splice(index, 1)
             })
             .catch((err) => {
               console.log(err)
@@ -120,8 +139,10 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
           } else {
-            this.$router.push('/403')
+            this.$router.push('/error')
           }
         })
         .catch((err) => {

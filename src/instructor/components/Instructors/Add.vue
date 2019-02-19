@@ -70,7 +70,6 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('pass1')
           if (this.getAuth) {
             this.axios({
               method: 'post',
@@ -79,6 +78,9 @@ export default {
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')
+                window.location.reload()
+              } else if (response.status === 401) {
+                this.$router.push('/unauthorized')
               } else {
                 this.$router.push('/error')
               }
