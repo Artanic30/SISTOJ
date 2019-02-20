@@ -36,7 +36,7 @@ const returnCourseAssignment = function () {
       'uid': Random.guid(),
       'course_uid': courseId,
       'name': Random.name(),
-      'descr_link': Random.url(),
+      'descr_link': 'http://www.baidu.com',
       'score': Random.natural(0, 5),
       'overall_score': Random.natural(10, 15),
       'release_date': Random.natural(1000000000, 9999999999),

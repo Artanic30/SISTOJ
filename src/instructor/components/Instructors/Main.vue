@@ -67,7 +67,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/instructor/${rows.uid}`
+            url: `/course/${this.getUid}/instructor/${rows.email}`
           }).then((response) => {
             this.$message({
               type: 'success',

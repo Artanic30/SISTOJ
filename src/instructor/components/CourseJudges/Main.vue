@@ -10,7 +10,30 @@
           </el-tooltip>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row class="row-half">
+        <el-col>
+          <el-card class="card-only">
+            <el-collapse :v-model="judgeInfo">
+              <el-collapse-item title="Host" name="1" prop="host">
+                <div>{{ judgeInfo.host}}</div>
+              </el-collapse-item>
+              <el-collapse-item title="Client cert" name="2" prop="client_cert">
+                <div>{{ judgeInfo.client_cert}}</div>
+              </el-collapse-item>
+              <el-collapse-item title="Cert CA" name="3" prop="cert_ca">
+                <div>{{ judgeInfo.cert_ca}}</div>
+              </el-collapse-item>
+              <el-collapse-item title="Client key" name="4" prop="client_key">
+                <div>{{ judgeInfo.client_key}}</div>
+              </el-collapse-item>
+              <el-collapse-item title="Max job" name="5" prop="max_job">
+                <div>{{ judgeInfo.max_job}}</div>
+              </el-collapse-item>
+            </el-collapse>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row class="row-half">
         <el-col>
           <el-table
           :data="judgeList"
@@ -19,6 +42,18 @@
           <el-table-column
             prop="uid"
             label="Uid">
+          </el-table-column>
+            <el-table-column
+            label="显示详情"
+            width="120">
+            <template slot-scope="scope">
+              <el-button
+                @click="showData(scope.row)"
+                type="text"
+                size="small">
+                显示详情
+              </el-button>
+            </template>
           </el-table-column>
             <el-table-column
             fixed="right"
@@ -46,8 +81,15 @@ export default {
   data () {
     return {
       judgeList: [{
-        uid: '3545'
+        uid: ''
       }],
+      judgeInfo: {
+        host: 'Please choose on of your judges',
+        client_cert: 'Please choose on of your judges',
+        cert_ca: 'Please choose on of your judges',
+        client_key: 'Please choose on of your judges',
+        max_job: 'Please choose on of your judges'
+      },
       childChange: false
     }
   },
@@ -61,7 +103,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/judge/${rows.uid}`
+            url: `/course/${this.getUid}/judge/${rows[index].uid}`
           })
             .then((response) => {
               this.$message({
@@ -92,6 +134,23 @@ export default {
         loading.close()
         this.$emit('changeState', this.childChange)
       }, 500)
+    },
+    showData (value) {
+      if (this.getAuth) {
+        this.axios.get(`/judge/${value.uid}`)
+          .then((response) => {
+            if (response.status === 200) {
+              this.judgeInfo = response.data
+            } else if (response.status === 401) {
+              this.$router.push('/unauthorized')
+            } else {
+              this.$router.push('/error')
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     }
   },
   created () {
@@ -135,5 +194,11 @@ export default {
   }
   .el-icon-plus {
     color: white!important;
+  }
+  .row-half {
+    margin-top: 2%;
+  }
+  .card-only {
+    padding: 0 10px 0 10px;
   }
 </style>

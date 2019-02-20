@@ -48,6 +48,12 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item>
+            <el-collapse v-model="assignmentInfo" @change="handleChange" class="collapse">
+              <el-collapse-item title="Existing Judges" name="1">
+              </el-collapse-item>
+            </el-collapse>
+          </el-form-item>
+          <el-form-item>
             <el-button type="primary" @click="submitForm('assignmentInfo')">提交</el-button>
             <el-button @click="resetForm('assignmentInfo')">重置</el-button>
           </el-form-item>
@@ -227,5 +233,8 @@ export default {
     background-color: #A40004;
     float: right;
     color: white;
+  }
+  .collapse {
+    width: 200px;
   }
 </style>

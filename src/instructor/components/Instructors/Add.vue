@@ -14,8 +14,8 @@
           <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="instructorInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Email:" prop="email">
-            <el-input type="email" v-model.number="instructorInfo.email"></el-input>
+          <el-form-item label="Email:" prop="enroll_email">
+            <el-input type="email" v-model.number="instructorInfo.enroll_email"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('instructorInfo')">提交</el-button>
@@ -42,13 +42,13 @@ export default {
     return {
       instructorInfo: {
         name: '',
-        email: '@shanghaitech.edu.cn'
+        enroll_email: '@shanghaitech.edu.cn'
       },
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
         ],
-        email: [
+        enroll_email: [
           { validator: check, trigger: 'blur' }
         ]
       }

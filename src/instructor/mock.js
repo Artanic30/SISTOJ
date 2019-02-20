@@ -4,6 +4,21 @@ Random.extend({
   season: function () {
     const seasons = ['Fall', 'Summer', 'Spring', 'Winter']
     return this.pick(seasons)
+  },
+  judges: function () {
+    let judgeList = []
+    for (let i = 0; i <= 4; i++) {
+      let judge = {
+        'uid': Random.guid(),
+        'host': Random.ip(),
+        'cert_ca': Random.name(),
+        'client_cert': Random.name(),
+        'client_key': Random.name(),
+        'max_job': Random.natural(1, 6)
+      }
+      judgeList.push(judge)
+    }
+    return judgeList
   }
 })
 
@@ -135,7 +150,21 @@ const login = function () {
   }
 }
 
+const returnJudgeInfo = function () {
+  return {
+    'uid': Random.guid(),
+    'host': Random.ip(),
+    'cert_ca': Random.name(),
+    'client_cert': Random.name(),
+    'client_key': Random.name(),
+    'max_job': Random.natural(1, 6)
+  }
+}
+
 // Mock.mock( url, post/get , 返回的数据);
+Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
+Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges)
+Mock.mock(/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
 Mock.mock(/instructor\/[-0-9a-zA-Z]+\/course/, 'post', 'success')
 Mock.mock(/user\/login\/oauth\/param/, 'get', login)
 Mock.mock(/user\/role/, 'get', returnRole)

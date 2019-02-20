@@ -20,7 +20,7 @@
             fixed
             prop="uid"
             label="Uid"
-            width="300px">
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="host"
@@ -104,7 +104,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/judge/${rows.uid}/`
+            url: `/judge/${rows[index].uid}/`
           }).then((response) => {
             this.$message({
               type: 'success',

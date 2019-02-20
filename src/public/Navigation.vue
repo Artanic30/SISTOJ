@@ -89,10 +89,10 @@ export default {
           this.$store.commit('changeRequest')
           if (response.data.is_student) {
             this.$store.commit('updateStudent', response.data.uid)
-            window.location.href = 'http://localhost:8080/#/' // todo: add url
+            window.location.href = 'https://' + location.hostname + '/#/' // todo: add url
           } else {
             this.$store.commit('updateInstructor', response.data.uid)
-            window.location.href = 'http://localhost:8080/instructor.html#/' // todo: add url
+            window.location.href = 'https://' + location.hostname + '/instructor.html#/'
           }
         } else if (response.status === 401) {
           this.$router.push('/unauthorized')

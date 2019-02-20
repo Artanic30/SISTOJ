@@ -36,7 +36,7 @@
         <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
-        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.uid }}">{{ a.name }}</router-link>
+        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.email }}">{{ a.name }}</router-link>
       </el-col>
     </el-row>
   </div>

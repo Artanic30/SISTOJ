@@ -114,6 +114,7 @@ export default {
   },
   methods: {
     getpath (scope) {
+      console.log(23)
       window.location.href = scope.row.descr_link
     },
     getstate (path) {
