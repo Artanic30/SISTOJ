@@ -10,11 +10,35 @@
           </el-tooltip>
         </el-col>
       </el-row>
+      <el-row class="row-only">
+        <el-col>
+          <el-card class="card-only">
+            <el-collapse :v-model="judgeInfo">
+              <el-collapse-item title="Host" name="1">
+                <span>{{ judgeInfo.host}}</span>
+              </el-collapse-item>
+              <el-collapse-item title="Client cert" name="2">
+                <span>{{ judgeInfo.client_cert}}</span>
+              </el-collapse-item>
+              <el-collapse-item title="Cert CA" name="3">
+                <span>{{ judgeInfo.cert_ca}}</span>
+              </el-collapse-item>
+              <el-collapse-item title="Client key" name="4">
+                <span>{{ judgeInfo.client_key}}</span>
+              </el-collapse-item>
+              <el-collapse-item title="Max job" name="5">
+                <span>{{ judgeInfo.max_job}}</span>
+              </el-collapse-item>
+            </el-collapse>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row class="row-quarter">
         <el-col>
           <el-table
           :data="coState"
-          style="width: 90%">
+          style="width: 90%"
+          @row-click="request">
           <el-table-column label="NAME" fix>
           <template slot-scope="scope" >
             <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
@@ -30,6 +54,19 @@
             :formatter="timestampToTime2"
             label="DUE"
             >
+          </el-table-column>
+            <el-table-column
+            label="Judges"
+            width="120">
+            <template slot-scope="scope">
+              <el-dropdown>
+                <span class="el-dropdown-link">click here<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="item in scope.row.Judges" v-bind:key="item.uid">{{ item }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -57,13 +94,29 @@ export default {
   data () {
     return {
       childChange: false,
+      store: [],
       coState: [{
         name: '',
         descr_link: '',
         release_date: '',
         deadline: '',
         uid: '',
-        course_uid: ''
+        course_uid: '',
+        Judges: []
+      }],
+      judgeInfo: {
+        host: 'Please choose on of your judges',
+        client_cert: 'Please choose on of your judges',
+        cert_ca: 'Please choose on of your judges',
+        client_key: 'Please choose on of your judges',
+        max_job: 'Please choose on of your judges'
+      },
+      judgeList: [{
+        host: '',
+        client_cert: '',
+        cert_ca: '',
+        client_key: '',
+        max_job: ''
       }]
     }
   },
@@ -109,7 +162,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows.uid}/`
+            url: `/course/${this.getUid}/assignment/${rows[index].uid}/`
           })
             .then((response) => {
               this.$message({
@@ -131,6 +184,25 @@ export default {
     },
     getpath (scope) {
       window.location.href = scope.row.descr_link
+    },
+    request (row) {
+      if (this.getAuth) {
+        console.log(row)
+        this.axios.get(`/course/${this.getUid}/assignment/${row.uid}/judge/`)
+          .then((response) => {
+            if (response.status === 200) {
+              row.judges = response.data
+            } else if (response.status === 401) {
+              this.$router.push('/unauthorized')
+            } else {
+              this.$router.push('/error')
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        console.log(row)
+      }
     }
   },
   created () {
@@ -139,6 +211,9 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
+            for (let i = 0; i < response.data.length; i++) {
+              this.coState[i].Judges = []
+            }
           } else if (response.status === 401) {
             this.$router.push('/unauthorized')
           } else {
@@ -148,6 +223,11 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    }
+  },
+  watch: {
+    coState: function name (newValue) {
+      this.coState = newValue
     }
   },
   computed: mapState({
@@ -176,5 +256,12 @@ export default {
   .name{
     border: none!important;
     padding: 0 0 2px 0!important;
+  }
+  .row-only {
+    margin-top: 2%;
+    margin-right: 10%;
+  }
+  .card-only {
+    padding: 0 10px 0 10px;
   }
 </style>
