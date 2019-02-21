@@ -37,8 +37,7 @@
         <el-col>
           <el-table
           :data="coState"
-          style="width: 90%"
-          @row-click="request">
+          style="width: 90%">
           <el-table-column label="NAME" fix>
           <template slot-scope="scope" >
             <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
@@ -59,13 +58,7 @@
             label="Judges"
             width="120">
             <template slot-scope="scope">
-              <el-dropdown>
-                <span class="el-dropdown-link">click here<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="item in scope.row.Judges" v-bind:key="item.uid">{{ item }}</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              <v-judge :passAssUID="scope.row.uid" v-on:reJudges="loadJudges"></v-judge>
             </template>
           </el-table-column>
           <el-table-column
@@ -89,21 +82,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import request from './AssJudges'
 
 export default {
   data () {
     return {
       childChange: false,
       store: [],
-      coState: [{
-        name: '',
-        descr_link: '',
-        release_date: '',
-        deadline: '',
-        uid: '',
-        course_uid: '',
-        Judges: []
-      }],
+      coState: [],
       judgeInfo: {
         host: 'Please choose on of your judges',
         client_cert: 'Please choose on of your judges',
@@ -185,26 +171,12 @@ export default {
     getpath (scope) {
       window.location.href = scope.row.descr_link
     },
-    request (row) {
-      if (this.getAuth) {
-        console.log(row)
-        this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${row.uid}/judge/`)
-          .then((response) => {
-            if (response.status === 200) {
-              // this.$set(, response.data)
-              row.judges = response.data
-            } else if (response.status === 401) {
-              this.$router.push('/unauthorized')
-            } else {
-              this.$router.push('/error')
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        console.log(row)
-      }
+    loadJudges (data) {
+      this.judgeInfo = data
     }
+  },
+  components: {
+    'v-judge': request
   },
   created () {
     if (this.getAuth) {
@@ -212,9 +184,7 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
-            for (let i = 0; i < response.data.length; i++) {
-              this.coState[i].Judges = []
-            }
+            // for (let i = 0; i < response.data.length; i++) {this.coState[i].Judges = []}
           } else if (response.status === 401) {
             this.$router.push('/unauthorized')
           } else {
