@@ -38,13 +38,14 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
   }),
   mounted () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.getID}/course/`
+        url: `${this.Api}/student/${this.getID}/course/`
       }).then((response) => {
         if (response.status === 200) {
           this.courseInfo = response.data

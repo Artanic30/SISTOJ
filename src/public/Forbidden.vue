@@ -31,22 +31,21 @@
 </template>
 <script>
 import na from './Navigation'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      img2: require('../assets/pagenotfound.jpg'),
-      historyUrl: ''
+      img2: require('../assets/pagenotfound.jpg')
     }
   },
   components: {
     'v-na': na
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    Api: state => state.api
+  }),
   methods: {
     logout () {
       this.$store.commit('logOut')

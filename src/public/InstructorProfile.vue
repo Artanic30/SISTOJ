@@ -41,22 +41,23 @@ export default {
     return {
       imgInstructor: require('../assets/instructor.jpg'),
       Info: {
-        uid: 'dlsakhdiagsfdcbhkagcu2',
-        name: '王大锤',
-        email: 'sjbdkjas@shanghaitech.edu.cn'
+        uid: '',
+        name: '',
+        email: ''
       }
     }
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
-    getCourseUid: state => state.coInfo.uid
+    getCourseUid: state => state.coInfo.uid,
+    Api: state => state.api
   }),
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}/`
+        url: `${this.Api}/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}/`
       }).then((response) => {
         if (response.status === 200) {
           this.Info = response.data

@@ -104,7 +104,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/judge/${rows[index].uid}/`
+            url: `${this.Api}/judge/${rows[index].uid}/`
           }).then((response) => {
             this.$message({
               type: 'success',
@@ -126,7 +126,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/judge/`)
+      this.axios.get(`${this.Api}/judge/`)
         .then((response) => {
           if (response.status === 200) {
             this.judges = response.data
@@ -143,7 +143,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

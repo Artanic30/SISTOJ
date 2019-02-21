@@ -33,7 +33,8 @@ const store = new Vuex.Store({
     baseInfo: {
       uid: '23123',
       isInstructor: false
-    }
+    },
+    api: ''
   },
   mutations: {
     updateCoInfo (state, value) {
@@ -58,6 +59,9 @@ const store = new Vuex.Store({
     },
     changeRequest (state) {
       state.isRequest = !state.isRequest
+    },
+    updateApi (state, value) {
+      state.api = value
     }
   },
   plugins: [vuexLocal.plugin]

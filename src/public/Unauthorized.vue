@@ -30,6 +30,7 @@
 </template>
 <script>
 import na from './Navigation'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -40,16 +41,15 @@ export default {
   components: {
     'v-na': na
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
-    }
-  },
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    Api: state => state.api
+  }),
   methods: {
     login () {
       this.axios({
         method: 'get',
-        url: `/user/login/oauth/param`
+        url: `${this.Api}/user/login/oauth/param`
       }).then((response) => {
         if (response.status === 200) {
           this.$store.commit('login')

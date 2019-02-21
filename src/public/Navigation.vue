@@ -50,6 +50,7 @@ export default {
     getUid: state => state.coInfo.uid,
     getCoInfo: state => state.coInfo,
     getReq: state => state.isRequest,
+    Api: state => state.api,
     profilePage () {
       return (this.$route.name === 'instrProfile') || (this.$route.name === 'profile')
     }
@@ -67,11 +68,12 @@ export default {
       if (!this.getAuth) {
         this.axios({
           method: 'get',
-          url: `/user/login/oauth/param`
+          url: `${this.Api}/user/login/oauth/param`
         }).then((response) => {
           if (response.status === 200) {
             this.$store.commit('login')
-            window.location.href = response.data.login_url
+            // window.location.href = response.data.login_url
+            window.location.reload()
           } else {
             this.$router.push('/error')
           }
@@ -80,16 +82,18 @@ export default {
     }
   },
   created () {
+    console.log(this.Api)
+    this.$store.commit('updateApi', location.hostname) // todo:add 'https://'
     if (this.getAuth && !this.getReq) {
       this.axios({
         method: 'get',
-        url: `/user/role`
+        url: `${location.hostname}/user/role` // todo:add 'https://'
       }).then((response) => {
         if (response.status === 200) {
           this.$store.commit('changeRequest')
           if (response.data.is_student) {
             this.$store.commit('updateStudent', response.data.uid)
-            window.location.href = 'https://' + location.hostname + '/#/' // todo: add url
+            window.location.href = 'https://' + location.hostname + '/#/'
           } else {
             this.$store.commit('updateInstructor', response.data.uid)
             window.location.href = 'https://' + location.hostname + '/instructor.html#/'

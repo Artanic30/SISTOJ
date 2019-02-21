@@ -162,7 +162,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows[index].uid}/`
+            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}/`
           })
             .then((response) => {
               this.$message({
@@ -188,9 +188,10 @@ export default {
     request (row) {
       if (this.getAuth) {
         console.log(row)
-        this.axios.get(`/course/${this.getUid}/assignment/${row.uid}/judge/`)
+        this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${row.uid}/judge/`)
           .then((response) => {
             if (response.status === 200) {
+              // this.$set(, response.data)
               row.judges = response.data
             } else if (response.status === 401) {
               this.$router.push('/unauthorized')
@@ -207,7 +208,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/assignment/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/assignment/`)
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
@@ -232,7 +233,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

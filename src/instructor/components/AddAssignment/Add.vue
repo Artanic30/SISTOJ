@@ -139,7 +139,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/assignment/`,
+              url: `${this.Api}/course/${this.getUid}/assignment/`,
               data: this.assignmentInfo
             }).then((response) => {
               if (response.status === 200) {
@@ -178,7 +178,7 @@ export default {
       this.steps += 1
       this.axios({
         method: 'post',
-        url: `/course/${this.getUid}/assignment/${this.reply.uid}`,
+        url: `${this.Api}/course/${this.getUid}/assignment/${this.reply.uid}`,
         data: {state: 2}
       })
       const loading = this.$loading({
@@ -196,7 +196,8 @@ export default {
   computed: mapState({
     getUid: state => state.coInfo.uid,
     getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

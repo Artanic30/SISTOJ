@@ -47,7 +47,7 @@ export default {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.getID}/course/${this.getUID}/assignment/${this.getAssUID}/history/`
+        url: `${this.Api}/student/${this.getID}/course/${this.getUID}/assignment/${this.getAssUID}/history/`
       }).then((response) => {
         if (response.status === 200) {
           this.submission = response.data
@@ -64,7 +64,8 @@ export default {
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     getUID: state => state.coInfo.uid,
-    getAssUID: state => state.assignments.uid
+    getAssUID: state => state.assignments.uid,
+    Api: state => state.api
   })
 }
 </script>

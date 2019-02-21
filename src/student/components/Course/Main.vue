@@ -114,7 +114,6 @@ export default {
   },
   methods: {
     getpath (scope) {
-      console.log(23)
       window.location.href = scope.row.descr_link
     },
     getstate (path) {
@@ -174,7 +173,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/student/${this.getID}/course/${this.getUid}/assignment/`)
+      this.axios.get(`${this.Api}/student/${this.getID}/course/${this.getUid}/assignment/`)
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
@@ -189,7 +188,7 @@ export default {
         })
     }
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/queue/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/queue/`)
         .then((response) => {
           if (response.status === 200) {
             this.pendingList = response.data
@@ -208,7 +207,8 @@ export default {
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     getUid: state => state.coInfo.uid,
-    getCoInfo: state => state.coInfo
+    getCoInfo: state => state.coInfo,
+    Api: state => state.api
   })
 }
 </script>

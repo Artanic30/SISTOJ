@@ -39,13 +39,14 @@ export default {
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
-    getState: state => state.baseInfo.isInstructor
+    getState: state => state.baseInfo.isInstructor,
+    Api: state => state.api
   }),
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/instructor/${this.getID}/course/`
+        url: `${this.Api}/instructor/${this.getID}/course/`
       }).then((response) => {
         if (response.status === 200) {
           this.courseInfo = response.data

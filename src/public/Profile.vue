@@ -78,14 +78,15 @@ export default {
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
-    getState: state => state.baseInfo.isInstructor
+    getState: state => state.baseInfo.isInstructor,
+    Api: state => state.api
   }),
   created () {
     if (this.getAuth) {
       if (this.getState) {
         this.axios({
           method: 'GET',
-          url: `/instructor/${this.getID}/`
+          url: `${this.Api}/instructor/${this.getID}/`
         }).then((response) => {
           if (response.status === 200) {
             this.Info = response.data
@@ -98,7 +99,7 @@ export default {
       } else {
         this.axios({
           method: 'GET',
-          url: `/student/${this.getID}/`
+          url: `${this.Api}/student/${this.getID}/`
         }).then((response) => {
           if (response.status === 200) {
             this.Info = response.data

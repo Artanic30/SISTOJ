@@ -34,6 +34,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -50,7 +52,7 @@ export default {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/course/${this.coInfo.uid}/instructor/`
+        url: `${this.Api}/course/${this.coInfo.uid}/instructor/`
       }).then((response) => {
         if (response.status === 200) {
           this.instructors = response.data
@@ -62,14 +64,11 @@ export default {
       })
     }
   },
-  computed: {
-    getCoInfo () {
-      return this.$store.state.coInfo
-    },
-    getAuth () {
-      return this.$store.state.isAuthorized
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getCoInfo: state => state.coInfo,
+    Api: state => state.api
+  })
 }
 </script>
 <style scoped>

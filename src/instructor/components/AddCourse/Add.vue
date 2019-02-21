@@ -105,7 +105,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/instructor/${this.getID}/course`,
+              url: `${this.Api}/instructor/${this.getID}/course`,
               data: this.courseInfo
             }).then((response) => {
               if (response.status === 200) {
@@ -134,7 +134,8 @@ export default {
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getUid: state => state.coInfo.uid,
-    getID: state => state.baseInfo.uid
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

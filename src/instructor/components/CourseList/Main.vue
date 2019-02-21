@@ -72,7 +72,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/students/${rows[index].uid}`
+            url: `${this.Api}/course/${this.getUid}/students/${rows[index].uid}`
           })
             .then((response) => {
               this.$message({
@@ -107,7 +107,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/students/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/students/`)
         .then((response) => {
           if (response.status === 200) {
             this.studentList = response.data
@@ -124,7 +124,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

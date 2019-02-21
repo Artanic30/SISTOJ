@@ -73,7 +73,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
         .then((response) => {
           if (response.status === 200) {
             this.scoreInfo = response.data
@@ -113,7 +113,8 @@ export default {
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getUid: state => state.coInfo.uid,
-    getAssUid: state => state.assignments.uid
+    getAssUid: state => state.assignments.uid,
+    Api: state => state.api
   })
 }
 </script>
