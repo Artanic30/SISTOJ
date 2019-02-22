@@ -21,24 +21,24 @@
         </el-table-column>
         <el-table-column
           prop="nickname"
-          label="nickname">
+          label="Nickname">
         </el-table-column>
         <el-table-column
           prop="score"
-          label="score">
+          label="Score">
         </el-table-column>
         <el-table-column
           prop="overall_score"
-          label="overall score">
+          label="Overall Score">
           </el-table-column>
           <el-table-column
           prop="submission_time"
           :formatter="timestampToTime"
-          label="submission time">
+          label="Submission Time">
         </el-table-column>
           <el-table-column
           prop="delta"
-          label="delta">
+          label="Delta">
         </el-table-column>
      </el-table>
       </el-col>
@@ -63,8 +63,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      scoreInfo: [{
-      }],
+      scoreInfo: [],
       loading: false,
       currentPage: 1,
       pagesize: 20,

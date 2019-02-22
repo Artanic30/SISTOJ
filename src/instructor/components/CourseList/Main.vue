@@ -21,7 +21,7 @@
             label="name">
           </el-table-column>
           <el-table-column
-            prop="email"
+            prop="enroll_email"
             label="email">
           </el-table-column>
           <el-table-column
@@ -56,7 +56,7 @@ export default {
       studentList: [{
         uid: '',
         name: '',
-        email: '',
+        enroll_email: '',
         student_id: ''
       }],
       childChange: false
@@ -72,7 +72,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/students/${rows[index].uid}`
+            url: `${this.Api}/course/${this.getUid}/students/${rows[index].enroll_email}`
           })
             .then((response) => {
               this.$message({

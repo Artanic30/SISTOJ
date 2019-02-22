@@ -72,8 +72,7 @@ export default {
         }).then((response) => {
           if (response.status === 200) {
             this.$store.commit('login')
-            // window.location.href = response.data.login_url
-            window.location.reload()
+            window.location.href = response.data.login_url
           } else {
             this.$router.push('/error')
           }
@@ -82,12 +81,11 @@ export default {
     }
   },
   created () {
-    console.log(this.Api)
-    this.$store.commit('updateApi', location.hostname) // todo:add 'https://'
+    this.$store.commit('updateApi', 'https://' + location.hostname) // todo:add 'https://'
     if (this.getAuth && !this.getReq) {
       this.axios({
         method: 'get',
-        url: `${location.hostname}/user/role` // todo:add 'https://'
+        url: `https://${location.hostname}/user/role` // todo:add 'https://'
       }).then((response) => {
         if (response.status === 200) {
           this.$store.commit('changeRequest')

@@ -1,12 +1,12 @@
 <template>
     <div>
     <el-row class="rows">
-      <el-col align="middle" v-if="!getState"><span class="title">{{ this.Info.nickname }}</span></el-col>
+      <el-col align="middle" v-if="!this.getState"><span class="title">{{ this.Info.nickname }}</span></el-col>
     </el-row>
     <el-row :gutter="2" class="rows">
       <el-col :span="24" align="middle">
         <el-card class="cards">
-          <img v-bind:src="imgInstructor" class="img-profile" v-if="getState">
+          <img v-bind:src="imgInstructor" class="img-profile" v-if="this.getState">
           <img v-bind:src="imgStudent" class="img-profile" v-else>
         </el-card>
       </el-col>
@@ -67,7 +67,7 @@ export default {
         name: '王大锤',
         nickname: 'hammerwang',
         email: 'sjbdkjas@shanghaitech.edu.cn',
-        student_id: 2018533110,
+        student_id: 0,
         rsa_pub_key: 'vakbhjgfbivgagkrhjafgiyrf'
       }
     }

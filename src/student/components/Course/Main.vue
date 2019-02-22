@@ -95,6 +95,7 @@ export default {
         uid: '',
         course_uid: '',
         name: '',
+        short_name: '',
         deadline: 0,
         release_date: 0,
         descr_link: '',

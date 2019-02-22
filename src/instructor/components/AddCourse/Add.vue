@@ -105,7 +105,7 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `${this.Api}/instructor/${this.getID}/course`,
+              url: `${this.Api}/instructor/${this.getID}/course/`,
               data: this.courseInfo
             }).then((response) => {
               if (response.status === 200) {

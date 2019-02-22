@@ -24,7 +24,7 @@
                 <span class="sub-title">Email:</span>
               </el-col>
               <el-col :span="9">
-                <el-input class="shortInput" v-model="Info.email" :disabled="true"></el-input>
+                <el-input class="shortInput" v-model="Info.enroll_email" :disabled="true"></el-input>
               </el-col>
             </el-row>
           </el-card>
@@ -43,7 +43,7 @@ export default {
       Info: {
         uid: '',
         name: '',
-        email: ''
+        enroll_email: ''
       }
     }
   },

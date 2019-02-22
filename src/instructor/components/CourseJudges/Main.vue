@@ -41,7 +41,7 @@
           stripe>
           <el-table-column
             prop="uid"
-            label="Uid">
+            label="UID">
           </el-table-column>
             <el-table-column
             label="显示详情"
@@ -135,9 +135,9 @@ export default {
         this.$emit('changeState', this.childChange)
       }, 500)
     },
-    showData (value) {
+    showData (judge) {
       if (this.getAuth) {
-        this.axios.get(`${this.Api}/judge/${value.uid}`)
+        this.axios.get(`${this.Api}/judge/${judge.uid}`)
           .then((response) => {
             if (response.status === 200) {
               this.judgeInfo = response.data
