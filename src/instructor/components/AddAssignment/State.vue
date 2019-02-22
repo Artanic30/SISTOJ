@@ -37,7 +37,8 @@
         <el-col>
           <el-table
           :data="coState"
-          style="width: 90%">
+          style="width: 90%"
+          class="table-only">
           <el-table-column label="NAME" fix>
           <template slot-scope="scope" >
             <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
@@ -184,7 +185,6 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
-            // for (let i = 0; i < response.data.length; i++) {this.coState[i].Judges = []}
           } else if (response.status === 401) {
             this.$router.push('/unauthorized')
           } else {
@@ -223,11 +223,11 @@ export default {
     background-color: #A40004;
   }
   .el-icon-plus {
-    color: white!important;
+    color: white !important;
   }
   .name{
-    border: none!important;
-    padding: 0 0 2px 0!important;
+    border: none !important;
+    padding: 0 0 2px 0 !important;
   }
   .row-only {
     margin-top: 2%;
@@ -235,5 +235,8 @@ export default {
   }
   .card-only {
     padding: 0 10px 0 10px;
+  }
+  .table-only {
+
   }
 </style>
