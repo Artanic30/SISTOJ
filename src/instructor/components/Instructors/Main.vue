@@ -33,7 +33,7 @@
                 @click.native.prevent="deleteRow(scope.$index, instructorList)"
                 type="text"
                 size="small">
-                移除学生
+                移除助教
               </el-button>
             </template>
           </el-table-column>
@@ -50,9 +50,9 @@ export default {
   data () {
     return {
       instructorList: [{
-        uid: '3545',
-        name: 'willion',
-        email: 'jbk@qq.com'
+        uid: '',
+        name: '',
+        email: ''
       }],
       childChange: false
     }
@@ -67,15 +67,14 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/instructor/${rows.uid}`,
-            data: rows.splice(index, 1)
-          })
-            .then((response) => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
+            url: `${this.Api}/course/${this.getUid}/instructor/${rows.email}`
+          }).then((response) => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
             })
+            rows.splice(index, 1)
+          })
             .catch((err) => {
               console.log(err)
             })
@@ -102,9 +101,15 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/instructor/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/instructor/`)
         .then((response) => {
-          this.instructorList = response.data
+          if (response.status === 200) {
+            this.instructorList = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -113,7 +118,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

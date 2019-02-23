@@ -9,10 +9,14 @@ import instructorProfile from '../../public/InstructorProfile'
 import judge from '../components/Judges/Index'
 import instructors from '../components/Instructors/Index'
 import judges from '../components/CourseJudges/Index'
+import unAuth from '../../public/Unauthorized'
+import store from '../../student/store'
+import forbidden from '../../public/Forbidden'
+import addcourse from '../components/AddCourse/Index'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -27,37 +31,60 @@ export default new Router({
     {
       path: '/home/course/:id',
       name: 'courses',
-      component: courses
+      component: courses,
+      meta: { requiresAuth: true }
     },
     {
       path: '/home/course/:id/assignment',
       name: 'instructorAddHomework',
-      component: addAssignment
+      component: addAssignment,
+      meta: { requiresAuth: true }
     },
     {
       path: '/profile',
       name: 'profile',
-      component: profile
+      component: profile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/instrProfile',
       name: 'instrProfile',
-      component: instructorProfile
+      component: instructorProfile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/judge',
       name: 'judge',
-      component: judge
+      component: judge,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/course',
+      name: 'addCourse',
+      component: addcourse,
+      meta: { requiresAuth: true }
     },
     {
       path: '/home/course/:id/instructor',
       name: 'instructor',
-      component: instructors
+      component: instructors,
+      meta: { requiresAuth: true }
     },
     {
       path: '/home/course/:id/judge',
       name: 'courseJudge',
-      component: judges
+      component: judges,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/error',
+      name: 'forbidden',
+      component: forbidden
+    },
+    {
+      path: '/unauthorized',
+      name: 'unauthorized',
+      component: unAuth
     },
     {
       path: '*',
@@ -66,3 +93,20 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const auth = store.state.isAuthorized
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!auth) {
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

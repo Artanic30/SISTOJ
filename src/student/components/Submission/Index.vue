@@ -25,12 +25,12 @@ export default {
       submission: [
       ],
       assignmentDetail: {
-        uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-        course_uid: 'b3b17c00f16511e8b3dfdca9047a0f14',
-        name: 'Homework1: Postfix Calculator',
-        deadline: 157000100,
-        release_date: 157000000,
-        descr_link: 'https://shtech.org/course/si100c/17f/hw/1',
+        uid: '',
+        course_uid: '',
+        name: '',
+        deadline: 0,
+        release_date: 0,
+        descr_link: '',
         score: 0,
         overall_score: 0
       }
@@ -47,12 +47,14 @@ export default {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.getID}/course/${this.getUID}/assignment/${this.getAssUID}/history/`
+        url: `${this.Api}/student/${this.getID}/course/${this.getUID}/assignment/${this.getAssUID}/history/`
       }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
+        if (response.status === 200) {
           this.submission = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
+        } else {
+          this.$router.push('/error')
         }
       })
     }
@@ -62,7 +64,8 @@ export default {
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     getUID: state => state.coInfo.uid,
-    getAssUID: state => state.assignments.uid
+    getAssUID: state => state.assignments.uid,
+    Api: state => state.api
   })
 }
 </script>

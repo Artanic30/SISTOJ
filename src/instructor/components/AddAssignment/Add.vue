@@ -12,7 +12,7 @@
       <el-col>
         <el-steps :active="steps" align-center>
           <el-step title="步骤 1" description="Please enter the information of new assignment"></el-step>
-          <el-step title="步骤 2" description="Please go to the given url and complete the detail collection"></el-step>
+          <el-step title="步骤 2" description="Please add judges for the assignment and you will be redirect to the next url "></el-step>
           <el-step title="步骤 3" description="Assignment successfully added"></el-step>
         </el-steps>
       </el-col>
@@ -20,9 +20,6 @@
     <el-row class="row-two" v-if="this.steps === 1">
       <el-col>
         <el-form :model="assignmentInfo" status-icon :rules="rules" ref="assignmentInfo" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="Uid:" prop="uid">
-            <el-input v-model="assignmentInfo.uid" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="Course uid:" prop="course_uid">
             <el-input v-model="assignmentInfo.course_uid" autocomplete="off"></el-input>
           </el-form-item>
@@ -61,11 +58,15 @@
       <el-col>
         <el-card>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="16"><span class="title-info">Please go to the following url and submit the detailed information of the assignment:</span></el-col>
+            <el-col :span="16"><span class="title-info">After you submit assignment judges, you will be redirect to the following url:</span></el-col>
           </el-row>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="20"><span class="title-info">{{ this.site }}</span></el-col>
-            <el-col :span="4" ><el-button @click="goOutside" class="button-out">前往</el-button></el-col>
+            <el-col :span="20"><span class="title-info">{{ this.reply.ssh_url_to_repo }}</span></el-col>
+          </el-row>
+          <el-row class="card-rows" type="flex" align="middle">
+            <el-col>
+              <v-transform :passReply="this.reply"></v-transform>
+            </el-col>
           </el-row>
         </el-card>
       </el-col>
@@ -75,6 +76,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import transform from './TransformJudge'
 
 export default {
   data () {
@@ -88,7 +90,6 @@ export default {
     }
     return {
       assignmentInfo: {
-        uid: '',
         course_uid: '',
         name: '',
         deadline: '',
@@ -117,7 +118,10 @@ export default {
         ]
       },
       steps: 1,
-      site: 'http://www.baidu.com'
+      reply: {
+        ssh_url_to_repo: '',
+        uid: ''
+      }
     }
   },
   methods: {
@@ -134,14 +138,17 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/assignment/${this.assignmentInfo.uid}`,
+              url: `${this.Api}/course/${this.getUid}/assignment/`,
               data: this.assignmentInfo
             }).then((response) => {
               if (response.status === 200) {
+                this.reply = response.data
                 loading.close()
                 alert('submit!')
-              } else if (response.status === 403) {
-                // todo: 跳转报错页面（%参数加上当前页面地址）
+              } else if (response.status === 401) {
+                this.$router.push('/unauthorized')
+              } else {
+                this.$router.push('/error')
               }
             })
           }
@@ -165,22 +172,29 @@ export default {
         loading.close()
         this.$emit('goBack')
       }, 500)
-    },
-    goOutside () {
-      window.location.href = this.site
     }
   },
   computed: mapState({
+    getUid: state => state.coInfo.uid,
     getAuth: state => state.isAuthorized,
-    getID: state => state.student_id
-  })
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
+  }),
+  watch: {
+    Judges: function (newValue) {
+      this.Judges = newValue
+    }
+  },
+  components: {
+    'v-transform': transform
+  }
 }
 </script>
 
 <style scoped>
-.card-rows {
-  margin: 2% 2% 2% 2%;
-}
+  .card-rows {
+    margin: 2% 2% 2% 2%;
+  }
   .row-one {
     margin-top: 5%;
     margin-left: 5%
@@ -204,10 +218,5 @@ export default {
   }
   .title-info {
     font-size: 20px;
-  }
-  .button-out {
-    background-color: #A40004;
-    float: right;
-    color: white;
   }
 </style>

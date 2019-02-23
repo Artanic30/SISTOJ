@@ -4,20 +4,23 @@
       <el-main style="height: 100%">
         <el-row type="flex" justify="center" align="middle">
           <el-col style="width: auto">
-            <span class="title-number">4 0 4</span>
+            <span class="title-number">4 0 3</span>
           </el-col>
         </el-row>
         <el-row type="flex" justify="center" align="middle">
           <el-col :span="10">
             <el-card class="cards">
               <el-row type="flex" justify="space-around" align="middle">
-                <span class="words">Page was gone.....</span>
+                <el-col class="space-center">
+                  <span class="words">Forbidden request detected or unknown error happens, please logout and login again!</span>
+                </el-col>
               </el-row>
               <el-row type="flex" justify="space-around" align="middle">
                 <img v-bind:src="img2" class="img">
               </el-row>
               <el-row type="flex" justify="space-around" align="middle">
-                <router-link class="link" :to="{ path: '/home'}">Dashboard</router-link>
+                <el-button @click="logout"><span class="title-button">Logout</span></el-button>
+                <el-button @click="login"><span class="title-button">Login</span></el-button>
               </el-row>
             </el-card>
           </el-col>
@@ -28,21 +31,39 @@
 </template>
 <script>
 import na from './Navigation'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      img: require('../assets/logo.png'),
-      img2: require('../assets/pagenotfound.jpg'),
-      historyUrl: ''
+      img2: require('../assets/pagenotfound.jpg')
     }
   },
   components: {
     'v-na': na
   },
-  computed: {
-    getAuth () {
-      return this.$store.state.isAuthorized
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    Api: state => state.api
+  }),
+  methods: {
+    logout () {
+      this.$store.commit('logOut')
+      this.$store.commit('changeRequest')
+      this.$router.push('/')
+    },
+    login () {
+      this.axios({
+        method: 'get',
+        url: `/user/login/oauth/param`
+      }).then((response) => {
+        if (response.status === 200) {
+          this.$store.commit('login')
+          window.location.href = response.data.login_url
+        } else {
+          this.$router.push('/error')
+        }
+      })
     }
   }
 }
@@ -53,22 +74,10 @@ export default {
   }
 
   .words {
-    color: #b82e3b;
-    font-size: 50px;
+    color: black;
+    font-size: 40px;
     flex-wrap: nowrap !important;
   }
-
-  .link {
-    text-decoration: none;
-    font-size: 30px;
-    color: #363636;
-  }
-
-  .link:hover {
-    font-size: 30px;
-    color: #b82e3b;
-  }
-
   .cards {
     padding: 4rem 0;
   }
@@ -76,6 +85,12 @@ export default {
   .img {
     padding: 3rem 0;
     height: 200px !important;
+  }
+  .space-center {
+    margin: 0 5% 0 10%;
+  }
+  .title-button {
+    font-size: 25px;
   }
   .title-number {
     color: #b82e3b;

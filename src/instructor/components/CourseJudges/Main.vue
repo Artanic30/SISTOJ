@@ -10,7 +10,7 @@
           </el-tooltip>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row class="row-half">
         <el-col>
           <el-table
           :data="judgeList"
@@ -18,7 +18,15 @@
           stripe>
           <el-table-column
             prop="uid"
-            label="Uid">
+            label="UID">
+          </el-table-column>
+          <el-table-column
+            prop="host"
+            label="Host">
+          </el-table-column>
+          <el-table-column
+            prop="max_job"
+            label="Max Job">
           </el-table-column>
             <el-table-column
             fixed="right"
@@ -45,9 +53,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      judgeList: [{
-        uid: '3545'
-      }],
+      judgeList: [],
       childChange: false
     }
   },
@@ -61,14 +67,14 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/judge/${rows.uid}`,
-            data: rows.splice(index, 1)
+            url: `${this.Api}/course/${this.getUid}/judge/${rows[index].uid}`
           })
             .then((response) => {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               })
+              rows.splice(index, 1)
             })
             .catch((err) => {
               console.log(err)
@@ -96,9 +102,30 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/judge/`)
+      let that = this
+      this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
         .then((response) => {
-          this.judgeList = response.data
+          if (response.status === 200) {
+            for (let i = 0; i < response.data.length; i++) {
+              that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
+                .then((response2) => {
+                  if (response2.status === 200) {
+                    that.judgeList.push(response2.data)
+                  } else if (response2.status === 401) {
+                    that.$router.push('/unauthorized')
+                  } else {
+                    that.$router.push('/error')
+                  }
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+            }
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -107,7 +134,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>
@@ -129,5 +157,11 @@ export default {
   }
   .el-icon-plus {
     color: white!important;
+  }
+  .row-half {
+    margin-top: 2%;
+  }
+  .card-only {
+    padding: 0 10px 0 10px;
   }
 </style>

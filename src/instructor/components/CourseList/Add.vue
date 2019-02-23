@@ -14,11 +14,8 @@
           <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="studentInfo.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="studentInfo.uid" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Email:" prop="email">
-            <el-input type="email" v-model.number="studentInfo.email"></el-input>
+          <el-form-item label="Email:" prop="enroll_email">
+            <el-input type="email" v-model.number="studentInfo.enroll_email"></el-input>
           </el-form-item>
           <el-form-item label="Student ID:" prop="student_id">
             <el-input v-model.number="studentInfo.student_id"></el-input>
@@ -58,18 +55,14 @@ export default {
     return {
       studentInfo: {
         name: '',
-        uid: '',
-        email: '@shanghaitech.edu.cn',
+        enroll_email: '@shanghaitech.edu.cn',
         student_id: ''
       },
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
         ],
-        uid: [
-          { validator: check, trigger: 'blur' }
-        ],
-        email: [
+        enroll_email: [
           { validator: checkEmail, trigger: 'blur' }
         ],
         student_id: [
@@ -97,13 +90,16 @@ export default {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `/course/${this.getUid}/students/${this.studentInfo.uid}`,
+              url: `${this.Api}/course/${this.getUid}/students/`,
               data: this.studentInfo
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')
-              } else if (response.status === 403) {
-                // todo: 跳转报错页面（%参数加上当前页面地址）
+                window.location.reload()
+              } else if (response.status === 401) {
+                this.$router.push('/unauthorized')
+              } else {
+                this.$router.push('/error')
               }
             })
           }
@@ -119,7 +115,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

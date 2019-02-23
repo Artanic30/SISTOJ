@@ -53,8 +53,8 @@ export default {
     margin-top: 5%;
   }
   .title-instr {
-    font-size: 150%;
-    margin-top: 30px;
+    font-size: 30px;
+    margin-top: 5%;
   }
   .title-msg {
     margin-top: 5%;

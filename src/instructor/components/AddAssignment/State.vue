@@ -10,11 +10,26 @@
           </el-tooltip>
         </el-col>
       </el-row>
+      <el-row class="row-only">
+        <el-col>
+          <el-card class="card-only">
+            <el-collapse :v-model="judgeInfo">
+              <el-collapse-item title="Host" name="1">
+                <span>{{ judgeInfo.host}}</span>
+              </el-collapse-item>
+              <el-collapse-item title="Max job" name="2">
+                <span>{{ judgeInfo.max_job}}</span>
+              </el-collapse-item>
+            </el-collapse>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row class="row-quarter">
         <el-col>
           <el-table
           :data="coState"
-          style="width: 90%">
+          style="width: 90%"
+          class="table-only">
           <el-table-column label="NAME" fix>
           <template slot-scope="scope" >
             <el-button @click="getpath(scope)" class="name">{{ scope.row.name }}</el-button>
@@ -22,12 +37,21 @@
         </el-table-column>
           <el-table-column
             prop="release_date"
+            :formatter="timestampToTime1"
             label="RELEASE">
           </el-table-column>
           <el-table-column
             prop="deadline"
+            :formatter="timestampToTime2"
             label="DUE"
             >
+          </el-table-column>
+            <el-table-column
+            label="Judges"
+            width="120">
+            <template slot-scope="scope">
+              <v-judge :passAssUID="scope.row.uid" v-on:reJudges="loadJudges"></v-judge>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -50,18 +74,24 @@
 
 <script>
 import { mapState } from 'vuex'
+import request from './AssJudges'
 
 export default {
   data () {
     return {
       childChange: false,
-      coState: [{
-        name: '',
-        descr_link: '',
-        release_date: '',
-        deadline: '',
-        uid: '',
-        course_uid: ''
+      store: [],
+      coState: [],
+      judgeInfo: {
+        host: 'Please choose on of your judges',
+        max_job: 'Please choose on of your judges'
+      },
+      judgeList: [{
+        host: '',
+        client_cert: '',
+        cert_ca: '',
+        client_key: '',
+        max_job: ''
       }]
     }
   },
@@ -78,27 +108,44 @@ export default {
         this.$emit('changeState', this.childChange)
       }, 500)
     },
+    timestampToTime1 (row) {
+      let date = new Date(row.release_date * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
+    timestampToTime2 (row) {
+      let date = new Date(row.deadline * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
     deleteRow (index, rows) {
       this.$confirm('此操作将永久删除该作业, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/assignment/${rows.uid}/`,
-            data: rows.splice(index, 1) // todo: Is data required?
+            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}`
           })
             .then((response) => {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               })
+              rows.splice(index, 1)
+              window.location.reload() // todo: bug here
             })
             .catch((err) => {
               console.log(err)
@@ -113,16 +160,24 @@ export default {
     },
     getpath (scope) {
       window.location.href = scope.row.descr_link
+    },
+    loadJudges (data) {
+      this.judgeInfo = data
     }
+  },
+  components: {
+    'v-judge': request
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/assignment/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/assignment/`)
         .then((response) => {
           if (response.status === 200) {
             this.coState = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
           } else {
-            this.$router.push('/403')
+            this.$router.push('/error')
           }
         })
         .catch((err) => {
@@ -130,9 +185,15 @@ export default {
         })
     }
   },
+  watch: {
+    coState: function name (newValue) {
+      this.coState = newValue
+    }
+  },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>
@@ -151,10 +212,20 @@ export default {
     background-color: #A40004;
   }
   .el-icon-plus {
-    color: white!important;
+    color: white !important;
   }
   .name{
-    border: none!important;
-    padding: 0 0 2px 0!important;
+    border: none !important;
+    padding: 0 0 2px 0 !important;
+  }
+  .row-only {
+    margin-top: 2%;
+    margin-right: 10%;
+  }
+  .card-only {
+    padding: 0 10px 0 10px;
+  }
+  .table-only {
+
   }
 </style>

@@ -20,10 +20,10 @@
     </el-row>
     <el-row class="row-half">
       <el-col :span="5">
-        <i class="el-icon-star-on"></i>
+        <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="15">
-        <router-link :to="{ path: `/home/course/${this.coInfo.uid}` }" class="sub-title">Course</router-link>
+        <router-link :to="{ path: `/home/course/${this.coInfo.uid}` }" class="sub-title">Assignment</router-link>
       </el-col>
     </el-row>
     <el-row class="row-half">
@@ -36,12 +36,14 @@
         <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
-        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.uid }}">{{ a.name }}</router-link>
+        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.enroll_email }}">{{ a.name }}</router-link>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -50,7 +52,7 @@ export default {
       instructors: [{
         uid: '',
         name: '',
-        email: ''
+        enroll_email: ''
       }]
     }
   },
@@ -59,25 +61,23 @@ export default {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/course/${this.coInfo.uid}/instructor/`
+        url: `${this.Api}/course/${this.coInfo.uid}/instructor/`
       }).then((response) => {
         if (response.status === 200) {
           this.instructors = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
-          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
-          this.$router.push({path: '/403', query: { path: this.$route.path }})
+          this.$router.push('/error')
         }
       })
     }
   },
-  computed: {
-    getCoInfo () {
-      return this.$store.state.coInfo
-    },
-    getAuth () {
-      return this.$store.state.isAuthorized
-    }
-  }
+  computed: mapState({
+    getAuth: state => state.isAuthorized,
+    getCoInfo: state => state.coInfo,
+    Api: state => state.api
+  })
 }
 </script>
 <style scoped>
@@ -106,9 +106,6 @@ export default {
     margin-top: 10%;
   }
   .el-icon-menu {
-    margin-left: 10px!important;
-  }
-  .el-icon-star-on {
     margin-left: 10px!important;
   }
   .row-quarter {

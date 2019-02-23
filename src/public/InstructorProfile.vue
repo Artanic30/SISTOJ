@@ -24,7 +24,7 @@
                 <span class="sub-title">Email:</span>
               </el-col>
               <el-col :span="9">
-                <el-input class="shortInput" v-model="Info.email" :disabled="true"></el-input>
+                <el-input class="shortInput" v-model="Info.enroll_email" :disabled="true"></el-input>
               </el-col>
             </el-row>
           </el-card>
@@ -41,28 +41,30 @@ export default {
     return {
       imgInstructor: require('../assets/instructor.jpg'),
       Info: {
-        uid: 'dlsakhdiagsfdcbhkagcu2',
-        name: '王大锤',
-        email: 'sjbdkjas@shanghaitech.edu.cn'
+        uid: '',
+        name: '',
+        enroll_email: ''
       }
     }
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
-    getCourseUid: state => state.coInfo.uid
+    getCourseUid: state => state.coInfo.uid,
+    Api: state => state.api
   }),
   created () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}/`
+        url: `${this.Api}/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}/`
       }).then((response) => {
         if (response.status === 200) {
           this.Info = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
         } else {
-          // （todo: 跳转报错页面（%参数加上当前页面地址)） 未测试
-          this.$router.push({path: '/403', query: { path: this.$route.path }})
+          this.$router.push('/error')
         }
       })
     }

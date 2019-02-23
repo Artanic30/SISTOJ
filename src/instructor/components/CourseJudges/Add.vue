@@ -10,9 +10,16 @@
     </el-row>
     <el-row class="row-quarter">
       <el-col>
-        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
+        <el-form :model="judgeInfo.uid" status-icon ref="judgeInfo">
           <el-form-item label="Uid:" prop="uid">
-            <el-input type="text" v-model="judgeInfo.uid" autocomplete="off"></el-input>
+            <el-select v-model="resultUID" placeholder="请选择服务器">
+              <el-option
+                v-for="item in judgeInfo"
+                :key="item.uid"
+                :label="item.host"
+                :value="item.uid">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('judgeInfo')">提交</el-button>
@@ -28,32 +35,13 @@ import { mapState } from 'vuex'
 
 export default {
   data () {
-    var check = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('不能为空'))
-      }
-      setTimeout(() => {
-        callback()
-      }, 500)
-    }
     return {
-      judgeInfo: {
-        uid: ''
-      },
-      rules: {
-        name: [
-          {validator: check, trigger: 'blur'}
-        ],
-        uid: [
-          { validator: check, trigger: 'blur' }
-        ],
-        email: [
-          { validator: check, trigger: 'blur' }
-        ],
-        student_id: [
-          { validator: check, trigger: 'blur' }
-        ]
-      }
+      judgeInfo: [{
+        uid: '',
+        host: '',
+        max_job: 0
+      }],
+      resultUID: ''
     }
   },
   methods: {
@@ -69,35 +57,50 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.getAuth) {
-            this.axios({
-              method: 'post',
-              url: `/course/${this.getUid}/judge/${this.judgeInfo.uid}`,
-              data: this.judgeInfo
-            }).then((response) => {
-              if (response.status === 200) {
-                alert('submit!')
-              } else if (response.status === 403) {
-                // todo: 跳转报错页面（%参数加上当前页面地址）
-              }
-            })
+    submitForm () {
+      console.log([{uid: this.resultUID}])
+      if (this.getAuth) {
+        this.axios({
+          method: 'post',
+          url: `${this.Api}/course/${this.getUid}/judge/`,
+          data: [{uid: this.resultUID}]
+        }).then((response) => {
+          if (response.status === 200) {
+            alert('submit!')
+            window.location.reload()
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
           }
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+        })
+      }
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
     }
   },
+  created () {
+    if (this.getAuth) {
+      this.axios.get(`${this.Api}/judge/`)
+        .then((response) => {
+          if (response.status === 200) {
+            this.judgeInfo = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>
@@ -121,5 +124,8 @@ export default {
   }
   .title-back {
     color: white;
+  }
+  .title-sub {
+    font-size: 20px;
   }
 </style>

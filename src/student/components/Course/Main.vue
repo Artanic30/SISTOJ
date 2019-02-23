@@ -37,10 +37,12 @@
         </el-table-column>
         <el-table-column
           prop="release_date"
+          :formatter="timestampToTime1"
           label="RELEASE">
         </el-table-column>
         <el-table-column
           prop="deadline"
+          :formatter="timestampToTime2"
           label="DUE(CST"
           width="180"
           >
@@ -50,7 +52,7 @@
     </el-row>
     <el-row style="margin-top: 10%">
       <el-col>
-        <el-tooltip class="item" effect="dark" content="Those who disrespect rules and cause harm to system will be on the list" placement="left">
+        <el-tooltip class="item" effect="dark" content="A list for those who made some mistakes" placement="left">
           <el-button size="mini" @click="showPending" class="button-shot">Show shot list</el-button>
         </el-tooltip>
       </el-col>
@@ -71,6 +73,7 @@
         </el-table-column>
         <el-table-column
           prop="submission_time"
+          :formatter="timestampToTime3"
           label="submission time">
         </el-table-column>
         <el-table-column
@@ -92,6 +95,7 @@ export default {
         uid: '',
         course_uid: '',
         name: '',
+        short_name: '',
         deadline: 0,
         release_date: 0,
         descr_link: '',
@@ -133,6 +137,36 @@ export default {
     },
     getScore (row) {
       return row.score + '/' + row.overall_score
+    },
+    timestampToTime3 (row) {
+      let date = new Date(row.submission_time * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
+    timestampToTime1 (row) {
+      let date = new Date(row.release_date * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
+    },
+    timestampToTime2 (row) {
+      let date = new Date(row.deadline * 1000)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
     }
   },
   mounted () {
@@ -140,18 +174,30 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/student/${this.getID}/course/${this.getUid}/assignment/`)
+      this.axios.get(`${this.Api}/student/${this.getID}/course/${this.getUid}/assignment/`)
         .then((response) => {
-          this.coState = response.data
+          if (response.status === 200) {
+            this.coState = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
         })
     }
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/queue/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/queue/`)
         .then((response) => {
-          this.pendingList = response.data
+          if (response.status === 200) {
+            this.pendingList = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -162,7 +208,8 @@ export default {
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     getUid: state => state.coInfo.uid,
-    getCoInfo: state => state.coInfo
+    getCoInfo: state => state.coInfo,
+    Api: state => state.api
   })
 }
 </script>

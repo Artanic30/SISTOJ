@@ -1,13 +1,24 @@
 const Mock = require('mockjs')
 const Random = Mock.Random
 Random.extend({
-  status: function () {
-    const status = ['Failed', 'Ongoing', '59/100']
-    return this.pick(status)
-  },
   season: function () {
     const seasons = ['Fall', 'Summer', 'Spring', 'Winter']
     return this.pick(seasons)
+  },
+  judges: function () {
+    let judgeList = []
+    for (let i = 0; i <= 4; i++) {
+      let judge = {
+        'uid': Random.guid(),
+        'host': Random.ip(),
+        'cert_ca': Random.name(),
+        'client_cert': Random.name(),
+        'client_key': Random.name(),
+        'max_job': Random.natural(1, 6)
+      }
+      judgeList.push(judge)
+    }
+    return judgeList
   }
 })
 
@@ -26,24 +37,6 @@ const returnStudentCourseList = function () {
     courses.push(course)
   }
   return courses
-}
-
-const returnCourseAssignment = function () {
-  let assignments = []
-  let courseId = Random.guid()
-  for (let i = 0; i <= 3; i++) {
-    let assignment = {
-      'uid': Random.guid(),
-      'course_uid': courseId,
-      'name': Random.name(),
-      'descr_link': Random.url(),
-      'state': Random.status(),
-      'release': Random.date(),
-      'due': Random.date()
-    }
-    assignments.push(assignment)
-  }
-  return assignments
 }
 
 const returnInstructors = function () {
@@ -66,8 +59,8 @@ const returnAssignments = function () {
       'uid': Random.guid(),
       'course_uid': Random.guid(),
       'name': Random.name(),
-      'deadline': Random.date(),
-      'release_date': Random.date(),
+      'deadline': Random.natural(1000000000, 9999999999),
+      'release_date': Random.natural(1000000000, 9999999999),
       'descr_link': Random.url()
     }
     list.push(scores)
@@ -81,7 +74,7 @@ const returnStudentList = function () {
     let list = {
       'name': Random.name(),
       'uid': Random.guid(),
-      'email': Random.email(),
+      'enroll_email': Random.email(),
       'student_id': Random.natural(2018000000, 2018999999)
     }
     studentList.push(list)
@@ -93,7 +86,7 @@ const returnInstructor = function () {
   return {
     'uid': Random.guid(),
     'name': Random.name(),
-    'email': Random.email()
+    'enroll_email': Random.email()
   }
 }
 
@@ -105,11 +98,10 @@ const returnAddAssignment = function () {
 
 const returnJudges = function () {
   let judgeList = []
-  for (let i = 0; i <= 12; i++) {
+  for (let i = 0; i <= 4; i++) {
     let judge = {
       'uid': Random.guid(),
       'host': Random.ip(),
-      'cert': Random.name(),
       'max_job': Random.natural(1, 6)
     }
     judgeList.push(judge)
@@ -123,7 +115,7 @@ const returnInstructorList = function () {
     let list = {
       'name': Random.name(),
       'uid': Random.guid(),
-      'email': Random.email()
+      'enroll_email': Random.email()
     }
     List.push(list)
   }
@@ -132,7 +124,7 @@ const returnInstructorList = function () {
 
 const returnCourseJudge = function () {
   let List = []
-  for (let i = 0; i <= 6; i++) {
+  for (let i = 0; i <= 3; i++) {
     let list = {
       'uid': Random.guid()
     }
@@ -140,18 +132,40 @@ const returnCourseJudge = function () {
   }
   return List
 }
+
+const returnRole = function () {
+  return {
+    'uid': Random.guid(),
+    'is_student': Random.boolean(),
+    'is_instructor': Random.boolean()
+  }
+}
+
+const returnJudgeInfo = function () {
+  return {
+    'uid': Random.guid(),
+    'host': Random.ip(),
+    'max_job': Random.natural(1, 6)
+  }
+}
+
 // Mock.mock( url, post/get , 返回的数据);
-Mock.mock(/course\/[-0-9a-zA-Z]+\/students\/[-0-9a-zA-Z]+/, 'post', 'success')
-Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'post', 'success')
-Mock.mock(/course\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'post', 'success')
-Mock.mock(/course\/[-0-9a-zA-Z]+\/judge/, 'get', returnCourseJudge())
-Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+/, 'post', 'success')
-Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructorList())
-Mock.mock(/course\/[-0-9a-zA-Z]+\/students/, 'get', returnStudentList())
-Mock.mock(/judge/, 'get', returnJudges)
-Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+/, 'post', returnAddAssignment)
-Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
-Mock.mock(/instructor\/[0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
-Mock.mock(/course\/[-0-9a-zA-Z]+\/assignment/, 'get', returnAssignments())
-Mock.mock(/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructors)
-Mock.mock(/course\/[a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'post', 'success')
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges)
+Mock.mock(/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
+Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+\/course/, 'post', 'success')
+Mock.mock(/[-0-9a-zA-Z]+\/user\/role/, 'get', returnRole)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/students/, 'post', 'success')
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'post', 'success')
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'post', 'success')
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge/, 'get', returnCourseJudge())
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment/, 'post', {ssh_url_to_repo: Random.url(), uid: Random.guid()})
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructorList())
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/students/, 'get', returnStudentList())
+Mock.mock(/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+/, 'post', returnAddAssignment)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
+Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment/, 'get', returnAssignments())
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructors)

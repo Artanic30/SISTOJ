@@ -27,7 +27,24 @@ import car from '../../../public/Carousel'
 export default {
   data () {
     return {
-      courseInfo: {}
+      courseInfo: [{
+        uid: '',
+        name: '',
+        code: '',
+        semester: 'fall',
+        year: 0,
+        homepage: '',
+        instructor: []
+      },
+      {
+        uid: '',
+        name: '',
+        code: '',
+        semester: 'fall',
+        year: 0,
+        homepage: '',
+        instructor: []
+      }]
     }
   },
   components: {
@@ -38,18 +55,21 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
   }),
   mounted () {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `/student/${this.getID}/course/`
+        url: `${this.Api}/student/${this.getID}/course/`
       }).then((response) => {
-        if (response.status === 403) {
-          // todo: 跳转报错页面（%参数加上当前页面地址）
-        } else {
+        if (response.status === 200) {
           this.courseInfo = response.data
+        } else if (response.status === 401) {
+          this.$router.push('/unauthorized')
+        } else {
+          this.$router.push('/error')
         }
       })
     }

@@ -15,7 +15,7 @@
         <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
-        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}` }" class="sub-title">CourseList</router-link>
+        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}` }" class="sub-title">Assignment</router-link>
       </el-col>
     </el-row>
     <el-row class="row-three-forth">

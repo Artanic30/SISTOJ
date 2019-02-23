@@ -21,7 +21,7 @@
             label="name">
           </el-table-column>
           <el-table-column
-            prop="email"
+            prop="enroll_email"
             label="email">
           </el-table-column>
           <el-table-column
@@ -54,10 +54,10 @@ export default {
   data () {
     return {
       studentList: [{
-        uid: '3545',
-        name: 'willion',
-        email: 'jbk@qq.com',
-        student_id: '23565765875'
+        uid: '',
+        name: '',
+        enroll_email: '',
+        student_id: ''
       }],
       childChange: false
     }
@@ -72,14 +72,14 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `/course/${this.getUid}/students/${rows.uid}`,
-            data: rows.splice(index, 1) // todo: Is data required?
+            url: `${this.Api}/course/${this.getUid}/students/${rows[index].enroll_email}`
           })
             .then((response) => {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               })
+              rows.splice(index, 1)
             })
             .catch((err) => {
               console.log(err)
@@ -107,9 +107,15 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`/course/${this.getUid}/students/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/student/`)
         .then((response) => {
-          this.studentList = response.data
+          if (response.status === 200) {
+            this.studentList = response.data
+          } else if (response.status === 401) {
+            this.$router.push('/unauthorized')
+          } else {
+            this.$router.push('/error')
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -118,7 +124,8 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid
+    getUid: state => state.coInfo.uid,
+    Api: state => state.api
   })
 }
 </script>

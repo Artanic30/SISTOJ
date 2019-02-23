@@ -7,10 +7,12 @@ import submission from '../components/Submission/Index'
 import pageNotFound from '../../public/PageNotFound'
 import profile from '../../public/Profile'
 import instructorProfile from '../../public/InstructorProfile'
-
+import unAuth from '../../public/Unauthorized'
+import store from '../store'
+import forbidden from '../../public/Forbidden'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -20,12 +22,14 @@ export default new Router({
     {
       path: '/home/course/:id/scoreboard/:ids',
       name: 'score',
-      component: score
+      component: score,
+      meta: { requiresAuth: true }
     },
     {
       path: '/home/course/:id/submission/:ids',
       name: 'submissionHistory',
-      component: submission
+      component: submission,
+      meta: { requiresAuth: true }
     },
     {
       path: '/home',
@@ -35,17 +39,30 @@ export default new Router({
     {
       path: '/home/course/:id',
       name: 'course',
-      component: course
+      component: course,
+      meta: { requiresAuth: true }
     },
     {
       path: '/profile',
       name: 'profile',
-      component: profile
+      component: profile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/instrProfile',
       name: 'instrProfile',
-      component: instructorProfile
+      component: instructorProfile,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/error',
+      name: 'forbidden',
+      component: forbidden
+    },
+    {
+      path: '/unauthorized',
+      name: 'unauthorized',
+      component: unAuth
     },
     {
       path: '*',
@@ -54,3 +71,20 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const auth = store.state.isAuthorized
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!auth) {
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
