@@ -17,16 +17,7 @@
               <el-collapse-item title="Host" name="1">
                 <span>{{ judgeInfo.host}}</span>
               </el-collapse-item>
-              <el-collapse-item title="Client cert" name="2">
-                <span>{{ judgeInfo.client_cert}}</span>
-              </el-collapse-item>
-              <el-collapse-item title="Cert CA" name="3">
-                <span>{{ judgeInfo.cert_ca}}</span>
-              </el-collapse-item>
-              <el-collapse-item title="Client key" name="4">
-                <span>{{ judgeInfo.client_key}}</span>
-              </el-collapse-item>
-              <el-collapse-item title="Max job" name="5">
+              <el-collapse-item title="Max job" name="2">
                 <span>{{ judgeInfo.max_job}}</span>
               </el-collapse-item>
             </el-collapse>
@@ -93,9 +84,6 @@ export default {
       coState: [],
       judgeInfo: {
         host: 'Please choose on of your judges',
-        client_cert: 'Please choose on of your judges',
-        cert_ca: 'Please choose on of your judges',
-        client_key: 'Please choose on of your judges',
         max_job: 'Please choose on of your judges'
       },
       judgeList: [{
@@ -149,7 +137,7 @@ export default {
         if (this.getAuth) {
           this.axios({
             methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}/`
+            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}`
           })
             .then((response) => {
               this.$message({
@@ -157,6 +145,7 @@ export default {
                 message: '删除成功!'
               })
               rows.splice(index, 1)
+              window.location.reload() // todo: bug here
             })
             .catch((err) => {
               console.log(err)

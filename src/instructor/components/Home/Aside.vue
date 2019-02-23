@@ -85,6 +85,6 @@ export default {
     margin-top: 10%;
   }
   .el-icon-menu {
-    margin: 5px 0 0 10px!important;
+    margin: 5px 0 0 10px !important;
   }
 </style>

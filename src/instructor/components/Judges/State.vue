@@ -31,21 +31,6 @@
             label="Max job"
             >
           </el-table-column>
-            <el-table-column
-            prop="cert_ca"
-            label="Cert CA"
-            >
-          </el-table-column>
-            <el-table-column
-            prop="client_cert"
-            label="Client Cert"
-            >
-          </el-table-column>
-            <el-table-column
-            prop="client_key"
-            label="Client Key"
-            >
-          </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
@@ -75,9 +60,6 @@ export default {
       judges: [{
         uid: '',
         host: '',
-        client_key: '',
-        client_cert: '',
-        cert_ca: '',
         max_job: 4
       }]
     }

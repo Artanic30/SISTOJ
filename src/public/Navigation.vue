@@ -59,6 +59,7 @@ export default {
     logout () {
       this.$store.commit('logOut')
       this.$store.commit('changeRequest')
+      // todo: clear cookie
       window.location.reload()
     },
     goBack () {

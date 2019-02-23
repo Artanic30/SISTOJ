@@ -12,7 +12,7 @@
       <el-col>
         <el-steps :active="steps" align-center>
           <el-step title="步骤 1" description="Please enter the information of new assignment"></el-step>
-          <el-step title="步骤 2" description="Please go to the given url and complete the detail collection"></el-step>
+          <el-step title="步骤 2" description="Please add judges for the assignment and you will be redirect to the next url "></el-step>
           <el-step title="步骤 3" description="Assignment successfully added"></el-step>
         </el-steps>
       </el-col>
@@ -48,12 +48,6 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-collapse v-model="assignmentInfo" @change="handleChange" class="collapse">
-              <el-collapse-item title="Existing Judges" name="1">
-              </el-collapse-item>
-            </el-collapse>
-          </el-form-item>
-          <el-form-item>
             <el-button type="primary" @click="submitForm('assignmentInfo')">提交</el-button>
             <el-button @click="resetForm('assignmentInfo')">重置</el-button>
           </el-form-item>
@@ -64,11 +58,15 @@
       <el-col>
         <el-card>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="16"><span class="title-info">Please go to the following url and submit the detailed information of the assignment:</span></el-col>
+            <el-col :span="16"><span class="title-info">After you submit assignment judges, you will be redirect to the following url:</span></el-col>
           </el-row>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="20"><span class="title-info">{{ this.reply.url }}</span></el-col>
-            <el-col :span="4" ><el-button @click="goOutside" class="button-out">前往</el-button></el-col>
+            <el-col :span="20"><span class="title-info">{{ this.reply.ssh_url_to_repo }}</span></el-col>
+          </el-row>
+          <el-row class="card-rows" type="flex" align="middle">
+            <el-col>
+              <v-transform :passReply="this.reply"></v-transform>
+            </el-col>
           </el-row>
         </el-card>
       </el-col>
@@ -78,6 +76,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import transform from './TransformJudge'
 
 export default {
   data () {
@@ -120,7 +119,7 @@ export default {
       },
       steps: 1,
       reply: {
-        url: '',
+        ssh_url_to_repo: '',
         uid: ''
       }
     }
@@ -173,24 +172,6 @@ export default {
         loading.close()
         this.$emit('goBack')
       }, 500)
-    },
-    goOutside () {
-      this.steps += 1
-      this.axios({
-        method: 'post',
-        url: `${this.Api}/course/${this.getUid}/assignment/${this.reply.uid}`,
-        data: {state: 2}
-      })
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      setTimeout(() => {
-        loading.close()
-        window.location.href = this.url
-      }, 500)
     }
   },
   computed: mapState({
@@ -198,14 +179,22 @@ export default {
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     Api: state => state.api
-  })
+  }),
+  watch: {
+    Judges: function (newValue) {
+      this.Judges = newValue
+    }
+  },
+  components: {
+    'v-transform': transform
+  }
 }
 </script>
 
 <style scoped>
-.card-rows {
-  margin: 2% 2% 2% 2%;
-}
+  .card-rows {
+    margin: 2% 2% 2% 2%;
+  }
   .row-one {
     margin-top: 5%;
     margin-left: 5%
@@ -229,13 +218,5 @@ export default {
   }
   .title-info {
     font-size: 20px;
-  }
-  .button-out {
-    background-color: #A40004;
-    float: right;
-    color: white;
-  }
-  .collapse {
-    width: 200px;
   }
 </style>

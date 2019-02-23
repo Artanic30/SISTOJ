@@ -47,14 +47,14 @@ export default {
   }
   .title-main {
     margin-top: 20px;
-    font-size: 200%;
+    font-size: 50px;
   }
   .row-quarter {
     margin-top: 5%;
   }
   .title-instr {
     font-size: 150%;
-    margin-top: 5%;
+    margin-top: 30px;
   }
   .title-msg {
     margin-top: 5%;

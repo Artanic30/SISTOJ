@@ -26,12 +26,12 @@
           <el-form-item label="Homepage:" prop="homepage">
             <el-input v-model="courseInfo.homepage"></el-input>
           </el-form-item>
-          <el-form-item label="Instructor:" prop="instructor">
-            <el-input v-model="courseInfo.instructor" disabled></el-input>
+          <el-form-item label="Instructor Email:" prop="instructor" v-for="item in courseInfo.instructor" :key="item.enroll_email">
+            <el-input v-model="item.enroll_email" disabled></el-input>
           </el-form-item>
           <el-form-item label="Add Instructor:">
             <template slot-scope="scope">
-              <el-input v-model="scope.tem_instr" class="input-short" prop="Instructor"></el-input>
+              <el-input v-model="scope.tem_instr" class="input-short" prop="Instructor" placeholder="instructor's email"></el-input>
               <el-button @click="AddInstructor(scope.tem_instr)"><i class="el-icon-plus"></i></el-button>
             </template>
           </el-form-item>
@@ -110,7 +110,7 @@ export default {
             }).then((response) => {
               if (response.status === 200) {
                 alert('submit!')
-                window.location.reload()
+                // window.location.reload()
               } else if (response.status === 401) {
                 this.$router.push('/unauthorized')
               } else {
@@ -128,7 +128,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     AddInstructor (value) {
-      this.courseInfo.instructor.push(value)
+      this.courseInfo.instructor.push({enroll_email: value})
     }
   },
   computed: mapState({

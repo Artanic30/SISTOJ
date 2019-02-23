@@ -100,7 +100,9 @@ const returnJudges = function () {
   let judgeList = []
   for (let i = 0; i <= 4; i++) {
     let judge = {
-      'uid': Random.guid()
+      'uid': Random.guid(),
+      'host': Random.ip(),
+      'max_job': Random.natural(1, 6)
     }
     judgeList.push(judge)
   }
@@ -141,11 +143,14 @@ const returnRole = function () {
 
 const returnJudgeInfo = function () {
   return {
-    'uid': Random.guid()
+    'uid': Random.guid(),
+    'host': Random.ip(),
+    'max_job': Random.natural(1, 6)
   }
 }
 
 // Mock.mock( url, post/get , 返回的数据);
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges)
 Mock.mock(/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)

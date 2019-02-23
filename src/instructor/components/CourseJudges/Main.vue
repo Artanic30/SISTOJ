@@ -12,29 +12,6 @@
       </el-row>
       <el-row class="row-half">
         <el-col>
-          <el-card class="card-only">
-            <el-collapse :v-model="judgeInfo">
-              <el-collapse-item title="Host" name="1" prop="host">
-                <div>{{ judgeInfo.host}}</div>
-              </el-collapse-item>
-              <el-collapse-item title="Client cert" name="2" prop="client_cert">
-                <div>{{ judgeInfo.client_cert}}</div>
-              </el-collapse-item>
-              <el-collapse-item title="Cert CA" name="3" prop="cert_ca">
-                <div>{{ judgeInfo.cert_ca}}</div>
-              </el-collapse-item>
-              <el-collapse-item title="Client key" name="4" prop="client_key">
-                <div>{{ judgeInfo.client_key}}</div>
-              </el-collapse-item>
-              <el-collapse-item title="Max job" name="5" prop="max_job">
-                <div>{{ judgeInfo.max_job}}</div>
-              </el-collapse-item>
-            </el-collapse>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row class="row-half">
-        <el-col>
           <el-table
           :data="judgeList"
           style="width: 100%"
@@ -43,17 +20,13 @@
             prop="uid"
             label="UID">
           </el-table-column>
-            <el-table-column
-            label="显示详情"
-            width="120">
-            <template slot-scope="scope">
-              <el-button
-                @click="showData(scope.row)"
-                type="text"
-                size="small">
-                显示详情
-              </el-button>
-            </template>
+          <el-table-column
+            prop="host"
+            label="Host">
+          </el-table-column>
+          <el-table-column
+            prop="max_job"
+            label="Max Job">
           </el-table-column>
             <el-table-column
             fixed="right"
@@ -80,16 +53,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      judgeList: [{
-        uid: ''
-      }],
-      judgeInfo: {
-        host: 'Please choose on of your judges',
-        client_cert: 'Please choose on of your judges',
-        cert_ca: 'Please choose on of your judges',
-        client_key: 'Please choose on of your judges',
-        max_job: 'Please choose on of your judges'
-      },
+      judgeList: [],
       childChange: false
     }
   },
@@ -134,31 +98,29 @@ export default {
         loading.close()
         this.$emit('changeState', this.childChange)
       }, 500)
-    },
-    showData (judge) {
-      if (this.getAuth) {
-        this.axios.get(`${this.Api}/judge/${judge.uid}`)
-          .then((response) => {
-            if (response.status === 200) {
-              this.judgeInfo = response.data
-            } else if (response.status === 401) {
-              this.$router.push('/unauthorized')
-            } else {
-              this.$router.push('/error')
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-      }
     }
   },
   created () {
     if (this.getAuth) {
+      let that = this
       this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
         .then((response) => {
           if (response.status === 200) {
-            this.judgeList = response.data
+            for (let i = 0; i < response.data.length; i++) {
+              that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
+                .then((response2) => {
+                  if (response2.status === 200) {
+                    that.judgeList.push(response2.data)
+                  } else if (response2.status === 401) {
+                    that.$router.push('/unauthorized')
+                  } else {
+                    that.$router.push('/error')
+                  }
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+            }
           } else if (response.status === 401) {
             this.$router.push('/unauthorized')
           } else {

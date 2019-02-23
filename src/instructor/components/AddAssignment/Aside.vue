@@ -73,7 +73,7 @@ export default {
  }
   .title-welcome {
     margin-top: 20px;
-    font-size: 200%;
+    font-size: 50px;
   }
   .row-one {
     margin-top: 20%;
@@ -85,7 +85,7 @@ export default {
     margin-top: 10%;
   }
   .title-instr {
-    font-size: 150%;
+    font-size: 30px;
     margin-top: 5%;
   }
   .title-msg {

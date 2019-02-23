@@ -27,7 +27,7 @@ import car from '../../../public/Carousel'
 export default {
   data () {
     return {
-      courseInfo: {}
+      courseInfo: [{}]
     }
   },
   components: {
