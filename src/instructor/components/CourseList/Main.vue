@@ -107,7 +107,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`${this.Api}/course/${this.getUid}/students/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/student/`)
         .then((response) => {
           if (response.status === 200) {
             this.studentList = response.data
