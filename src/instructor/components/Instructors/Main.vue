@@ -21,7 +21,7 @@
             label="name">
           </el-table-column>
           <el-table-column
-            prop="email"
+            prop="enroll_email"
             label="email">
           </el-table-column>
             <el-table-column
@@ -52,7 +52,7 @@ export default {
       instructorList: [{
         uid: '',
         name: '',
-        email: ''
+        enroll_email: ''
       }],
       childChange: false
     }
@@ -66,8 +66,9 @@ export default {
       }).then(() => {
         if (this.getAuth) {
           this.axios({
-            methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/instructor/${rows.email}`
+            method: 'delete',
+            url: `${this.Api}/course/${this.getUid}/instructor/${rows[index].enroll_email}`,
+            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
           }).then((response) => {
             this.$message({
               type: 'success',
@@ -76,7 +77,11 @@ export default {
             rows.splice(index, 1)
           })
             .catch((err) => {
-              console.log(err)
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
         }
       }).catch(() => {
@@ -85,6 +90,11 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     addInstructor () {
       const loading = this.$loading({
@@ -103,16 +113,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/course/${this.getUid}/instructor/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.instructorList = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.instructorList = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -135,6 +143,7 @@ export default {
   .col-one {
     float: right;
     margin-top: 5%;
+    padding-left: 35px !important;
   }
   .button-only {
     background-color: #A40004;

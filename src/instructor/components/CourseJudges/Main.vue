@@ -66,8 +66,9 @@ export default {
       }).then(() => {
         if (this.getAuth) {
           this.axios({
-            methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/judge/${rows[index].uid}`
+            method: 'delete',
+            url: `${this.Api}/course/${this.getUid}/judge/${rows[index].uid}`,
+            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
           })
             .then((response) => {
               this.$message({
@@ -77,7 +78,11 @@ export default {
               rows.splice(index, 1)
             })
             .catch((err) => {
-              console.log(err)
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
         }
       }).catch(() => {
@@ -86,6 +91,11 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     addJudges () {
       const loading = this.$loading({
@@ -105,30 +115,26 @@ export default {
       let that = this
       this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
         .then((response) => {
-          if (response.status === 200) {
-            for (let i = 0; i < response.data.length; i++) {
-              that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
-                .then((response2) => {
-                  if (response2.status === 200) {
-                    that.judgeList.push(response2.data)
-                  } else if (response2.status === 401) {
-                    that.$router.push('/unauthorized')
-                  } else {
-                    that.$router.push('/error')
-                  }
+          for (let i = 0; i < response.data.length; i++) {
+            that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
+              .then((response2) => {
+                that.judgeList.push(response2.data)
+              })
+              .catch((err) => {
+                this.$message({
+                  type: 'error',
+                  message: err,
+                  showClose: true
                 })
-                .catch((err) => {
-                  console.log(err)
-                })
-            }
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
+              })
           }
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -146,11 +152,12 @@ export default {
   }
   .title-main {
     font-family: inherit;
-    font-size: 30px;
+    font-size: 40px;
   }
   .col-one {
     float: right;
     margin-top: 5%;
+    padding-left: 35px !important;
   }
   .button-only {
     background-color: #A40004;
@@ -160,8 +167,5 @@ export default {
   }
   .row-half {
     margin-top: 2%;
-  }
-  .card-only {
-    padding: 0 10px 0 10px;
   }
 </style>

@@ -23,7 +23,6 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('judgeInfo')">提交</el-button>
-            <el-button @click="resetForm('judgeInfo')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -57,43 +56,43 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
     submitForm () {
-      console.log([{uid: this.resultUID}])
       if (this.getAuth) {
         this.axios({
           method: 'post',
           url: `${this.Api}/course/${this.getUid}/judge/`,
-          data: [{uid: this.resultUID}]
+          data: {uid: this.resultUID},
+          headers: {'X-CSRFToken': this.getCookie('csrftoken')}
         }).then((response) => {
-          if (response.status === 200) {
-            alert('submit!')
-            window.location.reload()
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          alert('submit!')
+          window.location.reload()
+        }).catch((err) => {
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
       }
-    },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
     }
   },
   created () {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/judge/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.judgeInfo = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.judgeInfo = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -124,8 +123,5 @@ export default {
   }
   .title-back {
     color: white;
-  }
-  .title-sub {
-    font-size: 20px;
   }
 </style>

@@ -11,23 +11,26 @@
     <el-row class="row-two">
       <el-col>
         <el-steps :active="steps" align-center>
-          <el-step title="步骤 1" description="Please enter the information of new assignment"></el-step>
-          <el-step title="步骤 2" description="Please add judges for the assignment and you will be redirect to the next url "></el-step>
-          <el-step title="步骤 3" description="Assignment successfully added"></el-step>
+          <el-step title="step 1" description="Please enter the information of new assignment"></el-step>
+          <el-step title="step 2" description="Please add judges for the assignment and you will receive a git command"></el-step>
+          <el-step title="step 3" description="Assignment successfully added"></el-step>
         </el-steps>
       </el-col>
     </el-row>
     <el-row class="row-two" v-if="this.steps === 1">
       <el-col>
-        <el-form :model="assignmentInfo" status-icon :rules="rules" ref="assignmentInfo" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="Course uid:" prop="course_uid">
-            <el-input v-model="assignmentInfo.course_uid" autocomplete="off"></el-input>
-          </el-form-item>
+        <el-form :model="assignmentInfo" status-icon :rules="rules" ref="assignmentInfo" label-width="20%" class="demo-ruleForm">
           <el-form-item label="Name:" prop="name">
             <el-input v-model="assignmentInfo.name" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="Short Name:" prop="short_name">
+            <el-input v-model="assignmentInfo.short_name" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="Describe link:" prop="descr_link">
             <el-input v-model="assignmentInfo.descr_link" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Grade:" prop="grade">
+            <el-input v-model="assignmentInfo.grade" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Deadline:" prop="deadline">
             <el-date-picker
@@ -35,7 +38,7 @@
               type="date"
               placeholder="选择日期"
               format="yyyy-MM-dd"
-              value-format="timestamp">
+              value-format="yyyy-MM-ddT">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="Release date:" prop="release_date">
@@ -44,12 +47,12 @@
               type="date"
               placeholder="选择日期"
               format="yyyy-MM-dd"
-              value-format="timestamp">
+              value-format="yyyy-MM-ddT">
             </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('assignmentInfo')">提交</el-button>
-            <el-button @click="resetForm('assignmentInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('assignmentInfo')">submit</el-button>
+            <el-button @click="resetForm('assignmentInfo')">reset</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -58,7 +61,7 @@
       <el-col>
         <el-card>
           <el-row class="card-rows" type="flex" align="middle">
-            <el-col :span="16"><span class="title-info">After you submit assignment judges, you will be redirect to the following url:</span></el-col>
+            <el-col :span="16"><span class="title-info">After you submit assignment judges, the git command may be useful for you:</span></el-col>
           </el-row>
           <el-row class="card-rows" type="flex" align="middle">
             <el-col :span="20"><span class="title-info">{{ this.reply.ssh_url_to_repo }}</span></el-col>
@@ -80,9 +83,19 @@ import transform from './TransformJudge'
 
 export default {
   data () {
-    var check = (rule, value, callback) => {
+    let check = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('不能为空'))
+      }
+      setTimeout(() => {
+        callback()
+      }, 500)
+    }
+    let checkUrl = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('不能为空'))
+      } else if (!value.includes('http')) {
+        return callback(new Error('请输入正确网址'))
       }
       setTimeout(() => {
         callback()
@@ -95,6 +108,8 @@ export default {
         deadline: '',
         release_date: '',
         descr_link: '',
+        grade: '',
+        short_name: '',
         state: 1
       },
       rules: {
@@ -107,13 +122,16 @@ export default {
         uid: [
           { validator: check, trigger: 'blur' }
         ],
-        course_uid: [
-          { validator: check, trigger: 'blur' }
-        ],
         descr_link: [
-          { validator: check, trigger: 'blur' }
+          { validator: checkUrl, trigger: 'blur' }
         ],
         release_date: [
+          { validator: check, trigger: 'blur' }
+        ],
+        grade: [
+          { validator: check, trigger: 'blur' }
+        ],
+        short_name: [
           { validator: check, trigger: 'blur' }
         ]
       },
@@ -129,34 +147,37 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.steps += 1
-          const loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
+          this.assignmentInfo.release_date += '23:59:59+08:00'
+          this.assignmentInfo.deadline += '23:59:59+08:00'
+          this.$store.commit('updateAss', this.assignmentInfo)
           if (this.getAuth) {
             this.axios({
               method: 'post',
               url: `${this.Api}/course/${this.getUid}/assignment/`,
-              data: this.assignmentInfo
+              data: this.assignmentInfo,
+              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
             }).then((response) => {
-              if (response.status === 200) {
-                this.reply = response.data
-                loading.close()
-                alert('submit!')
-              } else if (response.status === 401) {
-                this.$router.push('/unauthorized')
-              } else {
-                this.$router.push('/error')
-              }
+              this.reply = response.data
+              alert('submit!')
             })
+              .catch((err) => {
+                this.$message({
+                  type: 'error',
+                  message: err,
+                  showClose: true
+                })
+              })
           }
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
@@ -173,6 +194,9 @@ export default {
         this.$emit('goBack')
       }, 500)
     }
+  },
+  created () {
+    this.assignmentInfo.course_uid = this.getUid
   },
   computed: mapState({
     getUid: state => state.coInfo.uid,

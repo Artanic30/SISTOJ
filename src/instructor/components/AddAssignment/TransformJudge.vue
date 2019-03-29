@@ -11,7 +11,8 @@
           style="text-align: left; display: inline-block"
           v-model="value"
           :titles="['Available Judges', 'Existing Judges']"
-          :data="transData">
+          @change="handleChange"
+          :data="getTrans">
         </el-transfer>
       </el-col>
     </el-row>
@@ -36,29 +37,14 @@ export default {
   },
   methods: {
     submit () {
-      if (this.getAuth) {
-        let result = this.value.map(function (value) {
-          return {uid: value}
-        })
-        this.axios({
-          method: 'post',
-          url: `${this.Api}/course/${this.getUid}/assignment/${this.passReply.uid}/judge/`,
-          data: result
-        }).then((response) => {
-          if (response.status === 200) {
-            alert('submit!')
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
-        })
-      }
       this.steps += 1
+      let result = this.getAss
+      result.state = 2
       this.axios({
         method: 'post',
         url: `${this.Api}/course/${this.getUid}/assignment/${this.passReply.uid}`,
-        data: {state: 2}
+        data: result,
+        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
       })
       const loading = this.$loading({
         lock: true,
@@ -68,8 +54,56 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-        window.location.href = this.passReply.ssh_url_to_repo
       }, 500)
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
+    handleChange (cv, direction, value) {
+      let that = this
+      if (direction === 'right') {
+        value.map(function (uid) {
+          that.axios({
+            method: 'post',
+            url: `${that.Api}/course/${that.getUid}/assignment/${that.passReply.uid}/judge/`,
+            data: {uid},
+            headers: {'X-CSRFToken': that.getCookie('csrftoken')}
+          }).then((response) => {
+          }).catch((err) => {
+            that.$message({
+              type: 'error',
+              message: err,
+              showClose: true
+            })
+          })
+        })
+      } else {
+        value.map(function (uid) {
+          that.axios({
+            method: 'delete',
+            url: `${that.Api}/course/${that.getUid}/assignment/${that.passReply.uid}/judge/${uid}`,
+            headers: {'X-CSRFToken': that.getCookie('csrftoken')}
+          }).then((response) => {
+          }).catch((err) => {
+            that.$message({
+              type: 'error',
+              message: err,
+              showClose: true
+            })
+          })
+        })
+      }
+    },
+    check (n) {
+      let result = []
+      for (let i = 0; i < n.length; i++) {
+        if (result.indexOf(n[i]) === -1) {
+          result.push(n[i])
+        }
+      }
+      return result
     }
   },
   props: ['passReply'],
@@ -79,55 +113,48 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
         .then((response) => {
-          if (response.status === 200) {
-            len = response.data.length
-            for (let i = 0; i < response.data.length; i++) {
-              that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
-                .then((response2) => {
-                  if (response2.status === 200) {
-                    that.value.push(response2.data.uid)
-                    that.$set(that.transData, i + len, {
-                      key: response2.data.uid,
-                      label: response2.data.host,
-                      disable: false
-                    })
-                  } else if (response2.status === 401) {
-                    that.$router.push('/unauthorized')
-                  } else {
-                    that.$router.push('/error')
-                  }
+          len = response.data.length
+          for (let i = 0; i < response.data.length; i++) {
+            that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
+              .then((response2) => {
+                that.value.push(response2.data.uid)
+                that.$set(that.transData, i + len, {
+                  key: response2.data.uid,
+                  label: response2.data.host,
+                  disable: false
                 })
-                .catch((err) => {
-                  console.log(err)
+              })
+              .catch((err) => {
+                that.$message({
+                  type: 'error',
+                  message: err,
+                  showClose: true
                 })
-            }
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
+              })
           }
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
       this.axios.get(`${this.Api}/judge/`)
         .then((response) => {
-          if (response.status === 200) {
-            for (let i = 0; i < response.data.length; i++) {
-              that.$set(that.transData, i, {
-                key: response.data[i].uid,
-                label: response.data[i].host,
-                disable: false
-              })
-            }
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
+          for (let i = 0; i < response.data.length; i++) {
+            that.$set(that.transData, i, {
+              key: response.data[i].uid,
+              label: response.data[i].host,
+              disable: false
+            })
           }
-        })
-        .catch((err) => {
-          console.log(err)
+        }).catch((err) => {
+          that.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -135,7 +162,16 @@ export default {
     getUid: state => state.coInfo.uid,
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
-    Api: state => state.api
+    getAss: state => state.assignments,
+    Api: state => state.api,
+    getTrans () {
+      this.value = this.check(this.value)
+      if (this.transData.length === 0) {
+        return []
+      } else {
+        return this.check(this.transData)
+      }
+    }
   })
 }
 </script>

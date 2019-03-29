@@ -10,7 +10,7 @@
     </el-row>
     <el-row class="row-quarter">
       <el-col>
-        <el-form :model="instructorInfo" status-icon :rules="rules" ref="instructorInfo" label-width="100px">
+        <el-form :model="instructorInfo" status-icon :rules="rules" ref="instructorInfo" label-width="20%">
           <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="instructorInfo.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -18,8 +18,8 @@
             <el-input type="email" v-model.number="instructorInfo.enroll_email"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('instructorInfo')">提交</el-button>
-            <el-button @click="resetForm('instructorInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('instructorInfo')">submit</el-button>
+            <el-button @click="resetForm('instructorInfo')">reset</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -31,9 +31,19 @@ import { mapState } from 'vuex'
 
 export default {
   data () {
-    var check = (rule, value, callback) => {
+    let check = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('不能为空'))
+      }
+      setTimeout(() => {
+        callback()
+      }, 500)
+    }
+    let checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('不能为空'))
+      } else if (!value.includes('@shanghaitech.edu.cn')) {
+        return callback(new Error('请输入正确邮箱'))
       }
       setTimeout(() => {
         callback()
@@ -42,14 +52,14 @@ export default {
     return {
       instructorInfo: {
         name: '',
-        enroll_email: '@shanghaitech.edu.cn'
+        enroll_email: ''
       },
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
         ],
         enroll_email: [
-          { validator: check, trigger: 'blur' }
+          { validator: checkEmail, trigger: 'blur' }
         ]
       }
     }
@@ -67,6 +77,11 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -74,16 +89,17 @@ export default {
             this.axios({
               method: 'post',
               url: `${this.Api}/course/${this.getUid}/instructor/`,
-              data: this.instructorInfo
+              data: this.instructorInfo,
+              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
             }).then((response) => {
-              if (response.status === 200) {
-                alert('submit!')
-                window.location.reload()
-              } else if (response.status === 401) {
-                this.$router.push('/unauthorized')
-              } else {
-                this.$router.push('/error')
-              }
+              alert('submit!')
+              window.location.reload()
+            }).catch((err) => {
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
           }
         } else {

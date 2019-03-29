@@ -71,8 +71,9 @@ export default {
       }).then(() => {
         if (this.getAuth) {
           this.axios({
-            methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/students/${rows[index].enroll_email}`
+            method: 'delete',
+            url: `${this.Api}/course/${this.getUid}/students/${rows[index].enroll_email}`,
+            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
           })
             .then((response) => {
               this.$message({
@@ -80,9 +81,12 @@ export default {
                 message: '删除成功!'
               })
               rows.splice(index, 1)
-            })
-            .catch((err) => {
-              console.log(err)
+            }).catch((err) => {
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
         }
       }).catch(() => {
@@ -91,6 +95,11 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     addStudent () {
       const loading = this.$loading({
@@ -107,18 +116,16 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`${this.Api}/course/${this.getUid}/student/`)
+      this.axios.get(`${this.Api}/course/${this.getUid}/students/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.studentList = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.studentList = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -136,11 +143,12 @@ export default {
   }
   .title-main {
     font-family: inherit;
-    font-size: 30px;
+    font-size: 40px;
   }
   .col-one {
     float: right;
     margin-top: 5%;
+    padding-left: 35px !important;
   }
   .button-only {
     background-color: #A40004;

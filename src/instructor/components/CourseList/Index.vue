@@ -1,14 +1,14 @@
 <template>
-  <div class="index">
-    <el-row class="row-main" :gutter="6">
-      <el-col :span="4" class="col-one">
-          <el-menu class="menu-only">
+  <div>
+    <el-row :gutter="1">
+      <el-col :span="5">
+          <el-menu class="el-menu-vertical-demo">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="14">
-         <v-main v-if="change" v-on:changeState="changeState"></v-main>
-        <v-add v-else v-on:goBack="goBack"></v-add>
+      <el-col :span="18" class="row-one">
+         <v-main v-if="change" v-on:changeState="changeState" class="add"></v-main>
+        <v-add v-else v-on:goBack="goBack" class="add"></v-add>
       </el-col>
     </el-row>
   </div>
@@ -16,7 +16,7 @@
 <script>
 import na from '../../../public/Navigation'
 import main from './Main'
-import aside from './Aside'
+import aside from '../../../public/InstrAside'
 import add from './Add'
 
 export default {
@@ -42,16 +42,17 @@ export default {
 }
 </script>
 <style scoped>
-  .row-main{
-    height: 100%;
-  }
-  .col-one{
-    margin-right: 10%;
-  }
-  .menu-only {
-    float: left;
-    margin-right: 5%;
-    width: 220px;
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    min-width: 90%;
     min-height: 1000px;
+    max-width: 180px;
+    float: left!important;
+    margin: 0 5% 0 0!important;
+  }
+  .row-one {
+    float: right;
+  }
+  .add {
+    margin-right: 15%;
   }
 </style>

@@ -33,7 +33,6 @@
           </el-table-column>
           <el-table-column
           prop="submission_time"
-          :formatter="timestampToTime"
           label="Submission Time">
         </el-table-column>
           <el-table-column
@@ -74,17 +73,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.scoreInfo = response.data
-            this.total = response.data.length
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
+          this.scoreInfo = response.data
+          this.total = response.data.length
+        }).catch((err) => {
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -94,16 +90,6 @@ export default {
     },
     handleSizeChange (val) {
       this.pagesize = val
-    },
-    timestampToTime (row) {
-      let date = new Date(row.submission_time * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
     },
     ranking (index) {
       return (this.currentPage - 1) * 20 + index

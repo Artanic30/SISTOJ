@@ -57,15 +57,15 @@ export default {
     if (this.getAuth) {
       this.axios({
         method: 'GET',
-        url: `${this.Api}/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}/`
+        url: `${this.Api}/course/${this.getCourseUid}/instructor/${this.$route.query.instr_uid}`
       }).then((response) => {
-        if (response.status === 200) {
-          this.Info = response.data
-        } else if (response.status === 401) {
-          this.$router.push('/unauthorized')
-        } else {
-          this.$router.push('/error')
-        }
+        this.Info = response.data
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: err,
+          showClose: true
+        })
       })
     }
   }
@@ -75,6 +75,8 @@ export default {
 <style scoped>
   .img-profile {
     padding: 2%;
+    height: 500px !important;
+
   }
   .cards {
     width: 700px;

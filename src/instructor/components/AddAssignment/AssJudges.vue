@@ -2,7 +2,7 @@
   <div>
     <el-button @click="requestData" v-if="this.show" size="mini">Request</el-button>
     <el-dropdown v-else>
-      <span class="el-dropdown-link">click here<i class="el-icon-arrow-down el-icon--right"></i>
+      <span class="el-dropdown-link">Here<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item v-for="item in Judges" v-bind:key="item.uid" v-if="checkData(item)">
@@ -37,16 +37,14 @@ export default {
       for (let i = 0; i < this.JudgeUid.length; i++) {
         that.axios.get(`${that.Api}/judge/${that.JudgeUid[i].uid}`)
           .then((response) => {
-            if (response.status === 200) {
-              that.$set(that.Judges, i, response.data)
-            } else if (response.status === 401) {
-              that.$router.push('/unauthorized')
-            } else {
-              that.$router.push('/error')
-            }
+            that.$set(that.Judges, i, response.data)
           })
           .catch((err) => {
-            console.log(err)
+            that.$message({
+              type: 'error',
+              message: err,
+              showClose: true
+            })
           })
       }
       this.show = false
@@ -75,16 +73,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${this.passAssUID}/judge/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.JudgeUid = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.JudgeUid = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   }

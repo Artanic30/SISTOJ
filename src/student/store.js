@@ -27,14 +27,17 @@ const store = new Vuex.Store({
       deadline: 0,
       release_date: 0,
       descr_link: '',
+      short_name: '',
       score: 0,
       overall_socre: 0
     },
     baseInfo: {
-      uid: '23123',
-      isInstructor: false
+      uid: '',
+      isInstructor: false,
+      isStudent: false
     },
-    api: ''
+    api: '',
+    logout_url: ''
   },
   mutations: {
     updateCoInfo (state, value) {
@@ -43,22 +46,34 @@ const store = new Vuex.Store({
     updateAss (state, value) {
       state.assignments = value
     },
-    login (state) {
+    login (state, url) {
       state.isAuthorized = true
+      state.logout_url = url
     },
     logOut (state) {
       state.isAuthorized = false
-    },
-    updateInstructor (state, uid) {
-      state.baseInfo.uid = uid
-      state.baseInfo.isInstructor = true
-    },
-    updateStudent (state, uid) {
-      state.baseInfo.uid = uid
       state.baseInfo.isInstructor = false
+      state.baseInfo.isStudent = false
     },
-    changeRequest (state) {
-      state.isRequest = !state.isRequest
+    updateState (state, value) {
+      state.baseInfo.uid = value.uid
+      if (value.role === 1) {
+        state.baseInfo.isStudent = true
+      } else if (value.role === 2) {
+        state.baseInfo.isInstructor = true
+      } else if (value.role === 3) {
+        state.baseInfo.isStudent = true
+        state.baseInfo.isInstructor = true
+      } else {
+        state.baseInfo.isStudent = false
+        state.baseInfo.isInstructor = false
+      }
+    },
+    requested (state) {
+      state.isRequest = true
+    },
+    refreshReq (state) {
+      state.isRequest = false
     },
     updateApi (state, value) {
       state.api = value

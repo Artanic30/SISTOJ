@@ -100,8 +100,21 @@ const returnJudges = function () {
   let judgeList = []
   for (let i = 0; i <= 4; i++) {
     let judge = {
-      'uid': Random.guid(),
-      'host': Random.ip(),
+      'uid': 100 + i,
+      'host': `1.1.1.${i}`,
+      'max_job': Random.natural(1, 6)
+    }
+    judgeList.push(judge)
+  }
+  return judgeList
+}
+
+const returnJudges2 = function () {
+  let judgeList = []
+  for (let i = 0; i <= 4; i++) {
+    let judge = {
+      'uid': 99 + i,
+      'host': `1.1.1.${i - 1}`,
       'max_job': Random.natural(1, 6)
     }
     judgeList.push(judge)
@@ -136,8 +149,8 @@ const returnCourseJudge = function () {
 const returnRole = function () {
   return {
     'uid': Random.guid(),
-    'is_student': Random.boolean(),
-    'is_instructor': Random.boolean()
+    'is_student': true,
+    'is_instructor': false
   }
 }
 
@@ -149,13 +162,19 @@ const returnJudgeInfo = function () {
   }
 }
 
+const login = function () {
+  return {
+    'login_url': Random.url()
+  }
+}
 // Mock.mock( url, post/get , 返回的数据);
+Mock.mock(/[-0-9a-zA-Z/:]+\/user\/login\/oauth\/param/, 'get', login)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
-Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges2)
 Mock.mock(/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
 Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+\/course/, 'post', 'success')
-Mock.mock(/[-0-9a-zA-Z]+\/user\/role/, 'get', returnRole)
+Mock.mock(/[-0-9a-zA-Z/:]+\/api\/user\/role/, 'get', returnRole)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/students/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'post', 'success')

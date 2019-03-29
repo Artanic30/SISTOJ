@@ -1,7 +1,7 @@
 <template>
     <div>
-      <el-row :gutter="2">
-        <el-col :span="4">
+      <el-row :gutter="1">
+        <el-col :span="5">
           <el-menu class="el-menu-vertical-demo">
             <v-aside></v-aside>
         </el-menu>
@@ -17,7 +17,7 @@
 <script>
 import na from '../../../public/Navigation'
 import state from './State'
-import aside from './Aside'
+import aside from '../../../public/MasterAside'
 import add from './Add'
 
 export default {

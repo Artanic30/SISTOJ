@@ -12,7 +12,7 @@
             <el-card class="cards">
               <el-row type="flex" justify="space-around" align="middle">
                 <el-col class="space-center">
-                  <span class="words">Forbidden request detected or unknown error happens, please logout and login again!</span>
+                  <span class="words">Forbidden request detected or unknown error happens, please login again!</span>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="space-around" align="middle">
@@ -44,26 +44,34 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    Api: state => state.api
+    Api: state => state.api,
+    getLogout: state => state.logout_url
   }),
   methods: {
     logout () {
       this.$store.commit('logOut')
-      this.$store.commit('changeRequest')
+      this.$store.commit('refreshReq')
+      this.axios({
+        method: 'post',
+        url: `${this.getLogout}`,
+        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+      })
+      this.$cookies.delete('sessionid')
       this.$router.push('/')
     },
     login () {
       this.axios({
         method: 'get',
-        url: `/user/login/oauth/param`
+        url: `${this.Api}/user/login/oauth/param`
       }).then((response) => {
-        if (response.status === 200) {
-          this.$store.commit('login')
-          window.location.href = response.data.login_url
-        } else {
-          this.$router.push('/error')
-        }
+        this.$store.commit('login', response.data.logout_url)
+        window.location.href = response.data.login_url
       })
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     }
   }
 }

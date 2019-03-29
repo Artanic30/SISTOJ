@@ -10,7 +10,7 @@
     </el-row>
     <el-row class="rows">
       <el-col>
-        <el-form :model="courseInfo" status-icon :rules="rules" ref="courseInfo" label-width="100px">
+        <el-form :model="courseInfo" status-icon :rules="rules" ref="courseInfo" label-width="20%">
           <el-form-item label="Name:" prop="name">
             <el-input type="text" v-model="courseInfo.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -18,26 +18,33 @@
             <el-input type="text" v-model="courseInfo.code" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Semester:" prop="semester">
-            <el-input type="text" v-model="courseInfo.semester" autocomplete="off"></el-input>
+            <el-select v-model="courseInfo.semester" placeholder="请选择">
+              <el-option
+                v-for="item in seasons"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="Year:" prop="year">
-            <el-input type="text" v-model="courseInfo.year" autocomplete="off"></el-input>
+            <el-input type="number" v-model="courseInfo.year" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Homepage:" prop="homepage">
-            <el-input v-model="courseInfo.homepage"></el-input>
+            <el-input v-model="courseInfo.homepage" placeholder="https://github.com"></el-input>
           </el-form-item>
           <el-form-item label="Instructor Email:" prop="instructor" v-for="item in courseInfo.instructor" :key="item.enroll_email">
-            <el-input v-model="item.enroll_email" disabled></el-input>
+            <el-input v-model="item.enroll_email">
+              <el-button slot="append" class="el-icon-close" @click="DeleteEmail(item.enroll_email)"></el-button>
+            </el-input>
           </el-form-item>
-          <el-form-item label="Add Instructor:">
-            <template slot-scope="scope">
-              <el-input v-model="scope.tem_instr" class="input-short" prop="Instructor" placeholder="instructor's email"></el-input>
-              <el-button @click="AddInstructor(scope.tem_instr)"><i class="el-icon-plus"></i></el-button>
-            </template>
+          <el-form-item label="Add Instructor:" prop="tem_instr">
+            <el-input v-model="courseInfo.tem_instr" class="input-short" placeholder="instructor's email"></el-input>
+            <el-button @click="AddInstructor(courseInfo.tem_instr)"><i class="el-icon-plus"></i></el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('courseInfo')">提交</el-button>
-            <el-button @click="resetForm('courseInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('courseInfo')">submit</el-button>
+            <el-button @click="resetForm('courseInfo')">reset</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -49,7 +56,7 @@ import { mapState } from 'vuex'
 
 export default {
   data () {
-    var check = (rule, value, callback) => {
+    let check = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('不能为空'))
       }
@@ -57,16 +64,44 @@ export default {
         callback()
       }, 500)
     }
+    let checkUrl = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('不能为空'))
+      } else if (!value.includes('http')) {
+        return callback(new Error('请输入正确网址'))
+      }
+      setTimeout(() => {
+        callback()
+      }, 1000)
+    }
     return {
       courseInfo: {
         name: '',
         code: '',
         semester: '',
-        year: '',
+        year: 0,
         homepage: '',
-        instructor: []
+        instructor: [],
+        tem_instr: ''
       },
-      tem_instr: '',
+      seasons: [
+        {
+          value: 1,
+          label: 'Spring'
+        },
+        {
+          value: 2,
+          label: 'Summer'
+        },
+        {
+          value: 3,
+          label: 'Fall'
+        },
+        {
+          value: 4,
+          label: 'Winter'
+        }
+      ],
       rules: {
         name: [
           {validator: check, trigger: 'blur'}
@@ -81,7 +116,7 @@ export default {
           { validator: check, trigger: 'blur' }
         ],
         homepage: [
-          { validator: check, trigger: 'blur' }
+          { validator: checkUrl, trigger: 'blur' }
         ]
       }
     }
@@ -99,6 +134,11 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -106,16 +146,17 @@ export default {
             this.axios({
               method: 'post',
               url: `${this.Api}/instructor/${this.getID}/course/`,
-              data: this.courseInfo
+              data: this.courseInfo,
+              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
             }).then((response) => {
-              if (response.status === 200) {
-                alert('submit!')
-                // window.location.reload()
-              } else if (response.status === 401) {
-                this.$router.push('/unauthorized')
-              } else {
-                this.$router.push('/error')
-              }
+              alert('submit!')
+              window.location.reload()
+            }).catch((err) => {
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
           }
         } else {
@@ -124,11 +165,20 @@ export default {
         }
       })
     },
+    DeleteEmail (email) {
+      let that = this
+      this.courseInfo.instructor.map(function (currentValue, index) {
+        if (currentValue.enroll_email === email) {
+          that.courseInfo.instructor.splice(index, 1)
+        }
+      })
+    },
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
     AddInstructor (value) {
       this.courseInfo.instructor.push({enroll_email: value})
+      this.courseInfo.tem_instr = ''
     }
   },
   computed: mapState({
@@ -150,6 +200,7 @@ export default {
   }
   .title-main {
     font-size: 30px;
+    margin-left: 20px;
   }
   .col-one {
     float: right;

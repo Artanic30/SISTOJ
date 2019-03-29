@@ -10,25 +10,25 @@
     </el-row>
     <el-row class="rows">
       <el-col>
-        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="100px">
+        <el-form :model="judgeInfo" status-icon :rules="rules" ref="judgeInfo" label-width="15%">
           <el-form-item label="Host:" prop="host">
             <el-input type="text" v-model="judgeInfo.host" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Client Key:" prop="client_key">
-            <el-input type="text" v-model="judgeInfo.client_key" autocomplete="off"></el-input>
+            <el-input type="textarea" v-model="judgeInfo.client_key" autocomplete="off" class="height-input" :autosize="{ minRows: 10, maxRows: 100}"></el-input>
           </el-form-item>
           <el-form-item label="Client Cert:" prop="client_cert">
-            <el-input type="text" v-model="judgeInfo.client_cert" autocomplete="off"></el-input>
+            <el-input type="textarea" v-model="judgeInfo.client_cert" autocomplete="off"  :autosize="{ minRows: 10, maxRows: 100}"></el-input>
           </el-form-item>
           <el-form-item label="Cert CA:" prop="cert_ca">
-            <el-input type="text" v-model="judgeInfo.cert_ca" autocomplete="off"></el-input>
+            <el-input type="textarea" v-model="judgeInfo.cert_ca" autocomplete="off" :autosize="{ minRows: 10, maxRows: 100}"></el-input>
           </el-form-item>
           <el-form-item label="Max job:" prop="max_job">
-            <el-input v-model.number="judgeInfo.max_job"></el-input>
+            <el-input type="number" v-model.number="judgeInfo.max_job"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('judgeInfo')">提交</el-button>
-            <el-button @click="resetForm('judgeInfo')">重置</el-button>
+            <el-button type="primary" @click="submitForm('judgeInfo')">submit</el-button>
+            <el-button @click="resetForm('judgeInfo')">reset</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -89,23 +89,29 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.getAuth) {
             this.axios({
               method: 'post',
-              url: `${this.Api}/judge/${this.judgeInfo.uid}`,
-              data: this.JudgeInfo
+              url: `${this.Api}/judge/`,
+              data: this.judgeInfo,
+              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
             }).then((response) => {
-              if (response.status === 200) {
-                alert('submit!')
-                window.location.reload()
-              } else if (response.status === 401) {
-                this.$router.push('/unauthorized')
-              } else {
-                this.$router.push('/error')
-              }
+              alert('submit!')
+              window.location.reload()
+            }).catch((err) => {
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
           }
         } else {
@@ -126,10 +132,10 @@ export default {
 }
 </script>
 <style scoped>
-.rows {
-  margin-top: 5%;
-  margin-left: 5%;
-}
+  .rows {
+    margin-top: 5%;
+    margin-left: 5%;
+  }
   .row-main {
     margin-top: 5%;
     margin-left: 5%;

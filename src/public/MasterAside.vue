@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="aside">
       <el-row class="row-one">
         <el-col>
           <span class="title-main">Welcome</span>
@@ -20,7 +20,7 @@
           <i class="el-icon-menu"></i>
         </el-col>
         <el-col :span="15">
-          <router-link :to="{ path: `/`}" class="sub-title">Dashboard</router-link>
+          <router-link :to="{ path: `/instr`}" class="sub-title">Dashboard</router-link>
         </el-col>
       </el-row>
     </div>
@@ -37,6 +37,9 @@ export default {
 </script>
 
 <style scoped>
+  .aside {
+    padding: 0 20px 0 20px;
+  }
  .sub-title {
    font-size: 25px;
    text-decoration: none;
@@ -53,8 +56,8 @@ export default {
     margin-top: 5%;
   }
   .title-instr {
-    font-size: 30px;
-    margin-top: 5%;
+    font-size: 150%;
+    margin-top: 30px;
   }
   .title-msg {
     margin-top: 5%;
@@ -64,6 +67,7 @@ export default {
     margin-top: 10%;
   }
   .el-icon-menu {
-    margin: 5px 0 0 10px!important;
+    margin: 3px 0 0 10px!important;
+    font-size: 20px !important;
   }
 </style>

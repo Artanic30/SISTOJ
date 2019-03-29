@@ -18,7 +18,7 @@
     <el-row>
       <el-col>
         <el-table
-        :data="coState"
+        :data="getCoState(coState)"
         style="width: 100%"
         stripe>
         <el-table-column label="NAME">
@@ -30,30 +30,26 @@
           label="STATUS"
           width="180">
           <template slot-scope="scope">
-            <el-button :style="colors(scope.row.state)" @click="updateAss(scope.row)">
-              <router-link :to="getstate(scope.row)" class="fake-href">{{ getScore(scope.row) }}</router-link>
+            <el-button :style="colors(scope.row)" @click="updateAss(scope.row)" class="fake-href">
+              {{ getScore(scope.row) }}
             </el-button>
           </template>
         </el-table-column>
         <el-table-column
           prop="release_date"
-          :formatter="timestampToTime1"
           label="RELEASE">
         </el-table-column>
         <el-table-column
           prop="deadline"
-          :formatter="timestampToTime2"
-          label="DUE(CST"
-          width="180"
-          >
+          label="DUE">
         </el-table-column>
         </el-table>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10%">
+    <el-row class="row-half" v-if="show">
       <el-col>
         <el-tooltip class="item" effect="dark" content="A list for those who made some mistakes" placement="left">
-          <el-button size="mini" @click="showPending" class="button-shot">Show shot list</el-button>
+          <el-button size="mini" @click="showPending" class="button-shot">Show list</el-button>
         </el-tooltip>
       </el-col>
     </el-row>
@@ -73,7 +69,6 @@
         </el-table-column>
         <el-table-column
           prop="submission_time"
-          :formatter="timestampToTime3"
           label="submission time">
         </el-table-column>
         <el-table-column
@@ -91,17 +86,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      coState: [{
-        uid: '',
-        course_uid: '',
-        name: '',
-        short_name: '',
-        deadline: 0,
-        release_date: 0,
-        descr_link: '',
-        score: 0,
-        overall_score: 0
-      }],
+      coState: [],
       coInfo: {
       },
       show: false,
@@ -110,23 +95,25 @@ export default {
         course_id: '',
         submission_time: 0,
         submitter: ''
-      }]
+      }],
+      length: 0
     }
   },
   methods: {
     getpath (scope) {
       window.location.href = scope.row.descr_link
     },
-    getstate (path) {
-      return this.$route.path + '/submission/' + path.uid
-    },
     colors (situation) { // don't use state as the variable name
-      if (situation === 'Failed') {
-        return 'background-color: #ed3f14;width: 100px;'
-      } else if (situation === 'Ongoing') {
-        return 'background-color: #19be6b;width: 100px;'
+      if (situation.grade >= 70) {
+        return 'background-color: #67C23A;color: white;width: 100px;'
+      } else if (situation.grade >= 50) {
+        return 'background-color: #E6A23C;color: white;width: 100px;'
+      } else if (situation.grade >= 20) {
+        return 'background-color: #F56C6C;color: white;width: 100px;'
+      } else if (situation.grade === null || situation.grade === undefined) {
+        return 'background-color: #909399;color: white;width: 100px;'
       } else {
-        return 'background-color: #2d8cf0;width: 100px;'
+        return 'background-color: black;color: white;width: 100px;'
       }
     },
     showPending () {
@@ -134,39 +121,48 @@ export default {
     },
     updateAss (info) {
       this.$store.commit('updateAss', info)
+      this.$router.push(`${this.$route.path}/submission/${info.name}`)
     },
     getScore (row) {
-      return row.score + '/' + row.overall_score
+      if (row.grade === null || row.grade === undefined) {
+        return 'no result'
+      } else {
+        return row.grade
+      }
     },
-    timestampToTime3 (row) {
-      let date = new Date(row.submission_time * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
+    convertUTCTimeToLocalTime (UTCDateString) {
+      if (!UTCDateString) {
+        return '-'
+      }
+      if (UTCDateString.includes('PM') || UTCDateString.includes('AM')) {
+        return UTCDateString
+      }
+      function formatFunc (str) {
+        return str > 9 ? str : '0' + str
+      }
+      let date2 = new Date(UTCDateString)
+      let year = date2.getFullYear()
+      let mon = formatFunc(date2.getMonth() + 1)
+      let day = formatFunc(date2.getDate())
+      let hour = date2.getHours()
+      let noon = hour >= 12 ? 'PM' : 'AM'
+      hour = hour >= 12 ? hour - 12 : hour
+      hour = formatFunc(hour)
+      let min = formatFunc(date2.getMinutes())
+      return year + '-' + mon + '-' + day + ' ' + noon + ' ' + hour + ':' + min
     },
-    timestampToTime1 (row) {
-      let date = new Date(row.release_date * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
-    },
-    timestampToTime2 (row) {
-      let date = new Date(row.deadline * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
+    getCoState (data) {
+      let that = this
+      if (!data) {
+        return data
+      }
+      let result = []
+      data.map(function (a) {
+        a.deadline = that.convertUTCTimeToLocalTime(a.deadline)
+        a.release_date = that.convertUTCTimeToLocalTime(a.release_date)
+        result.push(a)
+      })
+      return result
     }
   },
   mounted () {
@@ -176,31 +172,26 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/student/${this.getID}/course/${this.getUid}/assignment/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.coState = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
+          this.length = response.data.length
+          this.coState = response.data
+        }).catch((err) => {
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
-    if (this.getAuth) {
-      this.axios.get(`${this.Api}/course/${this.getUid}/queue/`)
+    if (!this.getAuth) {
+      this.axios.get(`${this.Api}/course/${this.getUid}/queue`)
         .then((response) => {
-          if (response.status === 200) {
-            this.pendingList = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
+          this.pendingList = response.data
+        }).catch((err) => {
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -241,12 +232,15 @@ export default {
   }
   .fake-href {
     text-decoration: none;
-    color: white;
+    color: #cb0c0a;
   }
   .button-shot {
     float: right;
   }
   .table-only {
     width: 100%;
+  }
+  .row-half{
+    margin-top: 10%;
   }
 </style>

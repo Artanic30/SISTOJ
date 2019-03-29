@@ -27,7 +27,7 @@
       <el-row class="row-quarter">
         <el-col>
           <el-table
-          :data="coState"
+          :data="getCoState(coState)"
           style="width: 90%"
           class="table-only">
           <el-table-column label="NAME" fix>
@@ -37,12 +37,10 @@
         </el-table-column>
           <el-table-column
             prop="release_date"
-            :formatter="timestampToTime1"
             label="RELEASE">
           </el-table-column>
           <el-table-column
             prop="deadline"
-            :formatter="timestampToTime2"
             label="DUE"
             >
           </el-table-column>
@@ -108,25 +106,44 @@ export default {
         this.$emit('changeState', this.childChange)
       }, 500)
     },
-    timestampToTime1 (row) {
-      let date = new Date(row.release_date * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
+    convertUTCTimeToLocalTime (UTCDateString) {
+      if (!UTCDateString) {
+        return '-'
+      }
+      if (UTCDateString.includes('PM') || UTCDateString.includes('AM')) {
+        return UTCDateString
+      }
+      function formatFunc (str) {
+        return str > 9 ? str : '0' + str
+      }
+      let date2 = new Date(UTCDateString)
+      let year = date2.getFullYear()
+      let mon = formatFunc(date2.getMonth() + 1)
+      let day = formatFunc(date2.getDate())
+      let hour = date2.getHours()
+      let noon = hour >= 12 ? 'PM' : 'AM'
+      hour = hour >= 12 ? hour - 12 : hour
+      hour = formatFunc(hour)
+      let min = formatFunc(date2.getMinutes())
+      return year + '-' + mon + '-' + day + ' ' + noon + ' ' + hour + ':' + min
     },
-    timestampToTime2 (row) {
-      let date = new Date(row.deadline * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
+    getCoState (data) {
+      let that = this
+      if (!data) {
+        return data
+      }
+      let result = []
+      data.map(function (a) {
+        a.deadline = that.convertUTCTimeToLocalTime(a.deadline)
+        a.release_date = that.convertUTCTimeToLocalTime(a.release_date)
+        result.push(a)
+      })
+      return result
+    },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     deleteRow (index, rows) {
       this.$confirm('此操作将永久删除该作业, 是否继续?', '提示', {
@@ -136,8 +153,9 @@ export default {
       }).then(() => {
         if (this.getAuth) {
           this.axios({
-            methods: 'delete',
-            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}`
+            method: 'delete',
+            url: `${this.Api}/course/${this.getUid}/assignment/${rows[index].uid}`,
+            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
           })
             .then((response) => {
               this.$message({
@@ -148,7 +166,11 @@ export default {
               window.location.reload() // todo: bug here
             })
             .catch((err) => {
-              console.log(err)
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
         }
       }).catch(() => {
@@ -172,16 +194,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/course/${this.getUid}/assignment/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.coState = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.coState = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -203,7 +223,7 @@ export default {
   margin-top: 5%;
 }
   .title-main {
-    font-size: 30px;
+    font-size: 40px;
   }
   .col-one {
     float: right;

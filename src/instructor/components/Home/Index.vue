@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-row class="row-main" :gutter="2" v-if="this.getAuth">
-      <el-col :span="4" class="col-quarter">
+      <el-col :span="5" class="col-quarter">
           <el-menu class="el-menu-vertical-demo">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="18">
-         <v-main :passCoInfo="courseInfo"></v-main>
+      <el-col :span="17">
+        <v-main :passCoInfo="courseInfo"></v-main>
       </el-col>
     </el-row>
     <el-row v-else>
@@ -27,24 +27,7 @@ import car from '../../../public/Carousel'
 export default {
   data () {
     return {
-      courseInfo: [{
-        uid: '',
-        name: '',
-        code: '',
-        semester: 'fall',
-        year: 0,
-        homepage: '',
-        instructor: []
-      },
-      {
-        uid: '',
-        name: '',
-        code: '',
-        semester: 'fall',
-        year: 0,
-        homepage: '',
-        instructor: []
-      }]
+      courseInfo: []
     }
   },
   components: {
@@ -55,23 +38,69 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid,
+    getBase: state => state.baseInfo,
     getState: state => state.baseInfo.isInstructor,
+    getReq: state => state.isRequest,
     Api: state => state.api
   }),
   created () {
     if (this.getAuth) {
+      let that = this
+      if (!this.getReq) {
+        this.axios({
+          method: 'get',
+          url: `/user/role` // todo: warning
+        }).then((response) => {
+          this.$store.commit('requested')
+          if (!response.data.is_student && response.data.is_instructor) {
+            that.$store.commit('updateState', {
+              uid: response.data.uid,
+              role: 2
+            })
+            if (that.$route.name === 'indexInstructor') {
+            } else {
+              that.$router.push('/instr') // todo: warning
+            }
+          } else if (response.data.is_student && !response.data.is_instructor) {
+            that.$store.commit('updateState', {
+              uid: response.data.uid,
+              role: 1
+            })
+            if (that.$route.name === 'indexStudent' || that.$route.name === 'homeStudent') {
+            } else {
+              that.$router.push('/') // todo: warning
+            }
+          } else if (!response.data.is_student && !response.data.is_instructor) {
+            that.$store.commit('updateState', {
+              uid: response.data.uid,
+              role: 4
+            })
+            that.$router.push('/uninitialized')
+          } else {
+            that.$store.commit('updateState', {
+              uid: response.data.uid,
+              role: 3
+            })
+          }
+        }).catch((err) => {
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
+        })
+      }
       this.axios({
         method: 'GET',
-        url: `${this.Api}/instructor/${this.getID}/course/`
+        url: `${this.Api}/instructor/${this.getBase.uid}/course/`
       }).then((response) => {
-        if (response.status === 200) {
-          this.courseInfo = response.data
-        } else if (response.status === 401) {
-          this.$router.push('/unauthorized')
-        } else {
-          this.$router.push('/error')
-        }
+        this.courseInfo = response.data
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: err,
+          showClose: true
+        })
       })
     }
   }

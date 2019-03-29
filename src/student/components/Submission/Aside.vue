@@ -15,7 +15,7 @@
         <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
-        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}` }" class="sub-title">Assignment</router-link>
+        <router-link :to="{ path: `/home/course/${this.assignmentDetail.name}` }" class="sub-title">Assignment</router-link>
       </el-col>
     </el-row>
     <el-row class="row-three-forth">
@@ -23,7 +23,7 @@
         <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="18">
-        <router-link :to="{ path: `/home/course/${this.assignmentDetail.uid}/scoreboard/${this.assignmentDetail.name}` }" class="sub-title">Scoreboard</router-link>
+        <router-link :to="{ path: `/home/course/${this.assignmentDetail.name}/scoreboard/${this.assignmentDetail.name}` }" class="sub-title">Scoreboard</router-link>
       </el-col>
     </el-row>
   </div>
@@ -57,6 +57,9 @@ export default {
 }
 </script>
 <style scoped>
+  .aside {
+    padding: 0 20px 0 20px;
+  }
   .subtitle {
     font-size: 20px;
     font-style: italic;
@@ -78,5 +81,7 @@ export default {
   }
   .el-icon-menu {
     margin-left: 10px!important;
+    margin-top: 3px !important;
+    font-size: 20px !important;
   }
 </style>

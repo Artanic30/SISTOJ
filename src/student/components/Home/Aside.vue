@@ -10,15 +10,33 @@
       <span>{{msg}}</span>
     </div>
     </el-col>
+    <el-row class="row-one" v-if="checkRole">
+      <el-col>
+        <span class="title">Tips:</span>
+      </el-col>
+    </el-row>
+    <el-row v-if="checkRole">
+      <el-col>
+        <span class="content1">Since you are instructor and student in the meantime, version switch is available in the account menu.</span>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
       msg: 'Welcome to Shanghai Tech online judge! Click on one of your courses to the right, or on the Account menu above.'
     }
-  }
+  },
+  computed: mapState({
+    getBase: state => state.baseInfo,
+    checkRole () {
+      return this.getBase.isInstructor && this.getBase.isStudent
+    }
+  })
 }
 </script>
 <style>
@@ -27,6 +45,7 @@ export default {
     justify-content: center;
     flex-direction: column;
     margin-top: 20px;
+    padding: 0 20px 0 20px;
   }
   .title1 {
     font-size: 30px;
@@ -38,5 +57,8 @@ export default {
   }
   .row-one {
     margin-top: 20px;
+  }
+  .title {
+    font-size: 30px;
   }
 </style>

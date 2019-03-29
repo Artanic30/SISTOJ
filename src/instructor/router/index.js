@@ -13,6 +13,8 @@ import unAuth from '../../public/Unauthorized'
 import store from '../../student/store'
 import forbidden from '../../public/Forbidden'
 import addcourse from '../components/AddCourse/Index'
+import changePro from '../../public/ChangeProfile'
+import unInit from '../../public/NoRole'
 
 Vue.use(Router)
 
@@ -20,12 +22,12 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
+      name: 'indexInstructor',
       component: index
     },
     {
       path: '/home',
-      name: 'Home',
+      name: 'homeInstructor',
       component: index
     },
     {
@@ -41,9 +43,20 @@ const router = new Router({
       meta: { requiresAuth: true }
     },
     {
+      path: '/uninitialized',
+      name: 'uninitialized',
+      component: unInit
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: profile,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/changeProfile',
+      name: 'changeProfile',
+      component: changePro,
       meta: { requiresAuth: true }
     },
     {

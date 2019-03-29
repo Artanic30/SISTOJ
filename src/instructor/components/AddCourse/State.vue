@@ -47,7 +47,7 @@
             <template slot-scope="scope">
               <el-dropdown>
                 <span class="el-dropdown-link">
-                  Click here<i class="el-icon-arrow-down el-icon--right"></i>
+                  Here<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item v-for="item in scope.row.instructor" :key="item">{{ item }}</el-dropdown-item>
@@ -105,6 +105,11 @@ export default {
         this.$emit('changeState', this.childChange)
       }, 500)
     },
+    getCookie (name) {
+      let value = '; ' + document.cookie
+      let parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
     deleteRow (index, rows) {
       this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -113,8 +118,9 @@ export default {
       }).then(() => {
         if (this.getAuth) {
           this.axios({
-            methods: 'delete',
-            url: `${this.Api}/course/${rows[index].uid}`
+            method: 'delete',
+            url: `${this.Api}/course/${rows[index].uid}`,
+            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
           }).then((response) => {
             this.$message({
               type: 'success',
@@ -123,7 +129,11 @@ export default {
             rows.splice(index, 1)
           })
             .catch((err) => {
-              console.log(err)
+              this.$message({
+                type: 'error',
+                message: err,
+                showClose: true
+              })
             })
         }
       }).catch(() => {
@@ -138,16 +148,14 @@ export default {
     if (this.getAuth) {
       this.axios.get(`${this.Api}/instructor/${this.getID}/course/`)
         .then((response) => {
-          if (response.status === 200) {
-            this.courseList = response.data
-          } else if (response.status === 401) {
-            this.$router.push('/unauthorized')
-          } else {
-            this.$router.push('/error')
-          }
+          this.courseList = response.data
         })
         .catch((err) => {
-          console.log(err)
+          this.$message({
+            type: 'error',
+            message: err,
+            showClose: true
+          })
         })
     }
   },
@@ -164,10 +172,11 @@ export default {
   margin-top: 5%;
 }
   .title-main {
-    font-size: 30px;
+    font-size: 40px;
   }
   .col-one {
     float: right;
+    margin-right: 60px !important;
   }
   .el-icon-plus {
     color: white!important;

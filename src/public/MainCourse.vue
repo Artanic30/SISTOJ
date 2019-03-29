@@ -5,12 +5,12 @@
         <span class="title-main">Your Courses</span>
       </el-col>
     </el-row>
-    <el-row class="row-main">
+    <el-row class="row-main" v-if="!this.show">
       <el-col>
-         <span class="subtitle">{{ courseInfo[0].semester + ' ' + courseInfo[0].year }}</span>
+         <span class="subtitle">{{ getYear(this.courseInfo) }}</span>
       </el-col>
     </el-row>
-       <el-card class="box-card" v-for="a in courseInfo" :key="a.uid">
+       <el-card class="box-card" v-for="a in courseInfo" :key="a.uid" >
          <el-button class="button-course" @click="toCourse(a)">
                 <el-row class="row-button">
                   <span class="title-sub">{{ a.code }}</span>
@@ -19,10 +19,17 @@
                     <span class="title-forth">{{ a.name }}</span>
                 </el-row>
                 <el-row class="button-third" type="flex">
-                    <span class="title-fifth">{{ a.instructor[0] }} {{ a.instructor[1] }}</span>
+                    <span class="title-fifth">{{ getInstr(a.instructor) }}</span>
                 </el-row>
          </el-button>
        </el-card>
+    <el-row class="row-main" v-if="this.show">
+      <el-col>
+        <el-card class="card-index">
+          <span class="title-notify">Opps! You're not currently associated with any courses....</span>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -31,18 +38,42 @@ export default {
   data () {
     return {
       courseInfo: [],
+      show: true,
       student_id: 0
     }
   },
   methods: {
     toCourse (course) {
       this.$store.commit('updateCoInfo', course)
-      this.$router.push('home/course/' + course.uid)
+      if (this.$route.name === 'indexInstructor') {
+        this.$router.push('instr/home/course/' + course.code)
+      } else {
+        this.$router.push('home/course/' + course.code)
+      }
+    },
+    getYear (info) {
+      if (info.length === 0) {
+        return ''
+      } else {
+        return info[0].semester + ' ' + info[0].year
+      }
+    },
+    getInstr (instr) {
+      if (instr.length === 0) {
+        return ''
+      } else if (instr.length === 1) {
+        return instr[0].slice(0, 14) + '...'
+      } else {
+        return instr[0].slice(0, 14) + '...' + ' ' + instr[1].slice(0, 14) + '...'
+      }
     }
   },
   props: ['passCoInfo'],
   watch: {
     passCoInfo: function name (newValue) {
+      if (newValue.length > 0) {
+        this.show = false
+      }
       this.courseInfo = newValue
     }
   },
@@ -75,8 +106,8 @@ export default {
   }
   .button-course {
     background-color: #f6f0f0;
-    height: 250px;
-    width: 400px;
+    height: 250px!important;
+    width: 400px!important;
     padding: 0 0 0 0;
   }
   .row-button {
@@ -102,5 +133,11 @@ export default {
   .title-fifth {
     margin: 30px 0 0 4%;
     color: white;
+  }
+  .title-notify {
+    font-size: 30px;
+  }
+  .card-index {
+    padding: 50px;
   }
 </style>

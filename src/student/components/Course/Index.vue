@@ -1,12 +1,12 @@
 <template>
-  <div class="index">
-    <el-row class="row-height" :gutter="6">
+  <div>
+    <el-row class="row-height" :gutter="2">
       <el-col :span="4" class="col-one">
           <el-menu class="menu-only">
             <v-aside></v-aside>
           </el-menu>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="17">
          <v-main></v-main>
       </el-col>
     </el-row>
@@ -39,7 +39,6 @@ export default {
   .menu-only {
     float: left;
     margin-right: 5%;
-    width: 220px;
     min-height: 1000px;
   }
 </style>

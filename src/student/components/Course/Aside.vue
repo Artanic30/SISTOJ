@@ -28,7 +28,7 @@
         <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
-        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.enroll_email }}">{{ a.name }}</router-link>
+        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.enroll_email }}">{{ getEmail(a) }}</router-link>
       </el-col>
     </el-row>
   </div>
@@ -47,6 +47,16 @@ export default {
       }]
     }
   },
+  methods: {
+    getEmail (instr) {
+      let email = instr.enroll_email
+      if (instr.name) {
+        return instr.name
+      } else {
+        return email.slice(0, 14) + '...'
+      }
+    }
+  },
   created () {
     this.coInfo = this.getCoInfo
     if (this.getAuth) {
@@ -54,13 +64,13 @@ export default {
         method: 'GET',
         url: `${this.Api}/course/${this.coInfo.uid}/instructor/`
       }).then((response) => {
-        if (response.status === 200) {
-          this.instructors = response.data
-        } else if (response.status === 401) {
-          this.$router.push('/unauthorized')
-        } else {
-          this.$router.push('/error')
-        }
+        this.instructors = response.data
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: err,
+          showClose: true
+        })
       })
     }
   },
@@ -76,7 +86,7 @@ export default {
     margin-top: 10%;
   }
   .aside {
-    padding-left: 4%;
+    padding: 0 20px 0 20px;
   }
   .subtitle {
     font-size: 15px;
@@ -100,14 +110,16 @@ export default {
     font-style: inherit;
   }
   .el-icon-menu {
-    margin-left: 10px!important;
+    margin-left: 10px !important;
+    margin-top: 3px !important;
+    font-size: 20px !important;
   }
   .row-half {
     margin-top: 10%;
   }
   .el-icon-info {
-    margin-left: 10px!important;
-    height: 17px!important;
+    margin-left: 10px !important;
+    font-size: 20px !important;
   }
   .row-quarter {
     margin-top: 5%;

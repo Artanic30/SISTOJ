@@ -10,7 +10,23 @@
           </el-row>
         </el-card>
       </el-col>
-      <el-row>
+      <el-row class="row-only">
+        <el-col>
+          <el-card>
+            <el-row class="margins">
+              <el-col>
+                <span>
+                  <span class="code-two">git@git.geekpie.club:{{this.lower(this.getCoInfo.code)}}-{{this.lower(this.getCoInfo.year + this.getCoInfo.semester)}}/{{this.lower(this.getAss.short_name)}}/{{this.lower(this.email)}}.git </span>
+                    is the repo for your homework. To access
+                  your repo and submit your homework, clone it use
+                  <span class="code-two"> git clone git@oj.geekpie.club:{{this.lower(this.getCoInfo.code)}}-{{this.lower(this.getCoInfo.year + this.getCoInfo.semester)}}/{{this.lower(this.getAss.short_name)}}/{{this.lower(this.email)}}.git </span>
+                  {{this.getAss.short_name}} and follow the instruction of your TAs in discussion.</span>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row class="row-only">
         <el-col>
           <el-card class="card-only">
             <el-row class="margins">
@@ -21,17 +37,15 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row class="row-only">
         <el-col>
             <el-table
-            :data="submission"
+            :data="getSubmission(submission)"
             class="table-only"
-            :default-sort = "{prop: 'date', order: 'descending'}"
-            >
+            :default-sort = "{prop: 'date', order: 'descending'}">
             <el-table-column
               prop="submission_time"
               label="When"
-              :formatter="timestampToTime"
               sortable>
             </el-table-column>
             <el-table-column
@@ -66,6 +80,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -88,33 +104,84 @@ export default {
         release_date: 0,
         descr_link: ''
       },
-      message: ''
+      message: '',
+      email: ''
     }
   },
+  computed: mapState({
+    getAss: state => state.assignments,
+    getCoInfo: state => state.coInfo,
+    getID: state => state.baseInfo.uid,
+    Api: state => state.api
+  }),
   props: ['deliverDetail', 'deliverInfo'],
   mounted () {
     this.submission = this.deliverDetail
     this.assignmentDetail = this.deliverInfo
+    this.axios({
+      method: 'GET',
+      url: `${this.Api}/student/${this.getID}`
+    }).then((response) => {
+      let index = response.data.email.indexOf('@')
+      this.email = response.data.email.slice(0, index)
+    }).catch((err) => {
+      this.$message({
+        type: 'error',
+        message: err,
+        showClose: true
+      })
+    })
   },
   methods: {
     showMessage (data) {
       this.message = data.message
     },
-    timestampToTime (row) {
-      let date = new Date(row.submission_time * 1000)
-      let Y = date.getFullYear() + '-'
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-      let D = date.getDate() + ' '
-      let h = date.getHours() + ':'
-      let m = date.getMinutes() + ':'
-      let s = date.getSeconds()
-      return Y + M + D + h + m + s
+    lower (word) {
+      if (word === undefined) {
+        return ''
+      } else {
+        return word.toLowerCase()
+      }
+    },
+    getSubmission (data) {
+      let that = this
+      if (!data) {
+        return data
+      }
+      let result = []
+      data.map(function (a) {
+        a.submission_time = that.convertUTCTimeToLocalTime(a.submission_time)
+        result.push(a)
+      })
+      return result
+    },
+    convertUTCTimeToLocalTime (UTCDateString) {
+      if (!UTCDateString) {
+        return '-'
+      }
+      if (UTCDateString.includes('PM') || UTCDateString.includes('AM')) {
+        return UTCDateString
+      }
+      function formatFunc (str) {
+        return str > 9 ? str : '0' + str
+      }
+      let date2 = new Date(UTCDateString)
+      let year = date2.getFullYear()
+      let mon = formatFunc(date2.getMonth() + 1)
+      let day = formatFunc(date2.getDate())
+      let hour = date2.getHours()
+      let noon = hour >= 12 ? 'PM' : 'AM'
+      hour = hour >= 12 ? hour - 12 : hour
+      hour = formatFunc(hour)
+      let min = formatFunc(date2.getMinutes())
+      return year + '-' + mon + '-' + day + ' ' + noon + ' ' + hour + ':' + min
     }
   },
   watch: {
     deliverDetail: function name (newValue) {
       this.submission = newValue
       this.message = this.submission[0].message
+      console.log(newValue)
     }
   }
 }
@@ -140,5 +207,12 @@ export default {
   }
   .table-only {
     width: 100%;
+  }
+  .row-only {
+    margin-top: 2%;
+  }
+  .code-two {
+    font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    font-size: 15px;
   }
 </style>

@@ -23,7 +23,7 @@
         <i class="el-icon-menu"></i>
       </el-col>
       <el-col :span="15">
-        <router-link :to="{ path: `/home/course/${this.coInfo.uid}` }" class="sub-title">Assignment</router-link>
+        <router-link :to="{ path: `/home/course/${this.coInfo.code}` }" class="sub-title">Assignment</router-link>
       </el-col>
     </el-row>
     <el-row class="row-half">
@@ -36,7 +36,7 @@
         <i class="el-icon-info"></i>
       </el-col>
       <el-col :span="18">
-        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.enroll_email }}">{{ a.name }}</router-link>
+        <router-link class="instr" :to="{ path: '/instrProfile', query: { instr_uid: a.enroll_email }}">{{ getEmail(a) }}</router-link>
       </el-col>
     </el-row>
   </div>
@@ -56,6 +56,16 @@ export default {
       }]
     }
   },
+  methods: {
+    getEmail (instr) {
+      let email = instr.enroll_email
+      if (instr.name) {
+        return instr.name
+      } else {
+        return email.slice(0, 14) + '...'
+      }
+    }
+  },
   created () {
     this.coInfo = this.getCoInfo
     if (this.getAuth) {
@@ -63,13 +73,13 @@ export default {
         method: 'GET',
         url: `${this.Api}/course/${this.coInfo.uid}/instructor/`
       }).then((response) => {
-        if (response.status === 200) {
-          this.instructors = response.data
-        } else if (response.status === 401) {
-          this.$router.push('/unauthorized')
-        } else {
-          this.$router.push('/error')
-        }
+        this.instructors = response.data
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: err,
+          showClose: true
+        })
       })
     }
   },
@@ -81,6 +91,9 @@ export default {
 }
 </script>
 <style scoped>
+  .aside {
+    padding: 0 20px 0 20px;
+  }
   .subtitle {
     font-size: 15px;
     font-style: italic;
@@ -106,6 +119,8 @@ export default {
     margin-top: 10%;
   }
   .el-icon-menu {
+    margin-top: 3px !important;
+    font-size: 20px !important;
     margin-left: 10px!important;
   }
   .row-quarter {
@@ -113,5 +128,6 @@ export default {
   }
   .el-icon-info {
     margin-left: 10px!important;
+    font-size: 20px !important;
   }
 </style>
