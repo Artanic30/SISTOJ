@@ -83,24 +83,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         'app'
       ]
     }),
-    new HtmlWebpackPlugin({
-      filename: 'instructor.html',
-      template: './src/test.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      chunksSortMode: 'dependency',
-      chunks: [
-        'vendor',
-        'manifest',
-        'app2'
-      ]
-    }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting

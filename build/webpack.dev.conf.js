@@ -62,25 +62,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         'app'
       ]
     }),
-    new HtmlWebpackPlugin({
-      filename: 'instructor.html',
-      template: './src/test.html',
-      inject: true,
-      // import variable name from base.config.js
-      chunks: [
-        'vendor',
-        'manifest',
-        'app2'
-      ]
-    })
     // copy custom static assets
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: path.resolve(__dirname, '../static'),
-    //     to: config.dev.assetsSubDirectory,
-    //     ignore: ['.*']
-    //   }
-    // ])
+    new CopyWebpackPlugin([
+        {
+         from: path.resolve(__dirname, '../static'),
+         to: config.dev.assetsSubDirectory,
+         ignore: ['.*']
+        }
+     ])
   ]
 })
 
