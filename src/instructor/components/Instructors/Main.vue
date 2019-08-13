@@ -15,6 +15,7 @@
           <el-table
           :data="instructorList"
           style="width: 100%"
+          v-loading="loading"
           stripe>
           <el-table-column
             prop="name"
@@ -54,7 +55,8 @@ export default {
         name: '',
         enroll_email: ''
       }],
-      childChange: false
+      childChange: false,
+      loading: true
     }
   },
   methods: {
@@ -68,7 +70,7 @@ export default {
           this.axios({
             method: 'delete',
             url: `${this.Api}/course/${this.getUid}/instructor/${rows[index].enroll_email}`,
-            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+            headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
           }).then((response) => {
             this.$message({
               type: 'success',
@@ -91,11 +93,6 @@ export default {
         })
       })
     },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
     addInstructor () {
       const loading = this.$loading({
         lock: true,
@@ -114,6 +111,7 @@ export default {
       this.axios.get(`${this.Api}/course/${this.getUid}/instructor/`)
         .then((response) => {
           this.instructorList = response.data
+          this.loading = false
         })
         .catch((err) => {
           this.$message({

@@ -33,10 +33,28 @@
           <el-form-item label="Homepage:" prop="homepage">
             <el-input v-model="courseInfo.homepage" placeholder="https://github.com"></el-input>
           </el-form-item>
-          <el-form-item label="Instructor Email:" prop="instructor" v-for="item in courseInfo.instructor" :key="item.enroll_email">
-            <el-input v-model="item.enroll_email">
-              <el-button slot="append" class="el-icon-close" @click="DeleteEmail(item.enroll_email)"></el-button>
-            </el-input>
+          <el-form-item label="Instructor Email:">
+            <el-table
+              :data="courseInfo.instructor"
+              style="width: 100%"
+              max-height="250">
+              <el-table-column
+                fixed
+                prop="enroll_email"
+                label="Email"
+                width="600">
+              </el-table-column>
+              <el-table-column>
+                <template slot-scope="scope">
+                  <el-button
+                    @click.native.prevent="deleteRow(scope.$index, courseInfo.instructor)"
+                    type="text"
+                    size="small">
+                    移除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form-item>
           <el-form-item label="Add Instructor:" prop="tem_instr">
             <el-input v-model="courseInfo.tem_instr" class="input-short" placeholder="instructor's email"></el-input>
@@ -79,7 +97,7 @@ export default {
         name: '',
         code: '',
         semester: '',
-        year: 0,
+        year: 2019,
         homepage: '',
         instructor: [],
         tem_instr: ''
@@ -121,6 +139,18 @@ export default {
       }
     }
   },
+  created () {
+    this.axios.get(`${this.Api}/instructor/${this.getID}`).then(response => {
+      this.courseInfo.instructor.push({enroll_email: response.data.email})
+    })
+      .catch(err => {
+        this.$message({
+          type: 'error',
+          message: err.status,
+          showClose: true
+        })
+      })
+  },
   methods: {
     goBack () {
       const loading = this.$loading({
@@ -134,11 +164,6 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -147,7 +172,7 @@ export default {
               method: 'post',
               url: `${this.Api}/instructor/${this.getID}/course/`,
               data: this.courseInfo,
-              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+              headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
             }).then((response) => {
               alert('submit!')
               window.location.reload()
@@ -165,11 +190,11 @@ export default {
         }
       })
     },
-    DeleteEmail (email) {
-      let that = this
-      this.courseInfo.instructor.map(function (currentValue, index) {
-        if (currentValue.enroll_email === email) {
-          that.courseInfo.instructor.splice(index, 1)
+    deleteRow (index, rows) {
+      let email = this.courseInfo.instructor[index]
+      this.courseInfo.instructor.map((currentValue, index) => {
+        if (currentValue.enroll_email === email.enroll_email) {
+          this.courseInfo.instructor.splice(index, 1)
         }
       })
     },
@@ -183,7 +208,6 @@ export default {
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid,
     getID: state => state.baseInfo.uid,
     Api: state => state.api
   })

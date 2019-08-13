@@ -136,14 +136,7 @@ const returnInstructorList = function () {
 }
 
 const returnCourseJudge = function () {
-  let List = []
-  for (let i = 0; i <= 3; i++) {
-    let list = {
-      'uid': Random.guid()
-    }
-    List.push(list)
-  }
-  return List
+  return ['11111', '22222', '33333', '444444', '555555', '666666', '777777']
 }
 
 const returnRole = function () {
@@ -167,7 +160,9 @@ const login = function () {
     'login_url': Random.url()
   }
 }
-// Mock.mock( url, post/get , 返回的数据);
+
+// Mock.mock( url, post/get , 返回的数据);    wasted mock.js!!!!!!
+Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', {'uid': Random.guid(), 'name': Random.name(), 'email': Random.email()})
 Mock.mock(/[-0-9a-zA-Z/:]+\/user\/login\/oauth\/param/, 'get', login)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)

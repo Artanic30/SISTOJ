@@ -19,20 +19,12 @@ import aside from './Aside'
 
 export default {
   data () {
-    return {
-      coInfo: {
-      }
-    }
+    return {}
   },
   components: {
     'v-main': main,
     'v-na': na,
     'v-aside': aside
-  },
-  methods: {
-  },
-  created () {
-    this.coInfo = this.$store.state.coInfo
   }
 }
 </script>

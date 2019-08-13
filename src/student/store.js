@@ -10,7 +10,6 @@ const vuexLocal = new VuexPersistence({
 
 const store = new Vuex.Store({
   state: {
-    isRequest: false,
     isAuthorized: false,
     coInfo: {
       uid: '',
@@ -31,6 +30,8 @@ const store = new Vuex.Store({
       score: 0,
       overall_socre: 0
     },
+    course_storage: [],
+    ass_storage: [],
     baseInfo: {
       uid: '',
       isInstructor: false,
@@ -39,16 +40,37 @@ const store = new Vuex.Store({
     api: '',
     logout_url: ''
   },
+  getters: {
+    codeToUid: (state) => (value) => {
+      let result = ''
+      if (value.cate === 'course') {
+        state.course_storage.map(item => {
+          if (item.code === value.code) {
+            result = item.uid
+            state.coInfo = item
+          }
+        })
+      } else if (value.cate === 'assignment') {
+        state.ass_storage.map(item => {
+          if (item.name === value.code) {
+            result = item.uid
+            state.assignemnts = item
+          }
+        })
+      }
+      return result
+    }
+  },
   mutations: {
-    updateCoInfo (state, value) {
-      state.coInfo = value
-    },
     updateAss (state, value) {
       state.assignments = value
     },
     login (state, url) {
       state.isAuthorized = true
-      state.logout_url = url
+      if (url === null) {
+      } else {
+        state.logout_url = url
+      }
     },
     logOut (state) {
       state.isAuthorized = false
@@ -69,6 +91,13 @@ const store = new Vuex.Store({
         state.baseInfo.isInstructor = false
       }
     },
+    InstrUpdateScoreBoard (state, AssUid, CoUid) {
+      state.assignments.uid = AssUid
+      state.coInfo.uid = CoUid
+    },
+    updateCourse (state, course) {
+      state.coInfo = course
+    },
     requested (state) {
       state.isRequest = true
     },
@@ -77,6 +106,12 @@ const store = new Vuex.Store({
     },
     updateApi (state, value) {
       state.api = value
+    },
+    loadCourse (state, courses) {
+      state.course_storage = courses
+    },
+    loadAss (state, assignments) {
+      state.ass_storage = assignments
     }
   },
   plugins: [vuexLocal.plugin]

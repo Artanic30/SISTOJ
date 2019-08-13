@@ -18,7 +18,8 @@
     <el-row>
       <el-col>
         <el-table
-        :data="getCoState(coState)"
+        :data="coState"
+        v-loading="loading"
         style="width: 100%"
         stripe>
         <el-table-column label="NAME">
@@ -81,7 +82,7 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -96,7 +97,8 @@ export default {
         submission_time: 0,
         submitter: ''
       }],
-      length: 0
+      length: 0,
+      loading: true
     }
   },
   methods: {
@@ -104,13 +106,14 @@ export default {
       window.location.href = scope.row.descr_link
     },
     colors (situation) { // don't use state as the variable name
-      if (situation.grade >= 70) {
+      let grade = situation.score / situation.overall_score
+      if (grade >= 0.7) {
         return 'background-color: #67C23A;color: white;width: 100px;'
-      } else if (situation.grade >= 50) {
+      } else if (grade >= 0.5) {
         return 'background-color: #E6A23C;color: white;width: 100px;'
-      } else if (situation.grade >= 20) {
+      } else if (grade >= 0.2) {
         return 'background-color: #F56C6C;color: white;width: 100px;'
-      } else if (situation.grade === null || situation.grade === undefined) {
+      } else if (grade === null || grade === undefined) {
         return 'background-color: #909399;color: white;width: 100px;'
       } else {
         return 'background-color: black;color: white;width: 100px;'
@@ -124,32 +127,11 @@ export default {
       this.$router.push(`${this.$route.path}/submission/${info.name}`)
     },
     getScore (row) {
-      if (row.grade === null || row.grade === undefined) {
+      if (row.score === null || row.score === undefined) {
         return 'no result'
       } else {
-        return row.grade
+        return `${row.score}/${row.overall_score}`
       }
-    },
-    convertUTCTimeToLocalTime (UTCDateString) {
-      if (!UTCDateString) {
-        return '-'
-      }
-      if (UTCDateString.includes('PM') || UTCDateString.includes('AM')) {
-        return UTCDateString
-      }
-      function formatFunc (str) {
-        return str > 9 ? str : '0' + str
-      }
-      let date2 = new Date(UTCDateString)
-      let year = date2.getFullYear()
-      let mon = formatFunc(date2.getMonth() + 1)
-      let day = formatFunc(date2.getDate())
-      let hour = date2.getHours()
-      let noon = hour >= 12 ? 'PM' : 'AM'
-      hour = hour >= 12 ? hour - 12 : hour
-      hour = formatFunc(hour)
-      let min = formatFunc(date2.getMinutes())
-      return year + '-' + mon + '-' + day + ' ' + noon + ' ' + hour + ':' + min
     },
     getCoState (data) {
       let that = this
@@ -158,11 +140,44 @@ export default {
       }
       let result = []
       data.map(function (a) {
-        a.deadline = that.convertUTCTimeToLocalTime(a.deadline)
-        a.release_date = that.convertUTCTimeToLocalTime(a.release_date)
+        if (a.deadline) {
+          a.deadline = that.formatUTC(a.deadline)
+        } else {
+          a.deadline = 'no time!'
+        }
+        if (a.release_date) {
+          a.release_datee = that.formatUTC(a.release_date)
+        } else {
+          a.release_date = 'no time!'
+        }
         result.push(a)
       })
       return result
+    },
+    formatUTC (utcdatetime) {
+      let Tpos = utcdatetime.indexOf('T')
+      let Zpos = utcdatetime.indexOf('Z')
+      let yearmonthday = utcdatetime.substr(0, Tpos)
+      let hourminutesecond = utcdatetime.substr(Tpos + 1, Zpos - Tpos - 1)
+      let newdatetime = yearmonthday + ' ' + hourminutesecond
+      let timestamp = new Date(Date.parse(newdatetime))
+      timestamp = timestamp.getTime()
+      timestamp = timestamp / 1000
+      timestamp = timestamp + 8 * 60 * 60
+      return new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, '-').replace(/日/g, ' ')
+    },
+    filterUid (code) {
+      let uid = this.codeToUid({
+        code: code,
+        cate: 'course'
+      })
+      if (uid === '') {
+        this.$router.push({
+          name: 'notFound'
+        })
+      } else {
+        return uid
+      }
     }
   },
   mounted () {
@@ -170,10 +185,12 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`${this.Api}/student/${this.getID}/course/${this.getUid}/assignment/`)
+      this.axios.get(`${this.Api}/student/${this.getID}/course/${this.filterUid(this.$route.params.course_code)}/assignment/`)
         .then((response) => {
           this.length = response.data.length
-          this.coState = response.data
+          this.coState = this.getCoState(response.data)
+          this.$store.commit('loadAss', this.coState)
+          this.loading = false
         }).catch((err) => {
           this.$message({
             type: 'error',
@@ -195,13 +212,18 @@ export default {
         })
     }
   },
-  computed: mapState({
-    getAuth: state => state.isAuthorized,
-    getID: state => state.baseInfo.uid,
-    getUid: state => state.coInfo.uid,
-    getCoInfo: state => state.coInfo,
-    Api: state => state.api
-  })
+  computed: {
+    ...mapGetters([
+      'codeToUid'
+    ]),
+    ...mapState({
+      getAuth: state => state.isAuthorized,
+      getID: state => state.baseInfo.uid,
+      getUid: state => state.coInfo.uid,
+      getCoInfo: state => state.coInfo,
+      Api: state => state.api
+    })
+  }
 }
 </script>
 <style scoped>

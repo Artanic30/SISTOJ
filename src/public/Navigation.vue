@@ -53,7 +53,6 @@ export default {
     getBase: state => state.baseInfo,
     getUid: state => state.coInfo.uid,
     getCoInfo: state => state.coInfo,
-    getReq: state => state.isRequest,
     Api: state => state.api,
     getLogout: state => state.logout_url,
     profilePage () {
@@ -69,20 +68,24 @@ export default {
   methods: {
     logout () {
       this.$store.commit('logOut')
-      this.$store.commit('refreshReq')
-      this.axios({
-        method: 'post',
-        url: `${this.getLogout}`,
-        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
-      })
-      this.$cookies.delete('sessionid')
-      this.$router.push('/')
+      this.$cookies.remove('sessionid')
+      window.location.href = `${this.getLogout}`
     },
     goBack () {
       this.$router.go(-2)
     },
     backHome () {
-      this.$router.push('/')
+      if (this.getBase.isStudent && !this.getBase.isInstructor) {
+        this.$router.push('/')
+      } else if (!this.getBase.isStudent && this.getBase.isInstructor) {
+        this.$router.push('/instr')
+      } else {
+        if (this.$route.path.includes('instr')) {
+          this.$router.push('/instr')
+        } else {
+          this.$router.push('/')
+        }
+      }
     },
     login () {
       if (!this.getAuth) {
@@ -106,60 +109,91 @@ export default {
           })
         })
       }
-    },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
     }
   },
   created () {
     let that = this
     this.$store.commit('updateApi', location.hostname) // todo:warning  'https://' + location.hostname + '/api'
-    if (this.getAuth && !this.getReq) {
+    const loading = this.$loading({
+      lock: true,
+      text: 'Initializing!',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+    setTimeout(() => {
       this.axios({
         method: 'get',
         url: `https://${location.hostname}/api/user/role`
       }).then((response) => {
-        this.$store.commit('requested')
+        loading.close()
+        this.$store.commit('login', null)
+        this.$notify({
+          title: 'Success!',
+          message: 'Connection with potato server established!',
+          type: 'success',
+          offset: 50
+        })
         if (!response.data.is_student && response.data.is_instructor) {
           that.$store.commit('updateState', {
             uid: response.data.uid,
             role: 2
           })
-          if (that.$route.name === 'indexInstructor') {
-          } else {
-            that.$router.push('/instr')
-          }
         } else if (response.data.is_student && !response.data.is_instructor) {
           that.$store.commit('updateState', {
             uid: response.data.uid,
             role: 1
           })
-          if (that.$route.name === 'indexStudent' || that.$route.name === 'homeStudent') {
-          } else {
-            that.$router.push('/')
-          }
         } else if (!response.data.is_student && !response.data.is_instructor) {
           that.$store.commit('updateState', {
             uid: response.data.uid,
             role: 4
           })
-          this.$router.push('/uninitialized')
+          setTimeout(() => {
+            this.$notify({
+              title: 'Warning!',
+              message: 'No role detected, you will be redirect to another page!',
+              type: 'warning',
+              offset: 50
+            })
+            setTimeout(() => {
+              this.$router.push('/uninitialized')
+            }, 3000)
+          }, 1000)
         } else {
+          setTimeout(() => {
+            this.$notify({
+              title: 'Tips!',
+              message: 'Double roles detected! Version switch is available in the account menu.',
+              type: 'info',
+              offset: 50
+            })
+          }, 1000)
           that.$store.commit('updateState', {
             uid: response.data.uid,
             role: 3
           })
         }
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: err,
-          showClose: true
+      }).catch(() => {
+        loading.close()
+        this.$notify({
+          title: 'Failure!',
+          message: 'Lost synchronism with potato server!',
+          type: 'error'
         })
+        setTimeout(() => {
+          this.$notify({
+            title: 'Info!',
+            message: 'Please login again!',
+            type: 'info'
+          })
+          setTimeout(() => {
+            this.$store.commit('logOut')
+            this.$cookies.remove('sessionid')
+            this.$router.push('/')
+          }, 3000)
+        }, 1000)
       })
-    }
+    }, 1000)
   }
 }
 </script>

@@ -17,7 +17,7 @@ const returnStudentCourseList = function () {
     let course = {
       'uid': Random.guid(),
       'name': Random.name(),
-      'code': Random.guid(),
+      'code': 'CS10' + i,
       'semester': Random.season(),
       'year': 2019,
       'homepage': Random.domain(),
@@ -38,9 +38,10 @@ const returnCourseAssignment = function () {
       'name': Random.name(),
       'descr_link': 'http://www.baidu.com',
       'short_name': Random.name(),
-      'grade': Random.natural(0, 100),
+      'score': Random.natural(0, 100),
+      'overall_score': 100,
       'release_date': '2018-01-22T09:12:43.083Z',
-      'deadline': '2017-11-16T05:23:20.000Z'
+      'deadline': '2019-08-07T15:59:59Z'
     }
     assignments.push(assignment)
   }
@@ -57,7 +58,7 @@ const returnSubmissionHistory = function () {
       'score': Random.natural(10, 100),
       'overall_score': Random.natural(10, 100),
       'submission_time': '2018-01-22T09:12:43.083Z',
-      'delta': Random.natural(0, 20)
+      'delta': Random.natural(-20, 20)
     }
     submissionHistorys.push(submissionHistory)
   }
@@ -71,8 +72,8 @@ const returnAssignmentScoreboard = function () {
       'nickname': Random.name(),
       'score': Random.natural(10, 100),
       'overall_score': Random.natural(100, 120),
-      'submission_time': Random.natural(1000000000, 9999999999),
-      'delta': Random.natural(0, 10)
+      'submission_time': null,
+      'delta': Random.natural(-10, 10)
     }
     scoreBoard.push(scores)
   }
@@ -116,7 +117,8 @@ const returnInstructor = function () {
 
 const login = function () {
   return {
-    'login_url': Random.url()
+    'login_url': Random.url(),
+    'logout_url': 'https://www.baidu.com'
   }
 }
 
@@ -125,7 +127,7 @@ const returnAssignments = function () {
   for (let i = 0; i <= 6; i++) {
     let scores = {
       'uid': Random.guid(),
-      'course_uid': Random.guid(),
+      'course_id': Random.guid(),
       'name': Random.name(),
       'deadline': '2018-01-22T09:12:43.083Z',
       'release_date': '2018-01-22T09:12:43.083Z',
@@ -160,7 +162,7 @@ const returnJudges = function () {
   let judgeList = []
   for (let i = 0; i <= 4; i++) {
     let judge = {
-      'uid': 100 + i,
+      'uid': `100 + ${i}`,
       'host': `1.1.1.${i}`,
       'max_job': Random.natural(1, 6)
     }
@@ -196,20 +198,25 @@ const returnInstructorList = function () {
 }
 
 const returnCourseJudge = function () {
-  let List = []
-  for (let i = 0; i <= 3; i++) {
-    let list = {
-      'uid': Random.guid()
+  let List = [
+    {
+      'uid': 'test1'
+    },
+    {
+      'uid': 'test1'
+    },
+    {
+      'uid': 'test2'
     }
-    List.push(list)
-  }
+  ]
   return List
 }
 
 const returnJudgeInfo = function () {
+  let count = Random.natural(7, 8)
   return {
-    'uid': 'test',
-    'host': '1.1.1.1',
+    'uid': `test${count}`,
+    'host': '1.1.2.' + count,
     'max_job': Random.natural(1, 6)
   }
 }
@@ -222,12 +229,13 @@ const returnRole = function () {
   }
 }
 // Mock.mock( url, post/get , 返回的数据)
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'delete', {})
 Mock.mock(/[-0-9a-zA-Z]+\/student\/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/history/, 'get', returnSubmissionHistory)
 Mock.mock(/[-0-9a-zA-Z]+\/student\/[-a-zA-Z0-9]+\/course\/[-a-zA-Z0-9]+\/assignment/, 'get', returnCourseAssignment)
 Mock.mock(/[-0-9a-zA-Z]+\/student\/[-0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
 Mock.mock(/[-0-9a-zA-Z]+\/student\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
 Mock.mock(/[-0-9a-zA-Z/:]+\/user\/login\/oauth\/param/, 'get', login)
-Mock.mock(/api\/user\/role/, 'get', returnRole)
+Mock.mock(/[-0-9a-zA-Z/:]+\/user\/role/, 'get', returnRole)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/scores/, 'get', returnAssignmentScoreboard())
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', returnInstructor)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-a-zA-Z0-9]+\/queue/, 'get', returnPendingAssignment())
@@ -239,11 +247,10 @@ Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judg
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment\/[-0-9a-zA-Z]+\/judge/, 'get', returnJudges2)
 Mock.mock(/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'get', returnJudgeInfo)
 Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+\/course/, 'post', 'success')
-Mock.mock(/[-0-9a-zA-Z/:]+\/api\/user\/role/, 'get', returnRole)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/students/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'post', 'success')
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge\/[-0-9a-zA-Z]+/, 'post', 'success')
-Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge/, 'get', returnCourseJudge())
+Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/judge/, 'get', returnCourseJudge)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment/, 'post', {ssh_url_to_repo: Random.url(), uid: Random.guid()})
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructorList())
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/students/, 'get', returnStudentList())
@@ -253,3 +260,4 @@ Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'ge
 Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+\/course/, 'get', returnStudentCourseList)
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/assignment/, 'get', returnAssignments())
 Mock.mock(/[-0-9a-zA-Z]+\/course\/[-0-9a-zA-Z]+\/instructor/, 'get', returnInstructors)
+Mock.mock(/[-0-9a-zA-Z]+\/instructor\/[-0-9a-zA-Z]+/, 'get', {'uid': Random.guid(), 'name': Random.name(), 'email': Random.email()})

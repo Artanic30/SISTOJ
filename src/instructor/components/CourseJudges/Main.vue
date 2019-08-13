@@ -15,6 +15,7 @@
           <el-table
           :data="judgeList"
           style="width: 100%"
+          v-loading="loading"
           stripe>
           <el-table-column
             prop="uid"
@@ -54,7 +55,8 @@ export default {
   data () {
     return {
       judgeList: [],
-      childChange: false
+      childChange: false,
+      loading: true
     }
   },
   methods: {
@@ -68,7 +70,7 @@ export default {
           this.axios({
             method: 'delete',
             url: `${this.Api}/course/${this.getUid}/judge/${rows[index].uid}`,
-            headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+            headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
           })
             .then((response) => {
               this.$message({
@@ -92,11 +94,6 @@ export default {
         })
       })
     },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
     addJudges () {
       const loading = this.$loading({
         lock: true,
@@ -112,31 +109,31 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      let that = this
-      this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
-              .then((response2) => {
-                that.judgeList.push(response2.data)
-              })
-              .catch((err) => {
-                this.$message({
-                  type: 'error',
-                  message: err,
-                  showClose: true
-                })
-              })
-          }
-        })
-        .catch((err) => {
-          this.$message({
-            type: 'error',
-            message: err,
-            showClose: true
+      let promise = new Promise((resolve, reject) => {
+        this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
+          .then(response => {
+            resolve(response.data)
+          }).catch(error => {
+            reject(error)
           })
-        })
+      })
+      promise.then(data => {
+        for (let i = 0; i < data.length; i++) {
+          this.axios.get(`${this.Api}/judge/${data[i].uid}`)
+            .then((response2) => {
+              this.judgeList.push(response2.data)
+            })
+            .catch((err) => {
+              this.$message({
+                type: 'error',
+                message: err.status,
+                showClose: true
+              })
+            })
+        }
+      })
     }
+    this.loading = false
   },
   computed: mapState({
     getAuth: state => state.isAuthorized,

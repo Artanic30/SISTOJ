@@ -77,11 +77,6 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -90,7 +85,7 @@ export default {
               method: 'post',
               url: `${this.Api}/course/${this.getUid}/instructor/`,
               data: this.instructorInfo,
-              headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+              headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
             }).then((response) => {
               alert('submit!')
               window.location.reload()

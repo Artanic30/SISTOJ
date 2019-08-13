@@ -5,7 +5,7 @@
       <span class="el-dropdown-link">Here<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item v-for="item in Judges" v-bind:key="item.uid" v-if="checkData(item)">
+        <el-dropdown-item v-for="(item, index) in Judges" v-bind:key="index" v-if="checkData(item)">
           <el-button @click="returnJudges(item)" class="button-title">
             <span>{{ item.host }}</span>
           </el-button>

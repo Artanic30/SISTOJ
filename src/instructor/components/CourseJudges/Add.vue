@@ -56,18 +56,13 @@ export default {
         this.$emit('goBack')
       }, 500)
     },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
     submitForm () {
       if (this.getAuth) {
         this.axios({
           method: 'post',
           url: `${this.Api}/course/${this.getUid}/judge/`,
           data: {uid: this.resultUID},
-          headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+          headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
         }).then((response) => {
           alert('submit!')
           window.location.reload()

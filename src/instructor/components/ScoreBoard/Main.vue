@@ -36,10 +36,8 @@
           label="Submission Time">
         </el-table-column>
           <el-table-column
+          prop="delta"
           label="Delta">
-          <template slot-scope="scope">
-            <i :class=getArrow(scope.row.delta)></i>
-          </template>
         </el-table-column>
      </el-table>
       </el-col>
@@ -73,7 +71,7 @@ export default {
   },
   created () {
     if (this.getAuth) {
-      this.axios.get(`${this.Api}/course/${this.getUid}/assignment/${this.getAssUid}/scores/`)
+      this.axios.get(`${this.Api}/course/${this.$route.query.coUid}/assignment/${this.$route.query.assUid}/scores/`)
         .then((response) => {
           this.scoreInfo = this.getSubmission(response.data)
           this.total = response.data.length
@@ -95,16 +93,7 @@ export default {
       this.pagesize = val
     },
     ranking (index) {
-      return (this.currentPage - 1) * 20 + index + 1
-    },
-    getArrow (delta) {
-      if (delta > 0) {
-        return 'el-icon-caret-top'
-      } else if (delta === 0) {
-        return 'el-icon-d-caret'
-      } else {
-        return 'el-icon-caret-bottom'
-      }
+      return (this.currentPage - 1) * 20 + index
     },
     getSubmission (data) {
       let that = this
@@ -135,12 +124,12 @@ export default {
       return new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, '-').replace(/日/g, ' ')
     }
   },
-  computed: mapState({
-    getAuth: state => state.isAuthorized,
-    getUid: state => state.coInfo.uid,
-    getAssUid: state => state.assignments.uid,
-    Api: state => state.api
-  })
+  computed: {
+    ...mapState({
+      getAuth: state => state.isAuthorized,
+      Api: state => state.api
+    })
+  }
 }
 </script>
 <style scoped>

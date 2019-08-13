@@ -38,17 +38,17 @@ export default {
   data () {
     return {
       courseInfo: [],
-      show: true,
+      show: false,
       student_id: 0
     }
   },
   methods: {
     toCourse (course) {
-      this.$store.commit('updateCoInfo', course)
+      this.$store.commit('updateCourse', course)
       if (this.$route.name === 'indexInstructor') {
         this.$router.push('instr/home/course/' + course.code)
       } else {
-        this.$router.push('home/course/' + course.code)
+        this.$router.push(`home/course/${course.code}`)
       }
     },
     getYear (info) {
@@ -68,12 +68,12 @@ export default {
       }
     }
   },
-  props: ['passCoInfo'],
+  props: ['passCoInfo', 'passShow'],
   watch: {
     passCoInfo: function name (newValue) {
-      if (newValue.length > 0) {
-        this.show = false
-      }
+      this.courseInfo = newValue
+    },
+    passShow: function name (newValue) {
       this.courseInfo = newValue
     }
   },

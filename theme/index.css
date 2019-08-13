@@ -4036,7 +4036,7 @@
 .el-form-item__label {
   text-align: right;
   float: left;
-  font-size: 14px;
+  font-size: 23px;
   color: #606266;
   line-height: 40px;
   padding: 0 12px 0 0;
@@ -10461,7 +10461,7 @@
   color: #303133;
   cursor: pointer;
   border-bottom: 1px solid #ebeef5;
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 500;
   -webkit-transition: border-bottom-color .3s;
   transition: border-bottom-color .3s;
@@ -10500,7 +10500,7 @@
 
 .el-collapse-item__content {
   padding-bottom: 25px;
-  font-size: 13px;
+  font-size: 18px;
   color: #303133;
   line-height: 1.769230769230769
 }

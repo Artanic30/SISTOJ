@@ -31,16 +31,6 @@
           <router-link :to="{ path: '/instr/course'}" class="sub-title">Course</router-link>
         </el-col>
     </el-row>
-    <el-row class="row-half" v-if="checkRole">
-      <el-col>
-        <span class="title">Tips:</span>
-      </el-col>
-    </el-row>
-    <el-row v-if="checkRole">
-      <el-col>
-        <span class="content1">Since you are instructor and student in the meantime, version switch is available in the account menu.</span>
-      </el-col>
-    </el-row>
   </div>
 </template>
 <script>
@@ -54,10 +44,7 @@ export default {
     }
   },
   computed: mapState({
-    getBase: state => state.baseInfo,
-    checkRole () {
-      return this.getBase.isInstructor && this.getBase.isStudent
-    }
+    getBase: state => state.baseInfo
   })
 }
 </script>

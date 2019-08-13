@@ -51,13 +51,8 @@ export default {
     logout () {
       this.$store.commit('logOut')
       this.$store.commit('refreshReq')
-      this.axios({
-        method: 'post',
-        url: `${this.getLogout}`,
-        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
-      })
-      this.$cookies.delete('sessionid')
-      this.$router.push('/')
+      this.$cookies.remove('sessionid')
+      window.location.href = `${this.getLogout}`
     },
     login () {
       this.axios({
@@ -67,11 +62,6 @@ export default {
         this.$store.commit('login', response.data.logout_url)
         window.location.href = response.data.login_url
       })
-    },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
     }
   }
 }
@@ -103,5 +93,8 @@ export default {
   .title-number {
     color: #b82e3b;
     font-size: 7rem;
+  }
+  .el-table_2_column_8 {
+    padding-top: 0 !important;
   }
 </style>

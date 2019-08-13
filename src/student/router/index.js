@@ -19,6 +19,7 @@ import instructors from '../../instructor/components/Instructors/Index'
 import judges from '../../instructor/components/CourseJudges/Index'
 import addcourse from '../../instructor/components/AddCourse/Index'
 import instrIndex from '../../instructor/components/Home/Index'
+import instrScoreBoard from '../../instructor/components/ScoreBoard/Index'
 
 Vue.use(Router)
 
@@ -50,6 +51,12 @@ const router = new Router({
       meta: { requiresInstr: true, requiresAuth: true }
     },
     {
+      path: '/instr/scoreBoard',
+      name: 'instrScoreBoard',
+      component: instrScoreBoard,
+      meta: { requiresInstr: true, requiresAuth: true }
+    },
+    {
       path: '/instr/course',
       name: 'addCourse',
       component: addcourse,
@@ -77,10 +84,10 @@ const router = new Router({
       path: '/home/course/:id/scoreboard/:ids',
       name: 'score',
       component: score,
-      meta: { requiresStu: true, requiresAuth: true }
+      meta: { requiresAuth: true }
     },
     {
-      path: '/home/course/:id/submission/:ids',
+      path: '/home/course/:course_code/submission/:ass_name',
       name: 'submissionHistory',
       component: submission,
       meta: { requiresStu: true, requiresAuth: true }
@@ -92,7 +99,7 @@ const router = new Router({
       meta: { requiresStu: true }
     },
     {
-      path: '/home/course/:id',
+      path: '/home/course/:course_code',
       name: 'course',
       component: course,
       meta: { requiresStu: true, requiresAuth: true }

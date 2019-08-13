@@ -93,7 +93,7 @@ export default {
           method: 'post',
           url: `${this.Api}/instructor/${this.getID}`,
           data: this.Info,
-          headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+          headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
         }).then((response) => {
           alert('submit!')
         }).catch((err) => {
@@ -108,7 +108,7 @@ export default {
           method: 'post',
           url: `${this.Api}/student/${this.getID}`,
           data: this.Info,
-          headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+          headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
         }).then((response) => {
           alert('submit!')
         }).catch((err) => {
@@ -119,11 +119,6 @@ export default {
           })
         })
       }
-    },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
     }
   },
   components: {

@@ -7,7 +7,7 @@
           </el-menu>
       </el-col>
       <el-col :span="17">
-        <v-main :passCoInfo="courseInfo"></v-main>
+        <v-main :passCoInfo="courseInfo" :passShow="show"></v-main>
       </el-col>
     </el-row>
     <el-row v-else>
@@ -27,7 +27,8 @@ import car from '../../../public/Carousel'
 export default {
   data () {
     return {
-      courseInfo: []
+      courseInfo: [],
+      show: false
     }
   },
   components: {
@@ -40,69 +41,24 @@ export default {
     getAuth: state => state.isAuthorized,
     getBase: state => state.baseInfo,
     getState: state => state.baseInfo.isInstructor,
-    getReq: state => state.isRequest,
     Api: state => state.api
   }),
   created () {
-    if (this.getAuth) {
-      let that = this
-      if (!this.getReq) {
-        this.axios({
-          method: 'get',
-          url: `/user/role` // todo: warning
-        }).then((response) => {
-          this.$store.commit('requested')
-          if (!response.data.is_student && response.data.is_instructor) {
-            that.$store.commit('updateState', {
-              uid: response.data.uid,
-              role: 2
-            })
-            if (that.$route.name === 'indexInstructor') {
-            } else {
-              that.$router.push('/instr') // todo: warning
-            }
-          } else if (response.data.is_student && !response.data.is_instructor) {
-            that.$store.commit('updateState', {
-              uid: response.data.uid,
-              role: 1
-            })
-            if (that.$route.name === 'indexStudent' || that.$route.name === 'homeStudent') {
-            } else {
-              that.$router.push('/') // todo: warning
-            }
-          } else if (!response.data.is_student && !response.data.is_instructor) {
-            that.$store.commit('updateState', {
-              uid: response.data.uid,
-              role: 4
-            })
-            that.$router.push('/uninitialized')
-          } else {
-            that.$store.commit('updateState', {
-              uid: response.data.uid,
-              role: 3
-            })
-          }
-        }).catch((err) => {
-          this.$message({
-            type: 'error',
-            message: err,
-            showClose: true
-          })
-        })
+    this.axios({
+      method: 'GET',
+      url: `${this.Api}/instructor/${this.getBase.uid}/course/`
+    }).then((response) => {
+      this.courseInfo = response.data
+      if (response.data.length === 0) {
+        this.show = true
       }
-      this.axios({
-        method: 'GET',
-        url: `${this.Api}/instructor/${this.getBase.uid}/course/`
-      }).then((response) => {
-        this.courseInfo = response.data
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: err,
-          showClose: true
-        })
+    }).catch((err) => {
+      this.$message({
+        type: 'error',
+        message: err,
+        showClose: true
       })
-    }
+    })
   }
 }
 </script>

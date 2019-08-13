@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import na from '../../../public/Navigation'
 import state from './State'
 import aside from '../../../public/InstrAside'
 import add from './Add'
@@ -27,7 +26,6 @@ export default {
     }
   },
   components: {
-    'v-na': na,
     'v-state': state,
     'v-aside': aside,
     'v-add': add

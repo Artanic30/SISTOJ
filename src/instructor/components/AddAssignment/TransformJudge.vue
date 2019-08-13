@@ -12,7 +12,7 @@
           v-model="value"
           :titles="['Available Judges', 'Existing Judges']"
           @change="handleChange"
-          :data="getTrans">
+          :data="transData">
         </el-transfer>
       </el-col>
     </el-row>
@@ -44,7 +44,7 @@ export default {
         method: 'post',
         url: `${this.Api}/course/${this.getUid}/assignment/${this.passReply.uid}`,
         data: result,
-        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+        headers: {'X-CSRFToken': this.$cookies.get('csrftoken')}
       })
       const loading = this.$loading({
         lock: true,
@@ -54,12 +54,8 @@ export default {
       })
       setTimeout(() => {
         loading.close()
+        window.location.reload()
       }, 500)
-    },
-    getCookie (name) {
-      let value = '; ' + document.cookie
-      let parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
     },
     handleChange (cv, direction, value) {
       let that = this
@@ -69,12 +65,12 @@ export default {
             method: 'post',
             url: `${that.Api}/course/${that.getUid}/assignment/${that.passReply.uid}/judge/`,
             data: {uid},
-            headers: {'X-CSRFToken': that.getCookie('csrftoken')}
+            headers: {'X-CSRFToken': that.$cookies.get('csrftoken')}
           }).then((response) => {
           }).catch((err) => {
             that.$message({
               type: 'error',
-              message: err,
+              message: err.status,
               showClose: true
             })
           })
@@ -84,26 +80,32 @@ export default {
           that.axios({
             method: 'delete',
             url: `${that.Api}/course/${that.getUid}/assignment/${that.passReply.uid}/judge/${uid}`,
-            headers: {'X-CSRFToken': that.getCookie('csrftoken')}
+            headers: {'X-CSRFToken': that.$cookies.get('csrftoken')}
           }).then((response) => {
           }).catch((err) => {
             that.$message({
               type: 'error',
-              message: err,
+              message: err.status,
               showClose: true
             })
           })
         })
       }
     },
-    check (n) {
+    checkObj (value) {
       let result = []
-      for (let i = 0; i < n.length; i++) {
-        if (result.indexOf(n[i]) === -1) {
-          result.push(n[i])
+      let keys = []
+      value.map(element => {
+        if (keys.indexOf(element.key) === -1) {
+          result.push(element)
+          keys.push(element.key)
         }
-      }
+      })
       return result
+    },
+    checkNum (value) {
+      let result = new Set(value)
+      return [...result]
     }
   },
   props: ['passReply'],
@@ -111,67 +113,58 @@ export default {
     let that = this
     let len = 0
     if (this.getAuth) {
-      this.axios.get(`${this.Api}/course/${this.getUid}/judge/`)
-        .then((response) => {
+      let promise = new Promise((resolve, reject) => {
+        this.axios.get(`${this.Api}/course/${this.getUid}/judge/`).then((response) => {
           len = response.data.length
-          for (let i = 0; i < response.data.length; i++) {
-            that.axios.get(`${this.Api}/judge/${response.data[i].uid}`)
-              .then((response2) => {
-                that.value.push(response2.data.uid)
-                that.$set(that.transData, i + len, {
-                  key: response2.data.uid,
-                  label: response2.data.host,
-                  disable: false
-                })
-              })
-              .catch((err) => {
-                that.$message({
-                  type: 'error',
-                  message: err,
-                  showClose: true
-                })
-              })
-          }
+          resolve(response.data)
         })
-        .catch((err) => {
-          this.$message({
-            type: 'error',
-            message: err,
-            showClose: true
-          })
-        })
-      this.axios.get(`${this.Api}/judge/`)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            that.$set(that.transData, i, {
-              key: response.data[i].uid,
-              label: response.data[i].host,
+      })
+      promise.then(data => {
+        for (let i = 0; i < data.length; i++) {
+          that.axios.get(`${this.Api}/judge/${data[i].uid}`).then(response => {
+            that.$set(that.transData, i + len - 1, {
+              key: response.data.uid,
+              label: response.data.host,
               disable: false
             })
-          }
-        }).catch((err) => {
-          that.$message({
-            type: 'error',
-            message: err,
-            showClose: true
           })
+        }
+      }).catch((err) => {
+        that.$message({
+          type: 'error',
+          message: err,
+          showClose: true
         })
+      })
+      promise.then(() => {
+        this.axios.get(`${this.Api}/judge/`)
+          .then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+              that.$set(that.transData, i, {
+                key: response.data[i].uid,
+                label: response.data[i].host,
+                disable: false
+              })
+            }
+          }).catch((err) => {
+            that.$message({
+              type: 'error',
+              message: err,
+              showClose: true
+            })
+          })
+      })
     }
+    /* ajax 申请来数据后对数据进行去重 */
+    this.value = this.checkNum(this.value)
+    this.transData = this.checkObj(this.transData)
   },
   computed: mapState({
     getUid: state => state.coInfo.uid,
     getAuth: state => state.isAuthorized,
     getID: state => state.baseInfo.uid,
     getAss: state => state.assignments,
-    Api: state => state.api,
-    getTrans () {
-      this.value = this.check(this.value)
-      if (this.transData.length === 0) {
-        return []
-      } else {
-        return this.check(this.transData)
-      }
-    }
+    Api: state => state.api
   })
 }
 </script>
