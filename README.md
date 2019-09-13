@@ -51,8 +51,14 @@ npm run e2e
 npm test
 ```
 
-## 4. API
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## 4.Achieved Functions
+  > 1.Upload excel file
+  > 2.Mock data for frontend indenpendent development 
+  > 3.Vuex persist state management
+  > 4.Transform UTC time to local time 
+
+## 5. API Reference
     https://github.com/ShanghaitechGeekPie/oj-backend
 
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
